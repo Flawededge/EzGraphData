@@ -1,0 +1,811 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>plotGui</class>
+    <widget class="QDialog" name="plotGui">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>831</width>
+                <height>471</height>
+            </rect>
+        </property>
+        <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+            </sizepolicy>
+        </property>
+        <property name="windowTitle">
+            <string>My First Gui!</string>
+        </property>
+        <widget class="QGroupBox" name="fileProp">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>10</y>
+                    <width>381</width>
+                    <height>231</height>
+                </rect>
+            </property>
+            <property name="title">
+                <string>File properties</string>
+            </property>
+            <widget class="QListWidget" name="listDir">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>50</y>
+                        <width>361</width>
+                        <height>141</height>
+                    </rect>
+                </property>
+            </widget>
+            <widget class="QLineEdit" name="currentDir">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>20</y>
+                        <width>251</width>
+                        <height>21</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>No dir selected</string>
+                </property>
+            </widget>
+            <widget class="QPushButton" name="browseBtn">
+                <property name="geometry">
+                    <rect>
+                        <x>270</x>
+                        <y>20</y>
+                        <width>101</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Browse</string>
+                </property>
+            </widget>
+            <widget class="QPushButton" name="loadBtn">
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>200</y>
+                        <width>75</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Load</string>
+                </property>
+            </widget>
+            <widget class="QLabel" name="loadStatus">
+                <property name="geometry">
+                    <rect>
+                        <x>110</x>
+                        <y>200</y>
+                        <width>261</width>
+                        <height>21</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>No file loaded</string>
+                </property>
+                <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+            </widget>
+        </widget>
+        <widget class="QWidget" name="horizontalLayoutWidget">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>250</y>
+                    <width>811</width>
+                    <height>211</height>
+                </rect>
+            </property>
+            <layout class="QHBoxLayout" name="batteryConfigLayout">
+                <item>
+                    <widget class="QGroupBox" name="battery1">
+                        <property name="title">
+                            <string>Battery 1</string>
+                        </property>
+                        <widget class="QGroupBox" name="Peukert1">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>20</y>
+                                    <width>231</width>
+                                    <height>71</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QSlider" name="slidePeu1">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>40</y>
+                                        <width>211</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputPeu1">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="peuLbl1">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Peukert's</string>
+                                </property>
+                                <property name="scaledContents">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QGroupBox" name="Efficiency1">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>90</y>
+                                    <width>231</width>
+                                    <height>71</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QSlider" name="slideEff1">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>40</y>
+                                        <width>211</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputEff1">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="effLbl1">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Efficiency</string>
+                                </property>
+                                <property name="scaledContents">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QGroupBox" name="Capacity1">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>160</y>
+                                    <width>231</width>
+                                    <height>41</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QLabel" name="capLbl1">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Capacity (Ah)</string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputCap1">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                        </widget>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QGroupBox" name="battery2">
+                        <property name="title">
+                            <string>Battery 2</string>
+                        </property>
+                        <widget class="QGroupBox" name="Capacity2">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>160</y>
+                                    <width>231</width>
+                                    <height>41</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QLabel" name="capLbl2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Capacity (Ah)</string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputCap2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QGroupBox" name="Efficiency2">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>90</y>
+                                    <width>231</width>
+                                    <height>71</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QSlider" name="slideEff2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>40</y>
+                                        <width>211</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputEff2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="effLbl2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Efficiency</string>
+                                </property>
+                                <property name="scaledContents">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QGroupBox" name="Peukert2">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>20</y>
+                                    <width>231</width>
+                                    <height>71</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QSlider" name="slidePeu2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>40</y>
+                                        <width>211</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputPeu2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="peuLbl2">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Peukert's</string>
+                                </property>
+                                <property name="scaledContents">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </widget>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QGroupBox" name="battery3">
+                        <property name="title">
+                            <string>Battery 3</string>
+                        </property>
+                        <widget class="QGroupBox" name="Capacity3">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>160</y>
+                                    <width>231</width>
+                                    <height>41</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QLabel" name="capLbl3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Capacity (Ah)</string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputCap3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QGroupBox" name="Efficiency3">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>90</y>
+                                    <width>231</width>
+                                    <height>71</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QSlider" name="slideEff3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>40</y>
+                                        <width>211</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputEff3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="effLbl3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Efficiency</string>
+                                </property>
+                                <property name="scaledContents">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </widget>
+                        <widget class="QGroupBox" name="Peukert3">
+                            <property name="geometry">
+                                <rect>
+                                    <x>10</x>
+                                    <y>20</y>
+                                    <width>231</width>
+                                    <height>71</height>
+                                </rect>
+                            </property>
+                            <property name="title">
+                                <string/>
+                            </property>
+                            <widget class="QSlider" name="slidePeu3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>40</y>
+                                        <width>211</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Qt::Horizontal</enum>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" name="inputPeu3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>130</x>
+                                        <y>10</y>
+                                        <width>91</width>
+                                        <height>22</height>
+                                    </rect>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" name="peuLbl3">
+                                <property name="geometry">
+                                    <rect>
+                                        <x>10</x>
+                                        <y>0</y>
+                                        <width>111</width>
+                                        <height>41</height>
+                                    </rect>
+                                </property>
+                                <property name="font">
+                                    <font>
+                                        <pointsize>12</pointsize>
+                                    </font>
+                                </property>
+                                <property name="text">
+                                    <string>Peukert's</string>
+                                </property>
+                                <property name="scaledContents">
+                                    <bool>true</bool>
+                                </property>
+                            </widget>
+                        </widget>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QPushButton" name="plotButton">
+            <property name="geometry">
+                <rect>
+                    <x>730</x>
+                    <y>220</y>
+                    <width>91</width>
+                    <height>23</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Update Plot</string>
+            </property>
+        </widget>
+        <widget class="QWidget" name="gridLayoutWidget">
+            <property name="geometry">
+                <rect>
+                    <x>400</x>
+                    <y>10</y>
+                    <width>421</width>
+                    <height>201</height>
+                </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout">
+                <item row="1" column="1">
+                    <widget class="QCheckBox" name="b2Current">
+                        <property name="text">
+                            <string>B2 Current</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="1">
+                    <widget class="QCheckBox" name="SoC2">
+                        <property name="text">
+                            <string>SoC 2</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="0">
+                    <widget class="QCheckBox" name="b1Current">
+                        <property name="text">
+                            <string>B1 Current</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="1">
+                    <widget class="QCheckBox" name="supplyCurrent">
+                        <property name="text">
+                            <string>Supply Current</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="6" column="1">
+                    <widget class="QCheckBox" name="loadCurrent">
+                        <property name="text">
+                            <string>Load Current</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="3" column="1">
+                    <widget class="QCheckBox" name="b2Cap">
+                        <property name="text">
+                            <string>B2 remain cap</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="2">
+                    <widget class="QCheckBox" name="b3Current">
+                        <property name="text">
+                            <string>B3 Current</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="2">
+                    <widget class="QCheckBox" name="SoC3">
+                        <property name="text">
+                            <string>SoC 3</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="0">
+                    <widget class="QCheckBox" name="supplyVoltage">
+                        <property name="text">
+                            <string>Supply Voltage</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="4" column="1">
+                    <widget class="QCheckBox" name="b2Soc">
+                        <property name="text">
+                            <string>B2 SoC</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="4" column="2">
+                    <widget class="QCheckBox" name="b3soc">
+                        <property name="text">
+                            <string>B3 SoC</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="3" column="2">
+                    <widget class="QCheckBox" name="b3Cap">
+                        <property name="text">
+                            <string>B3 remain cap</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="0">
+                    <widget class="QCheckBox" name="SoC1">
+                        <property name="text">
+                            <string>SoC 1</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="3" column="0">
+                    <widget class="QCheckBox" name="b1Cap">
+                        <property name="text">
+                            <string>B1 remain Cap</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="6" column="0">
+                    <widget class="QCheckBox" name="loadVoltage">
+                        <property name="text">
+                            <string>Load Voltage</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="4" column="0">
+                    <widget class="QCheckBox" name="b1soc">
+                        <property name="text">
+                            <string>B1 SoC</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="2" column="0">
+                    <widget class="QCheckBox" name="checkBox">
+                        <property name="text">
+                            <string>B1 Voltage</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="2" column="1">
+                    <widget class="QCheckBox" name="checkBox_2">
+                        <property name="text">
+                            <string>B2 Voltage</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="2" column="2">
+                    <widget class="QCheckBox" name="checkBox_3">
+                        <property name="text">
+                            <string>B3 Voltage</string>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QLabel" name="plotStatus">
+            <property name="geometry">
+                <rect>
+                    <x>400</x>
+                    <y>220</y>
+                    <width>321</width>
+                    <height>21</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Not plotted yet</string>
+            </property>
+            <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
+</ui>
