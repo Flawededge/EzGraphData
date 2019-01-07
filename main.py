@@ -10,23 +10,48 @@ import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from mainwindow import Ui_plotGui
+import tkinter as tk
+from tkinter.filedialog import askdirectory
+from pathlib import Path
 
 
 class mainPlotGui(Ui_plotGui):
+    root = tk.Tk()
+    root.withdraw()
+
     def __init__(self, dialog):
         Ui_plotGui.__init__(self)
         self.setupUi(dialog)
 
-    # Todo : Add in variables for all of the buttons
+        self.browseBtn.clicked.connect(self.browseClicked)
+        self.currentDir.returnPressed.connect(self.searchDirectory)
 
-    # Todo : Attach sliders to spin boxes
+    def searchDirectory(self):
+        temp = self.currentDir.text()
+        if os.path.isdir(temp):  # If it's a valid directory
+            print('Searching dir')
+            if len(temp) > 30:  # Chop the string if it's going to go out of view
+                self.loadStatus.setText(f'Success! \'...{temp[slice(-30, None)]}\' contents shown')
+            else:
+                self.loadStatus.setText(f'Success! \'{temp}\' contents shown')
 
-        # # Connect "add" button with a custom function (addInputTextToListbox)
-        # self.addBtn.clicked.connect(self.addInputTextToListbox)
+            for i in os.listdir(temp):
+                if i.lower().endswith('.csv'):
+                    self.listDir.addItem(i)
+                else:
+                    print(f'{i} is not valid')
 
-    # def addInputTextToListbox(self):
-    #     txt = self.myTextInput.text()
-    #     self.listWidget.addItem(txt)
+        else:  # If it's an invalid directory
+            print('Error: directory not valid')
+            if len(temp) > 30:  # Chop the string if it's going to go out of view
+                self.loadStatus.setText(f'Error: \'...{temp[slice(-30, None)]}\' not valid')
+            else:
+                self.loadStatus.setText(f'Error: \'{temp}\' not valid')
+
+    def browseClicked(self):
+        self.currentDir.setText(askdirectory())  # Get the directory from the user
+        self.searchDirectory()  # Move to verifying the directory and searching it
+
 
 
 if __name__ == '__main__':

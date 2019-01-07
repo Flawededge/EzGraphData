@@ -66,26 +66,16 @@
                 <property name="text">
                     <string>Browse</string>
                 </property>
-            </widget>
-            <widget class="QPushButton" name="loadBtn">
-                <property name="geometry">
-                    <rect>
-                        <x>20</x>
-                        <y>200</y>
-                        <width>75</width>
-                        <height>23</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Load</string>
+                <property name="autoDefault">
+                    <bool>false</bool>
                 </property>
             </widget>
             <widget class="QLabel" name="loadStatus">
                 <property name="geometry">
                     <rect>
-                        <x>110</x>
+                        <x>10</x>
                         <y>200</y>
-                        <width>261</width>
+                        <width>361</width>
                         <height>21</height>
                     </rect>
                 </property>
@@ -94,9 +84,6 @@
                 </property>
                 <property name="alignment">
                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-                <property name="buddy">
-                    <cstring>loadBtn</cstring>
                 </property>
             </widget>
         </widget>
@@ -931,9 +918,8 @@
     </widget>
     <tabstops>
         <tabstop>currentDir</tabstop>
-        <tabstop>browseBtn</tabstop>
         <tabstop>listDir</tabstop>
-        <tabstop>loadBtn</tabstop>
+        <tabstop>browseBtn</tabstop>
         <tabstop>SoC1</tabstop>
         <tabstop>SoC2</tabstop>
         <tabstop>SoC3</tabstop>

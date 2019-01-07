@@ -9,22 +9,21 @@ It will "eventually" be able to plot any time based data it's given (assuming th
 - To do list
     -
 
-- ~~Make the gui in the first place~~
-    - Add in better looking symbols for spinner boxes
-    - Add in variables for each of the check boxes
-    - 
+- ~~Make the gui do stuff in the first place~~
+    - ~~Add in file searching capability~~
+    - Make the currently selected file be loaded
+    - ~~Add in better looking symbols for spinner boxes~~
+    - Make check boxes change what data is loaded
+    - Add in an easy way to use functions to change how data is processed
     
 - **Make a plot window and make it do the things**
-
-- Make it plot a set bit of data
-    - Make update plot 
+    - Choose which plotter to use
+    - Make separate window pop up
+    - Make update button make a fresh plot
 
 - Give a way to run a function to process each column differently
 
 - Make the gui user friendly
-
-- Make the file search do something
-    - List the files in the box under directory input
     
 - Give the entire interface a bit of pizazz
     - Make the 'No file loaded' label reflect current progress
@@ -36,11 +35,14 @@ And after that's done:
 
 	1.0 → Sit back in awe at my first git project
 
+    → Allow multiple data sets to be selected and overlayed
+
 
 - Get started guide
     - 
 
-I'm using PyCharm with python 3.7, and all of the dependencies can be grabbed with:
+I'm using PyCharm with python 3.7 \
+All of the dependencies can be grabbed with:
 
     pip3 install -r dependencies.txt
     
