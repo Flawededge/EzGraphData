@@ -40,6 +40,23 @@
                         <height>141</height>
                     </rect>
                 </property>
+                <property name="midLineWidth">
+                    <number>0</number>
+                </property>
+                <property name="horizontalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="selectionMode">
+                    <enum>QAbstractItemView::SingleSelection</enum>
+                </property>
+                <property name="currentRow">
+                    <number>-1</number>
+                </property>
+                <item>
+                    <property name="text">
+                        <string>None</string>
+                    </property>
+                </item>
             </widget>
             <widget class="QLineEdit" name="currentDir">
                 <property name="geometry">
@@ -179,7 +196,7 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's * 10</string>
+                                    <string>Peukert's * 100</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
@@ -511,7 +528,7 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's * 10</string>
+                                    <string>Peukert's * 100</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
@@ -724,7 +741,7 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's * 10</string>
+                                    <string>Peukert's * 100</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
@@ -874,23 +891,30 @@
                     </widget>
                 </item>
                 <item row="2" column="0">
-                    <widget class="QCheckBox" name="checkBox">
+                    <widget class="QCheckBox" name="b1Voltage">
                         <property name="text">
                             <string>B1 Voltage</string>
                         </property>
                     </widget>
                 </item>
                 <item row="2" column="1">
-                    <widget class="QCheckBox" name="checkBox_2">
+                    <widget class="QCheckBox" name="b2Voltage">
                         <property name="text">
                             <string>B2 Voltage</string>
                         </property>
                     </widget>
                 </item>
                 <item row="2" column="2">
-                    <widget class="QCheckBox" name="checkBox_3">
+                    <widget class="QCheckBox" name="b3Voltage">
                         <property name="text">
                             <string>B3 Voltage</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="2">
+                    <widget class="QCheckBox" name="temp">
+                        <property name="text">
+                            <string>Temperature</string>
                         </property>
                     </widget>
                 </item>
@@ -926,9 +950,9 @@
         <tabstop>b1Current</tabstop>
         <tabstop>b2Current</tabstop>
         <tabstop>b3Current</tabstop>
-        <tabstop>checkBox</tabstop>
-        <tabstop>checkBox_2</tabstop>
-        <tabstop>checkBox_3</tabstop>
+        <tabstop>b1Voltage</tabstop>
+        <tabstop>b2Voltage</tabstop>
+        <tabstop>b3Voltage</tabstop>
         <tabstop>b1Cap</tabstop>
         <tabstop>b2Cap</tabstop>
         <tabstop>b3Cap</tabstop>

@@ -3,8 +3,8 @@
 
 # Pre compile the ui (If an update is needed)
 import os
-
 os.system("pyuic5 mainwindow.ui > mainwindow.py")
+
 
 import sys
 import csv
@@ -12,8 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from mainwindow import Ui_plotGui
 import tkinter as tk
 from tkinter.filedialog import askdirectory
-from pathlib import Path
-
+from functools import partial
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
@@ -50,7 +49,7 @@ class mainPlotGui(Ui_plotGui):
             for i in os.listdir(temp):
                 if i.lower().endswith('.csv'):
                     self.listDir.addItem(i)
-                    self.fileList.append(temp + i)
+                    self.fileList.append(temp + '/' + i)
                 else:
                     print(f'{i} is not valid')
 
@@ -80,21 +79,63 @@ class mainPlotGui(Ui_plotGui):
             # Save full path and display status update
             curPath = self.fileList[self.listDir.currentRow()]
             if len(curPath) > 30:  # Chop the string if it's going to go out of view
-                self.plotStatus.setText(f'Checking! \'...{curPath[slice(-30, None)]}\' contents shown')
+                self.plotStatus.setText(f'Checking! \'...{curPath[slice(-30, None)]}\'')
             else:
-                self.plotStatus.setText(f'Checking! \'{curPath}\' contents shown')
-            QtGui.qApp.processEvents()  # Update user interface
+                self.plotStatus.setText(f'Checking! \'{curPath}\'')
+
+            QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
             # Check the header row to see if all the required data is there
             file = open(curPath)
-            reader = csv.DictReader(file)
+            reader = file.readline()
             fail = False
+            switcher = {
+                'Supply Current': partial(self.supplyCurrent.setChecked, True),
+                'Supply Voltage': partial(self.supplyVoltage.setChecked, True),
+                'Load Current': partial(self.loadCurrent.setChecked, True),
+                'Load Voltage': partial(self.loadVoltage.setChecked, True),
+                'Soc1': partial(self.SoC1.setChecked, True),
+                'Soc2': partial(self.SoC2.setChecked, True),
+                'Soc3': partial(self.SoC3.setChecked, True),
+                'Soc4': 'Soc4',
+                'Soc5': 'Soc5',
+                'B1Current': partial(self.b1Current.setChecked, True),
+                'B2Current': partial(self.b2Current.setChecked, True),
+                'B3Current': partial(self.b3Current.setChecked, True),
+                'B4Current': 'b4Current',
+                'B5Current': 'b5Current',
+                'B1Voltage': partial(self.b1Voltage.setChecked, True),
+                'B2Voltage': partial(self.b2Voltage.setChecked, True),
+                'B3Voltage': partial(self.b3Voltage.setChecked, True),
+                'B4Voltage': 'b4Voltage',
+                'B5Voltage': 'b5Voltage',
+                'B1RemainCapacity': partial(self.b1soc.setChecked, True),
+                'B2RemainCapacity': partial(self.b2Soc.setChecked, True),
+                'B3RemainCapacity': partial(self.b3soc.setChecked, True),
+                'B4RemainCapacity': 'b4Cap',
+                'B5RemainCapacity': 'b5Cap',
+                'B1EffectiveCurrent': 'b1EffCurr',
+                'B2EffectiveCurrent': 'b2EffCurr',
+                'B3EffectiveCurrent': 'b3EffCurr',
+                'B4EffectiveCurrent': 'b4EffCurr',
+                'B5EffectiveCurrent': 'b5EffCurr',
+                'B1RemianCapacityCoulombs': partial(self.b1Cap.setChecked, True),
+                'B2RemianCapacityCoulombs': partial(self.b2Cap.setChecked, True),
+                'B3RemianCapacityCoulombs': partial(self.b3Cap.setChecked, True),
+                'B4RemianCapacityCoulombs': 'b4Cap',
+                'B5RemianCapacityCoulombs': 'b5Cap',
+                'CANDevTemperature': partial(self.temp.setChecked, True),
+            }
             for i in self.neededHeaders:
                 if i not in reader:
                     print(f'Error: {i} not found in header')
                     self.plotStatus.setText(f'Error: {i} not found in header')
                     fail = True
-
+                else:
+                    func = switcher.get(i)
+                    if isinstance(func, partial):
+                        func()
+                    QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
             if fail:
                 return
             else:
