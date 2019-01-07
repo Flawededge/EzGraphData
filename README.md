@@ -13,8 +13,7 @@ It will "eventually" be able to plot any time based data it's given (assuming th
     - ~~Add in file searching capability~~
     - Make the currently selected file be loaded
     - ~~Add in better looking symbols for spinner boxes~~
-    - Make check boxes change what data is loaded
-    - Add in an easy way to use functions to change how data is processed
+    - ~~Make check boxes change when data is loaded~~
     
 - **Make a plot window and make it do the things**
     - Choose which plotter to use
@@ -36,7 +35,7 @@ And after that's done:
 	1.0 → Sit back in awe at my first git project
 
     → Allow multiple data sets to be selected and overlayed
-
+    → Add in an easy way to use functions to change how data is processed
 
 - Get started guide
     - 

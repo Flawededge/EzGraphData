@@ -88,6 +88,7 @@ class mainPlotGui(Ui_plotGui):
             # Check the header row to see if all the required data is there
             file = open(curPath)
             reader = file.readline()
+            file.close()
             fail = False
             switcher = {
                 'Supply Current': partial(self.supplyCurrent.setChecked, True),
@@ -141,7 +142,8 @@ class mainPlotGui(Ui_plotGui):
             else:
                 self.plotStatus.setText('Header valid! Now copying file to local directory')
 
-        # Copy the file to a local directory
+        # Read the file
+
 
 
 if __name__ == '__main__':
