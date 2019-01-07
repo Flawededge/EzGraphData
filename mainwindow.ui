@@ -95,6 +95,9 @@
                 <property name="alignment">
                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                 </property>
+                <property name="buddy">
+                    <cstring>loadBtn</cstring>
+                </property>
             </widget>
         </widget>
         <widget class="QWidget" name="horizontalLayoutWidget">
@@ -139,6 +142,9 @@
                                 <property name="maximum">
                                     <number>200</number>
                                 </property>
+                                <property name="value">
+                                    <number>110</number>
+                                </property>
                                 <property name="orientation">
                                     <enum>Qt::Horizontal</enum>
                                 </property>
@@ -149,8 +155,26 @@
                                         <x>130</x>
                                         <y>10</y>
                                         <width>91</width>
-                                        <height>22</height>
+                                        <height>21</height>
                                     </rect>
+                                </property>
+                                <property name="showGroupSeparator" stdset="0">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="prefix">
+                                    <string/>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="value">
+                                    <number>110</number>
+                                </property>
+                                <property name="displayIntegerBase">
+                                    <number>10</number>
                                 </property>
                             </widget>
                             <widget class="QLabel" name="peuLbl1">
@@ -168,10 +192,13 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's</string>
+                                    <string>Peukert's * 10</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
+                                </property>
+                                <property name="buddy">
+                                    <cstring>inputPeu1</cstring>
                                 </property>
                             </widget>
                         </widget>
@@ -197,10 +224,13 @@
                                     </rect>
                                 </property>
                                 <property name="minimum">
-                                    <number>75</number>
+                                    <number>0</number>
                                 </property>
                                 <property name="maximum">
-                                    <number>200</number>
+                                    <number>150</number>
+                                </property>
+                                <property name="value">
+                                    <number>50</number>
                                 </property>
                                 <property name="orientation">
                                     <enum>Qt::Horizontal</enum>
@@ -214,6 +244,15 @@
                                         <width>91</width>
                                         <height>22</height>
                                     </rect>
+                                </property>
+                                <property name="suffix">
+                                    <string extracomment="%">%</string>
+                                </property>
+                                <property name="maximum">
+                                    <number>150</number>
+                                </property>
+                                <property name="value">
+                                    <number>50</number>
                                 </property>
                             </widget>
                             <widget class="QLabel" name="effLbl1">
@@ -235,6 +274,9 @@
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
+                                </property>
+                                <property name="buddy">
+                                    <cstring>inputEff1</cstring>
                                 </property>
                             </widget>
                         </widget>
@@ -266,6 +308,9 @@
                                 </property>
                                 <property name="text">
                                     <string>Capacity (Ah)</string>
+                                </property>
+                                <property name="buddy">
+                                    <cstring>inputCap1</cstring>
                                 </property>
                             </widget>
                             <widget class="QSpinBox" name="inputCap1">
@@ -315,6 +360,9 @@
                                 <property name="text">
                                     <string>Capacity (Ah)</string>
                                 </property>
+                                <property name="buddy">
+                                    <cstring>inputCap2</cstring>
+                                </property>
                             </widget>
                             <widget class="QSpinBox" name="inputCap2">
                                 <property name="geometry">
@@ -349,10 +397,13 @@
                                     </rect>
                                 </property>
                                 <property name="minimum">
-                                    <number>75</number>
+                                    <number>0</number>
                                 </property>
                                 <property name="maximum">
-                                    <number>200</number>
+                                    <number>150</number>
+                                </property>
+                                <property name="value">
+                                    <number>50</number>
                                 </property>
                                 <property name="orientation">
                                     <enum>Qt::Horizontal</enum>
@@ -366,6 +417,18 @@
                                         <width>91</width>
                                         <height>22</height>
                                     </rect>
+                                </property>
+                                <property name="suffix">
+                                    <string comment="%" extracomment="%">%</string>
+                                </property>
+                                <property name="minimum">
+                                    <number>0</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>150</number>
+                                </property>
+                                <property name="value">
+                                    <number>50</number>
                                 </property>
                             </widget>
                             <widget class="QLabel" name="effLbl2">
@@ -387,6 +450,9 @@
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
+                                </property>
+                                <property name="buddy">
+                                    <cstring>inputEff2</cstring>
                                 </property>
                             </widget>
                         </widget>
@@ -417,6 +483,9 @@
                                 <property name="maximum">
                                     <number>200</number>
                                 </property>
+                                <property name="value">
+                                    <number>110</number>
+                                </property>
                                 <property name="orientation">
                                     <enum>Qt::Horizontal</enum>
                                 </property>
@@ -429,6 +498,15 @@
                                         <width>91</width>
                                         <height>22</height>
                                     </rect>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="value">
+                                    <number>110</number>
                                 </property>
                             </widget>
                             <widget class="QLabel" name="peuLbl2">
@@ -446,10 +524,13 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's</string>
+                                    <string>Peukert's * 10</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
+                                </property>
+                                <property name="buddy">
+                                    <cstring>inputPeu2</cstring>
                                 </property>
                             </widget>
                         </widget>
@@ -489,6 +570,9 @@
                                 <property name="text">
                                     <string>Capacity (Ah)</string>
                                 </property>
+                                <property name="buddy">
+                                    <cstring>inputCap3</cstring>
+                                </property>
                             </widget>
                             <widget class="QSpinBox" name="inputCap3">
                                 <property name="geometry">
@@ -523,10 +607,13 @@
                                     </rect>
                                 </property>
                                 <property name="minimum">
-                                    <number>75</number>
+                                    <number>0</number>
                                 </property>
                                 <property name="maximum">
-                                    <number>200</number>
+                                    <number>150</number>
+                                </property>
+                                <property name="value">
+                                    <number>50</number>
                                 </property>
                                 <property name="orientation">
                                     <enum>Qt::Horizontal</enum>
@@ -540,6 +627,21 @@
                                         <width>91</width>
                                         <height>22</height>
                                     </rect>
+                                </property>
+                                <property name="accelerated">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="suffix">
+                                    <string>%</string>
+                                </property>
+                                <property name="maximum">
+                                    <number>150</number>
+                                </property>
+                                <property name="value">
+                                    <number>50</number>
+                                </property>
+                                <property name="displayIntegerBase">
+                                    <number>10</number>
                                 </property>
                             </widget>
                             <widget class="QLabel" name="effLbl3">
@@ -561,6 +663,9 @@
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
+                                </property>
+                                <property name="buddy">
+                                    <cstring>inputEff3</cstring>
                                 </property>
                             </widget>
                         </widget>
@@ -591,6 +696,9 @@
                                 <property name="maximum">
                                     <number>200</number>
                                 </property>
+                                <property name="value">
+                                    <number>110</number>
+                                </property>
                                 <property name="orientation">
                                     <enum>Qt::Horizontal</enum>
                                 </property>
@@ -603,6 +711,15 @@
                                         <width>91</width>
                                         <height>22</height>
                                     </rect>
+                                </property>
+                                <property name="minimum">
+                                    <number>75</number>
+                                </property>
+                                <property name="maximum">
+                                    <number>200</number>
+                                </property>
+                                <property name="value">
+                                    <number>110</number>
                                 </property>
                             </widget>
                             <widget class="QLabel" name="peuLbl3">
@@ -620,10 +737,13 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's</string>
+                                    <string>Peukert's * 10</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
+                                </property>
+                                <property name="buddy">
+                                    <cstring>inputPeu3</cstring>
                                 </property>
                             </widget>
                         </widget>
@@ -804,8 +924,245 @@
             <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+            <property name="buddy">
+                <cstring>plotButton</cstring>
+            </property>
         </widget>
     </widget>
+    <tabstops>
+        <tabstop>currentDir</tabstop>
+        <tabstop>browseBtn</tabstop>
+        <tabstop>listDir</tabstop>
+        <tabstop>loadBtn</tabstop>
+        <tabstop>SoC1</tabstop>
+        <tabstop>SoC2</tabstop>
+        <tabstop>SoC3</tabstop>
+        <tabstop>b1Current</tabstop>
+        <tabstop>b2Current</tabstop>
+        <tabstop>b3Current</tabstop>
+        <tabstop>checkBox</tabstop>
+        <tabstop>checkBox_2</tabstop>
+        <tabstop>checkBox_3</tabstop>
+        <tabstop>b1Cap</tabstop>
+        <tabstop>b2Cap</tabstop>
+        <tabstop>b3Cap</tabstop>
+        <tabstop>b1soc</tabstop>
+        <tabstop>b2Soc</tabstop>
+        <tabstop>b3soc</tabstop>
+        <tabstop>supplyVoltage</tabstop>
+        <tabstop>supplyCurrent</tabstop>
+        <tabstop>loadVoltage</tabstop>
+        <tabstop>loadCurrent</tabstop>
+        <tabstop>plotButton</tabstop>
+        <tabstop>inputPeu1</tabstop>
+        <tabstop>slidePeu1</tabstop>
+        <tabstop>inputEff1</tabstop>
+        <tabstop>slideEff1</tabstop>
+        <tabstop>inputCap1</tabstop>
+        <tabstop>inputPeu2</tabstop>
+        <tabstop>slidePeu2</tabstop>
+        <tabstop>inputEff2</tabstop>
+        <tabstop>slideEff2</tabstop>
+        <tabstop>inputCap2</tabstop>
+        <tabstop>inputPeu3</tabstop>
+        <tabstop>slidePeu3</tabstop>
+        <tabstop>inputEff3</tabstop>
+        <tabstop>slideEff3</tabstop>
+        <tabstop>inputCap3</tabstop>
+    </tabstops>
     <resources/>
-    <connections/>
+    <connections>
+        <connection>
+            <sender>slideEff1</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>inputEff1</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>160</x>
+                    <y>392</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>170</x>
+                    <y>369</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>slidePeu2</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>inputPeu2</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>439</x>
+                    <y>323</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>443</x>
+                    <y>294</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>slideEff2</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>inputEff2</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>476</x>
+                    <y>393</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>478</x>
+                    <y>366</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>slidePeu3</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>inputPeu3</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>661</x>
+                    <y>323</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>724</x>
+                    <y>293</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>slideEff3</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>inputEff3</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>693</x>
+                    <y>388</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>720</x>
+                    <y>359</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>inputEff1</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>slideEff1</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>156</x>
+                    <y>365</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>133</x>
+                    <y>386</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>inputPeu2</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>slidePeu2</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>470</x>
+                    <y>290</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>406</x>
+                    <y>319</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>inputEff2</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>slideEff2</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>431</x>
+                    <y>363</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>413</x>
+                    <y>391</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>inputPeu3</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>slidePeu3</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>766</x>
+                    <y>291</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>768</x>
+                    <y>322</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>inputEff3</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>slideEff3</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>746</x>
+                    <y>369</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>745</x>
+                    <y>385</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>inputPeu1</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>slidePeu1</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>170</x>
+                    <y>287</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>123</x>
+                    <y>318</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>slidePeu1</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>inputPeu1</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>176</x>
+                    <y>322</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>193</x>
+                    <y>294</y>
+                </hint>
+            </hints>
+        </connection>
+    </connections>
 </ui>
