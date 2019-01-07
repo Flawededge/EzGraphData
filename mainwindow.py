@@ -8,7 +8,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_plotGui(object):
     def setupUi(self, plotGui):
         plotGui.setObjectName("plotGui")
@@ -412,3 +411,4 @@ class Ui_plotGui(object):
         self.checkBox_2.setText(_translate("plotGui", "B2 Voltage"))
         self.checkBox_3.setText(_translate("plotGui", "B3 Voltage"))
         self.plotStatus.setText(_translate("plotGui", "Not plotted yet"))
+
