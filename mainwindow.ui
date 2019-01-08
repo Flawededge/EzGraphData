@@ -40,6 +40,23 @@
                         <height>141</height>
                     </rect>
                 </property>
+                <property name="midLineWidth">
+                    <number>0</number>
+                </property>
+                <property name="horizontalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="selectionMode">
+                    <enum>QAbstractItemView::SingleSelection</enum>
+                </property>
+                <property name="currentRow">
+                    <number>-1</number>
+                </property>
+                <item>
+                    <property name="text">
+                        <string>None</string>
+                    </property>
+                </item>
             </widget>
             <widget class="QLineEdit" name="currentDir">
                 <property name="geometry">
@@ -179,7 +196,7 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's * 10</string>
+                                    <string>Peukert's * 100</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
@@ -309,6 +326,12 @@
                                         <height>22</height>
                                     </rect>
                                 </property>
+                                <property name="maximum">
+                                    <number>1000</number>
+                                </property>
+                                <property name="value">
+                                    <number>100</number>
+                                </property>
                             </widget>
                         </widget>
                     </widget>
@@ -359,6 +382,12 @@
                                         <width>91</width>
                                         <height>22</height>
                                     </rect>
+                                </property>
+                                <property name="maximum">
+                                    <number>1000</number>
+                                </property>
+                                <property name="value">
+                                    <number>130</number>
                                 </property>
                             </widget>
                         </widget>
@@ -511,7 +540,7 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's * 10</string>
+                                    <string>Peukert's * 100</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
@@ -569,6 +598,12 @@
                                         <width>91</width>
                                         <height>22</height>
                                     </rect>
+                                </property>
+                                <property name="maximum">
+                                    <number>1000</number>
+                                </property>
+                                <property name="value">
+                                    <number>120</number>
                                 </property>
                             </widget>
                         </widget>
@@ -724,7 +759,7 @@
                                     </font>
                                 </property>
                                 <property name="text">
-                                    <string>Peukert's * 10</string>
+                                    <string>Peukert's * 100</string>
                                 </property>
                                 <property name="scaledContents">
                                     <bool>true</bool>
@@ -755,7 +790,7 @@
             <property name="geometry">
                 <rect>
                     <x>400</x>
-                    <y>10</y>
+                    <y>20</y>
                     <width>421</width>
                     <height>201</height>
                 </rect>
@@ -763,6 +798,9 @@
             <layout class="QGridLayout" name="gridLayout">
                 <item row="1" column="1">
                     <widget class="QCheckBox" name="b2Current">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B2 Current</string>
                         </property>
@@ -770,6 +808,9 @@
                 </item>
                 <item row="0" column="1">
                     <widget class="QCheckBox" name="SoC2">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>SoC 2</string>
                         </property>
@@ -777,6 +818,9 @@
                 </item>
                 <item row="1" column="0">
                     <widget class="QCheckBox" name="b1Current">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B1 Current</string>
                         </property>
@@ -784,6 +828,9 @@
                 </item>
                 <item row="5" column="1">
                     <widget class="QCheckBox" name="supplyCurrent">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>Supply Current</string>
                         </property>
@@ -791,6 +838,9 @@
                 </item>
                 <item row="6" column="1">
                     <widget class="QCheckBox" name="loadCurrent">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>Load Current</string>
                         </property>
@@ -798,6 +848,9 @@
                 </item>
                 <item row="3" column="1">
                     <widget class="QCheckBox" name="b2Cap">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B2 remain cap</string>
                         </property>
@@ -805,6 +858,9 @@
                 </item>
                 <item row="1" column="2">
                     <widget class="QCheckBox" name="b3Current">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B3 Current</string>
                         </property>
@@ -812,6 +868,9 @@
                 </item>
                 <item row="0" column="2">
                     <widget class="QCheckBox" name="SoC3">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>SoC 3</string>
                         </property>
@@ -819,6 +878,9 @@
                 </item>
                 <item row="5" column="0">
                     <widget class="QCheckBox" name="supplyVoltage">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>Supply Voltage</string>
                         </property>
@@ -826,6 +888,9 @@
                 </item>
                 <item row="4" column="1">
                     <widget class="QCheckBox" name="b2Soc">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B2 SoC</string>
                         </property>
@@ -833,6 +898,9 @@
                 </item>
                 <item row="4" column="2">
                     <widget class="QCheckBox" name="b3soc">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B3 SoC</string>
                         </property>
@@ -840,6 +908,9 @@
                 </item>
                 <item row="3" column="2">
                     <widget class="QCheckBox" name="b3Cap">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B3 remain cap</string>
                         </property>
@@ -847,6 +918,9 @@
                 </item>
                 <item row="0" column="0">
                     <widget class="QCheckBox" name="SoC1">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>SoC 1</string>
                         </property>
@@ -854,6 +928,9 @@
                 </item>
                 <item row="3" column="0">
                     <widget class="QCheckBox" name="b1Cap">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B1 remain Cap</string>
                         </property>
@@ -861,6 +938,9 @@
                 </item>
                 <item row="6" column="0">
                     <widget class="QCheckBox" name="loadVoltage">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>Load Voltage</string>
                         </property>
@@ -868,29 +948,51 @@
                 </item>
                 <item row="4" column="0">
                     <widget class="QCheckBox" name="b1soc">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B1 SoC</string>
                         </property>
                     </widget>
                 </item>
                 <item row="2" column="0">
-                    <widget class="QCheckBox" name="checkBox">
+                    <widget class="QCheckBox" name="b1Voltage">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B1 Voltage</string>
                         </property>
                     </widget>
                 </item>
                 <item row="2" column="1">
-                    <widget class="QCheckBox" name="checkBox_2">
+                    <widget class="QCheckBox" name="b2Voltage">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B2 Voltage</string>
                         </property>
                     </widget>
                 </item>
                 <item row="2" column="2">
-                    <widget class="QCheckBox" name="checkBox_3">
+                    <widget class="QCheckBox" name="b3Voltage">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
                         <property name="text">
                             <string>B3 Voltage</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="2">
+                    <widget class="QCheckBox" name="temp">
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                        <property name="text">
+                            <string>Temperature</string>
                         </property>
                     </widget>
                 </item>
@@ -926,9 +1028,9 @@
         <tabstop>b1Current</tabstop>
         <tabstop>b2Current</tabstop>
         <tabstop>b3Current</tabstop>
-        <tabstop>checkBox</tabstop>
-        <tabstop>checkBox_2</tabstop>
-        <tabstop>checkBox_3</tabstop>
+        <tabstop>b1Voltage</tabstop>
+        <tabstop>b2Voltage</tabstop>
+        <tabstop>b3Voltage</tabstop>
         <tabstop>b1Cap</tabstop>
         <tabstop>b2Cap</tabstop>
         <tabstop>b3Cap</tabstop>
