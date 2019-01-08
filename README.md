@@ -11,24 +11,21 @@ It will "eventually" be able to plot any time based data it's given (assuming th
 
 - ~~Make the gui do stuff in the first place~~
     - ~~Add in file searching capability~~
-    - Make the currently selected file be loaded
+    - ~~Make the currently selected file be loaded~~
     - ~~Add in better looking symbols for spinner boxes~~
     - ~~Make check boxes change when data is loaded~~
+    - Add in some processing of the data
     
 - **Make a plot window and make it do the things**
     - Choose which plotter to use
     - Make separate window pop up
     - Make update button make a fresh plot
-
-- Give a way to run a function to process each column differently
-
-- Make the gui user friendly
     
 - Give the entire interface a bit of pizazz
     - Make the 'No file loaded' label reflect current progress
     - Make the 'Not plotted yet' label reflect 
-    
-- 
+    - Add a progress bar
+    - Add a line count 
 
 And after that's done:
 
@@ -36,6 +33,7 @@ And after that's done:
 
     → Allow multiple data sets to be selected and overlayed
     → Add in an easy way to use functions to change how data is processed
+    → Add in an estimator of how long to go based off previous runs
 
 - Get started guide
     - 

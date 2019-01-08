@@ -3,8 +3,8 @@
 
 # Pre compile the ui (If an update is needed)
 import os
-os.system("pyuic5 mainwindow.ui > mainwindow.py")
 
+os.system("pyuic5 mainwindow.ui > mainwindow.py")
 
 import sys
 import csv
@@ -12,11 +12,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from mainwindow import Ui_plotGui
 import tkinter as tk
 from tkinter.filedialog import askdirectory
-from functools import partial
+from functools import partial  # Used to read amount of lines quickly
+
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
     root.withdraw()
+    data = []
+    reader = None
     fileList = []
     neededHeaders = ['Supply Current', 'Supply Voltage', 'Load Current', 'Load Voltage', 'Soc1', 'Soc2', 'Soc3', 'Soc4',
                      'Soc5', 'B1Current', 'B2Current', 'B3Current', 'B4Current', 'B5Current', 'B1Voltage', 'B2Voltage',
@@ -65,6 +68,11 @@ class mainPlotGui(Ui_plotGui):
         self.currentDir.setText(askdirectory())  # Get the directory from the user
         self.searchDirectory()  # Move to verifying the directory and searching it
 
+    def countLines(self, filename):
+        buffer = 2 ** 16
+        with open(filename) as f:
+            return sum(x.count('\n') for x in iter(partial(f.read, buffer), ''))
+
     # Checks format of currently loaded file, then loads it if valid
     # Note: copies to current working directory to decrease networked file load
     def loadData(self):
@@ -86,33 +94,33 @@ class mainPlotGui(Ui_plotGui):
             QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
             # Check the header row to see if all the required data is there
-            file = open(curPath)
-            reader = file.readline()
-            file.close()
-            fail = False
+            with open(curPath) as file:
+                reader = file.readline()
+                file.close()
+
             switcher = {
-                'Supply Current': partial(self.supplyCurrent.setChecked, True),
-                'Supply Voltage': partial(self.supplyVoltage.setChecked, True),
-                'Load Current': partial(self.loadCurrent.setChecked, True),
-                'Load Voltage': partial(self.loadVoltage.setChecked, True),
-                'Soc1': partial(self.SoC1.setChecked, True),
-                'Soc2': partial(self.SoC2.setChecked, True),
-                'Soc3': partial(self.SoC3.setChecked, True),
+                'Supply Current': self.supplyCurrent,
+                'Supply Voltage': self.supplyVoltage,
+                'Load Current': self.loadCurrent,
+                'Load Voltage': self.loadVoltage,
+                'Soc1': self.SoC1,
+                'Soc2': self.SoC2,
+                'Soc3': self.SoC3,
                 'Soc4': 'Soc4',
                 'Soc5': 'Soc5',
-                'B1Current': partial(self.b1Current.setChecked, True),
-                'B2Current': partial(self.b2Current.setChecked, True),
-                'B3Current': partial(self.b3Current.setChecked, True),
+                'B1Current': self.b1Current,
+                'B2Current': self.b2Current,
+                'B3Current': self.b3Current,
                 'B4Current': 'b4Current',
                 'B5Current': 'b5Current',
-                'B1Voltage': partial(self.b1Voltage.setChecked, True),
-                'B2Voltage': partial(self.b2Voltage.setChecked, True),
-                'B3Voltage': partial(self.b3Voltage.setChecked, True),
+                'B1Voltage': self.b1Voltage,
+                'B2Voltage': self.b2Voltage,
+                'B3Voltage': self.b3Voltage,
                 'B4Voltage': 'b4Voltage',
                 'B5Voltage': 'b5Voltage',
-                'B1RemainCapacity': partial(self.b1soc.setChecked, True),
-                'B2RemainCapacity': partial(self.b2Soc.setChecked, True),
-                'B3RemainCapacity': partial(self.b3soc.setChecked, True),
+                'B1RemainCapacity': self.b1soc,
+                'B2RemainCapacity': self.b2Soc,
+                'B3RemainCapacity': self.b3soc,
                 'B4RemainCapacity': 'b4Cap',
                 'B5RemainCapacity': 'b5Cap',
                 'B1EffectiveCurrent': 'b1EffCurr',
@@ -120,30 +128,44 @@ class mainPlotGui(Ui_plotGui):
                 'B3EffectiveCurrent': 'b3EffCurr',
                 'B4EffectiveCurrent': 'b4EffCurr',
                 'B5EffectiveCurrent': 'b5EffCurr',
-                'B1RemianCapacityCoulombs': partial(self.b1Cap.setChecked, True),
-                'B2RemianCapacityCoulombs': partial(self.b2Cap.setChecked, True),
-                'B3RemianCapacityCoulombs': partial(self.b3Cap.setChecked, True),
+                'B1RemianCapacityCoulombs': self.b1Cap,
+                'B2RemianCapacityCoulombs': self.b2Cap,
+                'B3RemianCapacityCoulombs': self.b3Cap,
                 'B4RemianCapacityCoulombs': 'b4Cap',
                 'B5RemianCapacityCoulombs': 'b5Cap',
-                'CANDevTemperature': partial(self.temp.setChecked, True),
+                'CANDevTemperature': self.temp,
             }
             for i in self.neededHeaders:
+                func = switcher.get(i)
                 if i not in reader:
-                    print(f'Error: {i} not found in header')
-                    self.plotStatus.setText(f'Error: {i} not found in header')
-                    fail = True
+                    # print(f'Error: {i} not found in header')
+                    # self.plotStatus.setText(f'Error: {i} not found in header')
+                    # QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
+                    if not isinstance(func, str):
+                        func.setChecked(False)
+                        func.setEnabled(False)
                 else:
-                    func = switcher.get(i)
-                    if isinstance(func, partial):
-                        func()
-                    QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
-            if fail:
-                return
-            else:
-                self.plotStatus.setText('Header valid! Now copying file to local directory')
+                    if not isinstance(func, str):
+                        func.setEnabled(True)
+                        # func.setChecked(True)
 
-        # Read the file
+                self.plotStatus.setText('')
+                QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
+            # Read the file
+            lines = self.countLines(curPath)
+            step = round(lines / 100)
+            print(f'File has {lines} lines')
 
+            with open(curPath) as file:
+                reader = csv.DictReader(file)
+                self.data = [r for r in reader]
+
+            print(self.data[0]['Supply Current'])
+
+            self.processData()  # Use a separate function to process the data
+
+    def processData(self, ):
+        print('Processing!')
 
 
 if __name__ == '__main__':
