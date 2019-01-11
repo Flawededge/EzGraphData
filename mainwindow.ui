@@ -1,1256 +1,1318 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-    <class>plotGui</class>
-    <widget class="QDialog" name="plotGui">
+ <class>plotGui</class>
+ <widget class="QDialog" name="plotGui">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1128</width>
+    <height>534</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>EzPlot</string>
+  </property>
+  <widget class="QGroupBox" name="fileProp">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>381</width>
+     <height>231</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>File properties</string>
+   </property>
+   <widget class="QListWidget" name="listDir">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>361</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="midLineWidth">
+     <number>0</number>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SingleSelection</enum>
+    </property>
+    <property name="currentRow">
+     <number>-1</number>
+    </property>
+    <item>
+     <property name="text">
+      <string>None</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QLineEdit" name="currentDir">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>251</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>No dir selected</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="browseBtn">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>20</y>
+      <width>101</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Browse</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="loadStatus">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>361</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>No file loaded</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="horizontalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>250</y>
+     <width>811</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="batteryConfigLayout">
+    <item>
+     <widget class="QGroupBox" name="battery1">
+      <property name="title">
+       <string>Battery 1</string>
+      </property>
+      <widget class="QGroupBox" name="Peukert1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>231</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QSlider" name="slidePeu1">
         <property name="geometry">
-            <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>831</width>
-                <height>471</height>
-            </rect>
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>211</width>
+          <height>22</height>
+         </rect>
         </property>
-        <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-            </sizepolicy>
+        <property name="minimum">
+         <number>75</number>
         </property>
-        <property name="windowTitle">
-            <string>My First Gui!</string>
+        <property name="maximum">
+         <number>200</number>
         </property>
-        <widget class="QGroupBox" name="fileProp">
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>10</y>
-                    <width>381</width>
-                    <height>231</height>
-                </rect>
-            </property>
-            <property name="title">
-                <string>File properties</string>
-            </property>
-            <widget class="QListWidget" name="listDir">
-                <property name="geometry">
-                    <rect>
-                        <x>10</x>
-                        <y>50</y>
-                        <width>361</width>
-                        <height>141</height>
-                    </rect>
-                </property>
-                <property name="midLineWidth">
-                    <number>0</number>
-                </property>
-                <property name="horizontalScrollBarPolicy">
-                    <enum>Qt::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="selectionMode">
-                    <enum>QAbstractItemView::SingleSelection</enum>
-                </property>
-                <property name="currentRow">
-                    <number>-1</number>
-                </property>
-                <item>
-                    <property name="text">
-                        <string>None</string>
-                    </property>
-                </item>
-            </widget>
-            <widget class="QLineEdit" name="currentDir">
-                <property name="geometry">
-                    <rect>
-                        <x>10</x>
-                        <y>20</y>
-                        <width>251</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>No dir selected</string>
-                </property>
-            </widget>
-            <widget class="QPushButton" name="browseBtn">
-                <property name="geometry">
-                    <rect>
-                        <x>270</x>
-                        <y>20</y>
-                        <width>101</width>
-                        <height>23</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Browse</string>
-                </property>
-                <property name="autoDefault">
-                    <bool>false</bool>
-                </property>
-            </widget>
-            <widget class="QLabel" name="loadStatus">
-                <property name="geometry">
-                    <rect>
-                        <x>10</x>
-                        <y>200</y>
-                        <width>361</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>No file loaded</string>
-                </property>
-                <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-            </widget>
-        </widget>
-        <widget class="QWidget" name="horizontalLayoutWidget">
-            <property name="geometry">
-                <rect>
-                    <x>10</x>
-                    <y>250</y>
-                    <width>811</width>
-                    <height>211</height>
-                </rect>
-            </property>
-            <layout class="QHBoxLayout" name="batteryConfigLayout">
-                <item>
-                    <widget class="QGroupBox" name="battery1">
-                        <property name="title">
-                            <string>Battery 1</string>
-                        </property>
-                        <widget class="QGroupBox" name="Peukert1">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>20</y>
-                                    <width>231</width>
-                                    <height>71</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QSlider" name="slidePeu1">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>40</y>
-                                        <width>211</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="minimum">
-                                    <number>75</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>200</number>
-                                </property>
-                                <property name="value">
-                                    <number>110</number>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputPeu1">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>21</height>
-                                    </rect>
-                                </property>
-                                <property name="showGroupSeparator" stdset="0">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="prefix">
-                                    <string/>
-                                </property>
-                                <property name="minimum">
-                                    <number>75</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>200</number>
-                                </property>
-                                <property name="value">
-                                    <number>110</number>
-                                </property>
-                                <property name="displayIntegerBase">
-                                    <number>10</number>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" name="peuLbl1">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Peukert's * 100</string>
-                                </property>
-                                <property name="scaledContents">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputPeu1</cstring>
-                                </property>
-                            </widget>
-                        </widget>
-                        <widget class="QGroupBox" name="Efficiency1">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>90</y>
-                                    <width>231</width>
-                                    <height>71</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QSlider" name="slideEff1">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>40</y>
-                                        <width>211</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="minimum">
-                                    <number>0</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>150</number>
-                                </property>
-                                <property name="value">
-                                    <number>50</number>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputEff1">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="suffix">
-                                    <string extracomment="%">%</string>
-                                </property>
-                                <property name="maximum">
-                                    <number>150</number>
-                                </property>
-                                <property name="value">
-                                    <number>50</number>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" name="effLbl1">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Efficiency</string>
-                                </property>
-                                <property name="scaledContents">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputEff1</cstring>
-                                </property>
-                            </widget>
-                        </widget>
-                        <widget class="QGroupBox" name="Capacity1">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>160</y>
-                                    <width>231</width>
-                                    <height>41</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QLabel" name="capLbl1">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Capacity (Ah)</string>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputCap1</cstring>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputCap1">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="maximum">
-                                    <number>1000</number>
-                                </property>
-                                <property name="value">
-                                    <number>100</number>
-                                </property>
-                            </widget>
-                        </widget>
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QGroupBox" name="battery2">
-                        <property name="title">
-                            <string>Battery 2</string>
-                        </property>
-                        <widget class="QGroupBox" name="Capacity2">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>160</y>
-                                    <width>231</width>
-                                    <height>41</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QLabel" name="capLbl2">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Capacity (Ah)</string>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputCap2</cstring>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputCap2">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="maximum">
-                                    <number>1000</number>
-                                </property>
-                                <property name="value">
-                                    <number>130</number>
-                                </property>
-                            </widget>
-                        </widget>
-                        <widget class="QGroupBox" name="Efficiency2">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>90</y>
-                                    <width>231</width>
-                                    <height>71</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QSlider" name="slideEff2">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>40</y>
-                                        <width>211</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="minimum">
-                                    <number>0</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>150</number>
-                                </property>
-                                <property name="value">
-                                    <number>50</number>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputEff2">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="suffix">
-                                    <string comment="%" extracomment="%">%</string>
-                                </property>
-                                <property name="minimum">
-                                    <number>0</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>150</number>
-                                </property>
-                                <property name="value">
-                                    <number>50</number>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" name="effLbl2">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Efficiency</string>
-                                </property>
-                                <property name="scaledContents">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputEff2</cstring>
-                                </property>
-                            </widget>
-                        </widget>
-                        <widget class="QGroupBox" name="Peukert2">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>20</y>
-                                    <width>231</width>
-                                    <height>71</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QSlider" name="slidePeu2">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>40</y>
-                                        <width>211</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="minimum">
-                                    <number>75</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>200</number>
-                                </property>
-                                <property name="value">
-                                    <number>110</number>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputPeu2">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="minimum">
-                                    <number>75</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>200</number>
-                                </property>
-                                <property name="value">
-                                    <number>110</number>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" name="peuLbl2">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Peukert's * 100</string>
-                                </property>
-                                <property name="scaledContents">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputPeu2</cstring>
-                                </property>
-                            </widget>
-                        </widget>
-                    </widget>
-                </item>
-                <item>
-                    <widget class="QGroupBox" name="battery3">
-                        <property name="title">
-                            <string>Battery 3</string>
-                        </property>
-                        <widget class="QGroupBox" name="Capacity3">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>160</y>
-                                    <width>231</width>
-                                    <height>41</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QLabel" name="capLbl3">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Capacity (Ah)</string>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputCap3</cstring>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputCap3">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="maximum">
-                                    <number>1000</number>
-                                </property>
-                                <property name="value">
-                                    <number>120</number>
-                                </property>
-                            </widget>
-                        </widget>
-                        <widget class="QGroupBox" name="Efficiency3">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>90</y>
-                                    <width>231</width>
-                                    <height>71</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QSlider" name="slideEff3">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>40</y>
-                                        <width>211</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="minimum">
-                                    <number>0</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>150</number>
-                                </property>
-                                <property name="value">
-                                    <number>50</number>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputEff3">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="accelerated">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="suffix">
-                                    <string>%</string>
-                                </property>
-                                <property name="maximum">
-                                    <number>150</number>
-                                </property>
-                                <property name="value">
-                                    <number>50</number>
-                                </property>
-                                <property name="displayIntegerBase">
-                                    <number>10</number>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" name="effLbl3">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Efficiency</string>
-                                </property>
-                                <property name="scaledContents">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputEff3</cstring>
-                                </property>
-                            </widget>
-                        </widget>
-                        <widget class="QGroupBox" name="Peukert3">
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>20</y>
-                                    <width>231</width>
-                                    <height>71</height>
-                                </rect>
-                            </property>
-                            <property name="title">
-                                <string/>
-                            </property>
-                            <widget class="QSlider" name="slidePeu3">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>40</y>
-                                        <width>211</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="minimum">
-                                    <number>75</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>200</number>
-                                </property>
-                                <property name="value">
-                                    <number>110</number>
-                                </property>
-                                <property name="orientation">
-                                    <enum>Qt::Horizontal</enum>
-                                </property>
-                            </widget>
-                            <widget class="QSpinBox" name="inputPeu3">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>130</x>
-                                        <y>10</y>
-                                        <width>91</width>
-                                        <height>22</height>
-                                    </rect>
-                                </property>
-                                <property name="minimum">
-                                    <number>75</number>
-                                </property>
-                                <property name="maximum">
-                                    <number>200</number>
-                                </property>
-                                <property name="value">
-                                    <number>110</number>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" name="peuLbl3">
-                                <property name="geometry">
-                                    <rect>
-                                        <x>10</x>
-                                        <y>0</y>
-                                        <width>111</width>
-                                        <height>41</height>
-                                    </rect>
-                                </property>
-                                <property name="font">
-                                    <font>
-                                        <pointsize>12</pointsize>
-                                    </font>
-                                </property>
-                                <property name="text">
-                                    <string>Peukert's * 100</string>
-                                </property>
-                                <property name="scaledContents">
-                                    <bool>true</bool>
-                                </property>
-                                <property name="buddy">
-                                    <cstring>inputPeu3</cstring>
-                                </property>
-                            </widget>
-                        </widget>
-                    </widget>
-                </item>
-            </layout>
-        </widget>
-        <widget class="QPushButton" name="plotButton">
-            <property name="geometry">
-                <rect>
-                    <x>730</x>
-                    <y>220</y>
-                    <width>91</width>
-                    <height>23</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>Update Plot</string>
-            </property>
-        </widget>
-        <widget class="QWidget" name="gridLayoutWidget">
-            <property name="geometry">
-                <rect>
-                    <x>400</x>
-                    <y>20</y>
-                    <width>421</width>
-                    <height>201</height>
-                </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout">
-                <item row="1" column="1">
-                    <widget class="QCheckBox" name="b2Current">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B2 Current</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="0" column="1">
-                    <widget class="QCheckBox" name="SoC2">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>SoC 2</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="1" column="0">
-                    <widget class="QCheckBox" name="b1Current">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B1 Current</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="5" column="1">
-                    <widget class="QCheckBox" name="supplyCurrent">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>Supply Current</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="6" column="1">
-                    <widget class="QCheckBox" name="loadCurrent">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>Load Current</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="3" column="1">
-                    <widget class="QCheckBox" name="b2Cap">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B2 remain cap</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="1" column="2">
-                    <widget class="QCheckBox" name="b3Current">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B3 Current</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="0" column="2">
-                    <widget class="QCheckBox" name="SoC3">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>SoC 3</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="5" column="0">
-                    <widget class="QCheckBox" name="supplyVoltage">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>Supply Voltage</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="4" column="1">
-                    <widget class="QCheckBox" name="b2Soc">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B2 SoC</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="4" column="2">
-                    <widget class="QCheckBox" name="b3soc">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B3 SoC</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="3" column="2">
-                    <widget class="QCheckBox" name="b3Cap">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B3 remain cap</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="0" column="0">
-                    <widget class="QCheckBox" name="SoC1">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>SoC 1</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="3" column="0">
-                    <widget class="QCheckBox" name="b1Cap">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B1 remain Cap</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="6" column="0">
-                    <widget class="QCheckBox" name="loadVoltage">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>Load Voltage</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="4" column="0">
-                    <widget class="QCheckBox" name="b1soc">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B1 SoC</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="2" column="0">
-                    <widget class="QCheckBox" name="b1Voltage">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B1 Voltage</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="2" column="1">
-                    <widget class="QCheckBox" name="b2Voltage">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B2 Voltage</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="2" column="2">
-                    <widget class="QCheckBox" name="b3Voltage">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>B3 Voltage</string>
-                        </property>
-                    </widget>
-                </item>
-                <item row="5" column="2">
-                    <widget class="QCheckBox" name="temp">
-                        <property name="enabled">
-                            <bool>false</bool>
-                        </property>
-                        <property name="text">
-                            <string>Temperature</string>
-                        </property>
-                    </widget>
-                </item>
-            </layout>
-        </widget>
-        <widget class="QLabel" name="plotStatus">
-            <property name="geometry">
-                <rect>
-                    <x>400</x>
-                    <y>220</y>
-                    <width>321</width>
-                    <height>21</height>
-                </rect>
-            </property>
-            <property name="text">
-                <string>Not plotted yet</string>
-            </property>
-            <property name="alignment">
-                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="buddy">
-                <cstring>plotButton</cstring>
-            </property>
-        </widget>
-    </widget>
-    <tabstops>
-        <tabstop>currentDir</tabstop>
-        <tabstop>listDir</tabstop>
-        <tabstop>browseBtn</tabstop>
-        <tabstop>SoC1</tabstop>
-        <tabstop>SoC2</tabstop>
-        <tabstop>SoC3</tabstop>
-        <tabstop>b1Current</tabstop>
-        <tabstop>b2Current</tabstop>
-        <tabstop>b3Current</tabstop>
-        <tabstop>b1Voltage</tabstop>
-        <tabstop>b2Voltage</tabstop>
-        <tabstop>b3Voltage</tabstop>
-        <tabstop>b1Cap</tabstop>
-        <tabstop>b2Cap</tabstop>
-        <tabstop>b3Cap</tabstop>
-        <tabstop>b1soc</tabstop>
-        <tabstop>b2Soc</tabstop>
-        <tabstop>b3soc</tabstop>
-        <tabstop>supplyVoltage</tabstop>
-        <tabstop>supplyCurrent</tabstop>
-        <tabstop>loadVoltage</tabstop>
-        <tabstop>loadCurrent</tabstop>
-        <tabstop>plotButton</tabstop>
-        <tabstop>inputPeu1</tabstop>
-        <tabstop>slidePeu1</tabstop>
-        <tabstop>inputEff1</tabstop>
-        <tabstop>slideEff1</tabstop>
-        <tabstop>inputCap1</tabstop>
-        <tabstop>inputPeu2</tabstop>
-        <tabstop>slidePeu2</tabstop>
-        <tabstop>inputEff2</tabstop>
-        <tabstop>slideEff2</tabstop>
-        <tabstop>inputCap2</tabstop>
-        <tabstop>inputPeu3</tabstop>
-        <tabstop>slidePeu3</tabstop>
-        <tabstop>inputEff3</tabstop>
-        <tabstop>slideEff3</tabstop>
-        <tabstop>inputCap3</tabstop>
-    </tabstops>
-    <resources/>
-    <connections>
-        <connection>
-            <sender>slideEff1</sender>
-            <signal>sliderMoved(int)</signal>
-            <receiver>inputEff1</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>160</x>
-                    <y>392</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>170</x>
-                    <y>369</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>slidePeu2</sender>
-            <signal>sliderMoved(int)</signal>
-            <receiver>inputPeu2</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>439</x>
-                    <y>323</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>443</x>
-                    <y>294</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>slideEff2</sender>
-            <signal>sliderMoved(int)</signal>
-            <receiver>inputEff2</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>476</x>
-                    <y>393</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>478</x>
-                    <y>366</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>slidePeu3</sender>
-            <signal>sliderMoved(int)</signal>
-            <receiver>inputPeu3</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>661</x>
-                    <y>323</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>724</x>
-                    <y>293</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>slideEff3</sender>
-            <signal>sliderMoved(int)</signal>
-            <receiver>inputEff3</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>693</x>
-                    <y>388</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>720</x>
-                    <y>359</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>inputEff1</sender>
-            <signal>valueChanged(int)</signal>
-            <receiver>slideEff1</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>156</x>
-                    <y>365</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>133</x>
-                    <y>386</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>inputPeu2</sender>
-            <signal>valueChanged(int)</signal>
-            <receiver>slidePeu2</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>470</x>
-                    <y>290</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>406</x>
-                    <y>319</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>inputEff2</sender>
-            <signal>valueChanged(int)</signal>
-            <receiver>slideEff2</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>431</x>
-                    <y>363</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>413</x>
-                    <y>391</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>inputPeu3</sender>
-            <signal>valueChanged(int)</signal>
-            <receiver>slidePeu3</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>766</x>
-                    <y>291</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>768</x>
-                    <y>322</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>inputEff3</sender>
-            <signal>valueChanged(int)</signal>
-            <receiver>slideEff3</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>746</x>
-                    <y>369</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>745</x>
-                    <y>385</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>inputPeu1</sender>
-            <signal>valueChanged(int)</signal>
-            <receiver>slidePeu1</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>170</x>
-                    <y>287</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>123</x>
-                    <y>318</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
-            <sender>slidePeu1</sender>
-            <signal>sliderMoved(int)</signal>
-            <receiver>inputPeu1</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>176</x>
-                    <y>322</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>193</x>
-                    <y>294</y>
-                </hint>
-            </hints>
-        </connection>
-    </connections>
+        <property name="value">
+         <number>110</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputPeu1">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="showGroupSeparator" stdset="0">
+         <bool>true</bool>
+        </property>
+        <property name="prefix">
+         <string/>
+        </property>
+        <property name="minimum">
+         <number>75</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+        <property name="value">
+         <number>110</number>
+        </property>
+        <property name="displayIntegerBase">
+         <number>10</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="peuLbl1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Peukert's * 100</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="buddy">
+         <cstring>inputPeu1</cstring>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="Efficiency1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>231</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QSlider" name="slideEff1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>211</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputEff1">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="suffix">
+         <string extracomment="%">%</string>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="effLbl1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Efficiency</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="buddy">
+         <cstring>inputEff1</cstring>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="Capacity1">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>160</y>
+         <width>231</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QLabel" name="capLbl1">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Capacity (Ah)</string>
+        </property>
+        <property name="buddy">
+         <cstring>inputCap1</cstring>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputCap1">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="battery2">
+      <property name="title">
+       <string>Battery 2</string>
+      </property>
+      <widget class="QGroupBox" name="Capacity2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>160</y>
+         <width>231</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QLabel" name="capLbl2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Capacity (Ah)</string>
+        </property>
+        <property name="buddy">
+         <cstring>inputCap2</cstring>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputCap2">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="value">
+         <number>130</number>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="Efficiency2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>231</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QSlider" name="slideEff2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>211</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputEff2">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="suffix">
+         <string comment="%" extracomment="%">%</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="effLbl2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Efficiency</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="buddy">
+         <cstring>inputEff2</cstring>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="Peukert2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>231</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QSlider" name="slidePeu2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>211</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>75</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+        <property name="value">
+         <number>110</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputPeu2">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>75</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+        <property name="value">
+         <number>110</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="peuLbl2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Peukert's * 100</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="buddy">
+         <cstring>inputPeu2</cstring>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="battery3">
+      <property name="title">
+       <string>Battery 3</string>
+      </property>
+      <widget class="QGroupBox" name="Capacity3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>160</y>
+         <width>231</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QLabel" name="capLbl3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Capacity (Ah)</string>
+        </property>
+        <property name="buddy">
+         <cstring>inputCap3</cstring>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputCap3">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="value">
+         <number>120</number>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="Efficiency3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>90</y>
+         <width>231</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QSlider" name="slideEff3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>211</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputEff3">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="accelerated">
+         <bool>true</bool>
+        </property>
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="maximum">
+         <number>150</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="displayIntegerBase">
+         <number>10</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="effLbl3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Efficiency</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="buddy">
+         <cstring>inputEff3</cstring>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QGroupBox" name="Peukert3">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>231</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string/>
+       </property>
+       <widget class="QSlider" name="slidePeu3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>40</y>
+          <width>211</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>75</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+        <property name="value">
+         <number>110</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+       <widget class="QSpinBox" name="inputPeu3">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>10</y>
+          <width>91</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <number>75</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+        <property name="value">
+         <number>110</number>
+        </property>
+       </widget>
+       <widget class="QLabel" name="peuLbl3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>0</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Peukert's * 100</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+        <property name="buddy">
+         <cstring>inputPeu3</cstring>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="plotButton">
+   <property name="geometry">
+    <rect>
+     <x>730</x>
+     <y>220</y>
+     <width>91</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Update Plot</string>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>10</y>
+     <width>421</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="plotCheckboxes">
+    <item row="6" column="1">
+     <widget class="QCheckBox" name="supplyCurrent">
+      <property name="text">
+       <string>Supply Current</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="b2Current">
+      <property name="text">
+       <string>B2 Current</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QCheckBox" name="b1Current">
+      <property name="text">
+       <string>B1 Current</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QCheckBox" name="SoC2">
+      <property name="text">
+       <string>SoC 2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QCheckBox" name="b2Cap">
+      <property name="text">
+       <string>B2 remain cap</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QCheckBox" name="supplyVoltage">
+      <property name="text">
+       <string>Supply Voltage</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QCheckBox" name="SoC3">
+      <property name="text">
+       <string>SoC 3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QCheckBox" name="b3Current">
+      <property name="text">
+       <string>B3 Current</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QCheckBox" name="loadCurrent">
+      <property name="text">
+       <string>Load Current</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QCheckBox" name="b3soc">
+      <property name="text">
+       <string>B3 SoC</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QCheckBox" name="b2Soc">
+      <property name="text">
+       <string>B2 SoC</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QCheckBox" name="b3Cap">
+      <property name="text">
+       <string>B3 remain cap</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QCheckBox" name="b1Cap">
+      <property name="text">
+       <string>B1 remain Cap</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QCheckBox" name="SoC1">
+      <property name="text">
+       <string>SoC 1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QCheckBox" name="b2Voltage">
+      <property name="text">
+       <string>B2 Voltage</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QCheckBox" name="b1soc">
+      <property name="text">
+       <string>B1 SoC</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QCheckBox" name="b3Voltage">
+      <property name="text">
+       <string>B3 Voltage</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QCheckBox" name="temp">
+      <property name="text">
+       <string>Temperature</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QCheckBox" name="loadVoltage">
+      <property name="text">
+       <string>Load Voltage</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QCheckBox" name="b1Voltage">
+      <property name="text">
+       <string>B1 Voltage</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QCheckBox" name="b2TSoc">
+      <property name="text">
+       <string>Theor SoC2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QCheckBox" name="b1TSoc">
+      <property name="text">
+       <string>Theor SoC1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QCheckBox" name="b3TSoc">
+      <property name="text">
+       <string>Theor SoC 3</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLabel" name="plotStatus">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>220</y>
+     <width>321</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Not plotted yet</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+   <property name="buddy">
+    <cstring>plotButton</cstring>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lineOut">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>470</y>
+     <width>191</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="text">
+    <string>Line count: No file loaded</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="plotList">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>10</y>
+     <width>231</width>
+     <height>241</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Sunken</enum>
+   </property>
+   <property name="midLineWidth">
+    <number>0</number>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::MultiSelection</enum>
+   </property>
+   <property name="currentRow">
+    <number>-1</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>No data loaded yet</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QProgressBar" name="progressBar">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>470</y>
+     <width>351</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="value">
+    <number>0</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="progressLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>470</y>
+     <width>161</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="text">
+    <string>Progress:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>currentDir</tabstop>
+  <tabstop>listDir</tabstop>
+  <tabstop>browseBtn</tabstop>
+  <tabstop>SoC1</tabstop>
+  <tabstop>SoC2</tabstop>
+  <tabstop>SoC3</tabstop>
+  <tabstop>b1Current</tabstop>
+  <tabstop>b2Current</tabstop>
+  <tabstop>b3Current</tabstop>
+  <tabstop>b1Voltage</tabstop>
+  <tabstop>b2Voltage</tabstop>
+  <tabstop>b3Voltage</tabstop>
+  <tabstop>b1Cap</tabstop>
+  <tabstop>b2Cap</tabstop>
+  <tabstop>b3Cap</tabstop>
+  <tabstop>b1soc</tabstop>
+  <tabstop>b2Soc</tabstop>
+  <tabstop>b3soc</tabstop>
+  <tabstop>supplyVoltage</tabstop>
+  <tabstop>supplyCurrent</tabstop>
+  <tabstop>loadVoltage</tabstop>
+  <tabstop>loadCurrent</tabstop>
+  <tabstop>plotButton</tabstop>
+  <tabstop>inputPeu1</tabstop>
+  <tabstop>slidePeu1</tabstop>
+  <tabstop>inputEff1</tabstop>
+  <tabstop>slideEff1</tabstop>
+  <tabstop>inputCap1</tabstop>
+  <tabstop>inputPeu2</tabstop>
+  <tabstop>slidePeu2</tabstop>
+  <tabstop>inputEff2</tabstop>
+  <tabstop>slideEff2</tabstop>
+  <tabstop>inputCap2</tabstop>
+  <tabstop>inputPeu3</tabstop>
+  <tabstop>slidePeu3</tabstop>
+  <tabstop>inputEff3</tabstop>
+  <tabstop>slideEff3</tabstop>
+  <tabstop>inputCap3</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>slideEff1</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>inputEff1</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>392</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>170</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slidePeu2</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>inputPeu2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>439</x>
+     <y>323</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>443</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slideEff2</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>inputEff2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>476</x>
+     <y>393</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>478</x>
+     <y>366</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slidePeu3</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>inputPeu3</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>661</x>
+     <y>323</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slideEff3</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>inputEff3</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>693</x>
+     <y>388</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>720</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inputEff1</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>slideEff1</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>365</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>133</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inputPeu2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>slidePeu2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>470</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>319</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inputEff2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>slideEff2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>431</x>
+     <y>363</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>413</x>
+     <y>391</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inputPeu3</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>slidePeu3</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>766</x>
+     <y>291</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>768</x>
+     <y>322</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inputEff3</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>slideEff3</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>746</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>745</x>
+     <y>385</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>inputPeu1</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>slidePeu1</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>170</x>
+     <y>287</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>123</x>
+     <y>318</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>slidePeu1</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>inputPeu1</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>294</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

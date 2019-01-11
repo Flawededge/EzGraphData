@@ -3,39 +3,63 @@
 
 # Pre compile the ui (If an update is needed)
 import os
-
 os.system("pyuic5 mainwindow.ui > mainwindow.py")
 
 import sys
 import csv
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from mainwindow import Ui_plotGui
 import tkinter as tk
 from tkinter.filedialog import askdirectory
 from functools import partial  # Used to read amount of lines quickly
-
+from datetime import datetime
+import setup
+import shelve
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
     root.withdraw()
-    data = []
+    # data = []
+    validData = []  # Add extra processing functions in here
     reader = None
     fileList = []
-    neededHeaders = ['Supply Current', 'Supply Voltage', 'Load Current', 'Load Voltage', 'Soc1', 'Soc2', 'Soc3', 'Soc4',
-                     'Soc5', 'B1Current', 'B2Current', 'B3Current', 'B4Current', 'B5Current', 'B1Voltage', 'B2Voltage',
-                     'B3Voltage', 'B4Voltage', 'B5Voltage', 'B1RemainCapacity', 'B2RemainCapacity', 'B3RemainCapacity',
-                     'B4RemainCapacity', 'B5RemainCapacity', 'B1EffectiveCurrent', 'B2EffectiveCurrent',
-                     'B3EffectiveCurrent', 'B4EffectiveCurrent', 'B5EffectiveCurrent', 'B1RemianCapacityCoulombs',
-                     'B2RemianCapacityCoulombs', 'B3RemianCapacityCoulombs', 'B4RemianCapacityCoulombs',
-                     'B5RemianCapacityCoulombs', 'CANDevTemperature']
+    lines = None
+    plotData = None
+    step = None
+    deep = shelve.open('data', flag='c', writeback=True)
 
     def __init__(self, dialog):
         Ui_plotGui.__init__(self)
         self.setupUi(dialog)
 
-        self.browseBtn.clicked.connect(self.browseClicked)
+        self.batterySpecs = [{'peu': self.inputPeu1.value(),
+                              'eff': self.inputEff1.value(),
+                              'cap': self.inputCap1.value()},
+                             {'peu': self.inputPeu2.value(),
+                              'eff': self.inputEff2.value(),
+                              'cap': self.inputCap2.value()},
+                             {'peu': self.inputPeu3.value(),
+                              'eff': self.inputEff3.value(),
+                              'cap': self.inputCap3.value()}]
+
+        self.browseBtn.clicked.connect(self.browseClicked)  # Clicking buttons
         self.currentDir.returnPressed.connect(self.searchDirectory)
         self.plotButton.clicked.connect(self.loadData)
+
+        self.inputPeu1.valueChanged.connect(self.printBatteries)  # For battery type commands
+        self.slidePeu1.sliderReleased.connect(self.printBatteries)
+
+    def printBatteries(self):  # TODO: change fcn to update plot
+        self.batterySpecs = [{'peu': self.inputPeu1.value(),
+                              'eff': self.inputEff1.value(),
+                              'cap': self.inputCap1.value()},
+                             {'peu': self.inputPeu2.value(),
+                              'eff': self.inputEff2.value(),
+                              'cap': self.inputCap2.value()},
+                             {'peu': self.inputPeu3.value(),
+                              'eff': self.inputEff3.value(),
+                              'cap': self.inputCap3.value()}]
+        print(self.batterySpecs)
 
     # Grab the contents of the currentDir box, check if it's a real dir and search it
     def searchDirectory(self):
@@ -73,6 +97,12 @@ class mainPlotGui(Ui_plotGui):
         with open(filename) as f:
             return sum(x.count('\n') for x in iter(partial(f.read, buffer), ''))
 
+    def updateProgress(self, percent, text=None):
+        if text:
+            self.progressLabel.setText(f'{text} | Progress:')
+        self.progressBar.setValue(percent)
+        QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
+
     # Checks format of currently loaded file, then loads it if valid
     # Note: copies to current working directory to decrease networked file load
     def loadData(self):
@@ -81,92 +111,82 @@ class mainPlotGui(Ui_plotGui):
             return
         elif self.listDir.currentRow() == -1:  # Another check
             self.plotStatus.setText('No file selected on left =(')
+            return
 
-        else:  # Current selection is valid, so continue
+        # Current selection is valid, so continue
+        # Save full path and display status update
+        curPath = self.fileList[self.listDir.currentRow()]
+        if len(curPath) > 30:  # Chop the string if it's going to go out of view
+            self.plotStatus.setText(f'Checking! \'...{curPath[slice(-30, None)]}\'')
+        else:
+            self.plotStatus.setText(f'Checking! \'{curPath}\'')
+        QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
-            # Save full path and display status update
-            curPath = self.fileList[self.listDir.currentRow()]
-            if len(curPath) > 30:  # Chop the string if it's going to go out of view
-                self.plotStatus.setText(f'Checking! \'...{curPath[slice(-30, None)]}\'')
-            else:
-                self.plotStatus.setText(f'Checking! \'{curPath}\'')
+        # Check the header row to see if all the required data is there
+        with open(curPath) as file:
+            firstLine = file.readline()
+            file.close()
 
+        self.updateProgress(10, 'Checking headers')
+
+        error = 0
+        for i in setup.neededHeaders:
+            if i not in firstLine:
+                if not error:
+                    self.plotList.clear()
+                error += 1
+                self.plotStatus.setText(f'Errors found: {error}')
+                self.plotList.addItem(f'Err: {i}')
             QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
-            # Check the header row to see if all the required data is there
-            with open(curPath) as file:
-                reader = file.readline()
-                file.close()
+        if error:
+            print('error found')
+            return
+        else:
+            self.plotList.clear()
+            self.plotList.addItems(list(setup.outputDirect.keys()) + setup.outputProcessing)
 
-            switcher = {
-                'Supply Current': self.supplyCurrent,
-                'Supply Voltage': self.supplyVoltage,
-                'Load Current': self.loadCurrent,
-                'Load Voltage': self.loadVoltage,
-                'Soc1': self.SoC1,
-                'Soc2': self.SoC2,
-                'Soc3': self.SoC3,
-                'Soc4': 'Soc4',
-                'Soc5': 'Soc5',
-                'B1Current': self.b1Current,
-                'B2Current': self.b2Current,
-                'B3Current': self.b3Current,
-                'B4Current': 'b4Current',
-                'B5Current': 'b5Current',
-                'B1Voltage': self.b1Voltage,
-                'B2Voltage': self.b2Voltage,
-                'B3Voltage': self.b3Voltage,
-                'B4Voltage': 'b4Voltage',
-                'B5Voltage': 'b5Voltage',
-                'B1RemainCapacity': self.b1soc,
-                'B2RemainCapacity': self.b2Soc,
-                'B3RemainCapacity': self.b3soc,
-                'B4RemainCapacity': 'b4Cap',
-                'B5RemainCapacity': 'b5Cap',
-                'B1EffectiveCurrent': 'b1EffCurr',
-                'B2EffectiveCurrent': 'b2EffCurr',
-                'B3EffectiveCurrent': 'b3EffCurr',
-                'B4EffectiveCurrent': 'b4EffCurr',
-                'B5EffectiveCurrent': 'b5EffCurr',
-                'B1RemianCapacityCoulombs': self.b1Cap,
-                'B2RemianCapacityCoulombs': self.b2Cap,
-                'B3RemianCapacityCoulombs': self.b3Cap,
-                'B4RemianCapacityCoulombs': 'b4Cap',
-                'B5RemianCapacityCoulombs': 'b5Cap',
-                'CANDevTemperature': self.temp,
-            }
-            for i in self.neededHeaders:
-                func = switcher.get(i)
-                if i not in reader:
-                    # print(f'Error: {i} not found in header')
-                    # self.plotStatus.setText(f'Error: {i} not found in header')
-                    # QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
-                    if not isinstance(func, str):
-                        func.setChecked(False)
-                        func.setEnabled(False)
-                else:
-                    if not isinstance(func, str):
-                        func.setEnabled(True)
-                        # func.setChecked(True)
+        self.updateProgress(0, 'Reading the file')  # Read the file
+        self.lines = self.countLines(curPath)
+        self.step = round(self.lines / 1000)
+        print(f'Line count: {self.lines} lines')
+        self.lineOut.setText(f'Line count: {self.lines} lines')
+        QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
-                self.plotStatus.setText('')
+        self.deep['data'] = []
+        with open(curPath) as file:
+            print(f'Opening {curPath}')
+            reader = csv.DictReader(file)
+            for count, r in enumerate(reader):
+                self.deep['data'].append(r)
+                if count % (self.step * 50) == 0:
+                    self.deep.sync()
+                    self.progressBar.setValue(count // (self.step * 50))
+                    print(f'Reading data: {count // (self.step * 50)}%')
+                    QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
+            # self.deep['data'] = [r for r in reader]
+            file.close()
+        print(f'{curPath} opened')
+
+        self.updateProgress(0, 'Time column')
+        print('Time column: 0%')
+        for i in range(len(self.deep['data'])):  # Convert the time column into an easier to use datetime format
+            self.deep['data'][i]['Time'] = datetime.strptime(self.deep['data'][i]['Time'], '%Y-%m-%d %H:%M:%S:%f')
+            if i % (self.step * 50) == 0:
+                self.progressBar.setValue(20 + i // (self.step * 50))
+                print(f'Time column: {20 + i // (self.step * 50)}%')
                 QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
-            # Read the file
-            lines = self.countLines(curPath)
-            step = round(lines / 100)
-            print(f'File has {lines} lines')
 
-            with open(curPath) as file:
-                reader = csv.DictReader(file)
-                self.data = [r for r in reader]
+        print('Time done')
+        self.updateProgress(40, 'Processing data')
 
-            print(self.data[0]['Supply Current'])
+        self.plotData = setup.process(self, True)  # Run plotData in the first run mode to load everything
 
-            self.processData()  # Use a separate function to process the data
+        self.plotList.setEnabled(True)
+        self.updateProgress(100, 'Done!')
 
-    def processData(self, ):
-        print('Processing!')
-
+    def updateData(self):
+        self.plotData = setup.process(self)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
