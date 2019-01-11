@@ -14,7 +14,7 @@ It will "eventually" be able to plot any time based data it's given (assuming th
     - ~~Make the currently selected file be loaded~~
     - ~~Add in better looking symbols for spinner boxes~~
     - ~~Make check boxes change when data is loaded~~
-    - Add in some processing of the data
+    - Add in processing of the data
     
 - **Make a plot window and make it do the things**
     - Choose which plotter to use
@@ -26,19 +26,20 @@ It will "eventually" be able to plot any time based data it's given (assuming th
     - Make the 'Not plotted yet' label reflect 
     - Add a progress bar
     - Add a line count 
+    - Add in an estimator of how long to go based off previous runs
+    
+Things I want to do after it's working
 
-And after that's done:
-
-	1.0 → Sit back in awe at my first git project
-
+	→ Sit back in awe at my first git project
     → Allow multiple data sets to be selected and overlayed
-    → Add in an easy way to use functions to change how data is processed
-    → Add in an estimator of how long to go based off previous runs
+    → Cache processed data to decrease the time to update plots
 
-- Get started guide
+- Hello world guide
     - 
 
-I'm using PyCharm with python 3.7 \
+I'm using PyCharm with python 3.7 https://www.jetbrains.com/pycharm/\
+
+Once you're in the python interpreter
 All of the dependencies can be grabbed with:
 
     pip3 install -r dependencies.txt
@@ -48,4 +49,3 @@ Feel free to disable these 2 lines, but they end up having no effect on the oper
 
     import os
     os.system("pyuic5 mainwindow.ui > mainwindow.py")
-    
