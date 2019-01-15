@@ -1,10 +1,11 @@
-from PyQt5 import QtWidgets
-import datetime
+import pandas as pd
+import numpy as np
 
 # Config
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 # These headers are checked if they are present, warnings will show if any are missing (can leave empty)
-neededHeaders = ['Supply Current', 'Supply Voltage', 'Load Current', 'Load Voltage', 'Soc1', 'Soc2', 'Soc3', 'Soc4',
+neededHeaders = ['Time', 'Supply Current', 'Supply Voltage', 'Load Current', 'Load Voltage', 'Soc1', 'Soc2', 'Soc3',
+                 'Soc4',
                  'Soc5', 'B1SecondarySoC', 'B2SecondarySoC', 'B3SecondarySoC',
                  'B1Current', 'B2Current', 'B3Current', 'B4Current', 'B5Current',
                  'B1Voltage', 'B2Voltage', 'B3Voltage', 'B4Voltage', 'B5Voltage',
@@ -38,7 +39,7 @@ outputDirect = {'Temperature': 'CANDevTemperature',
                 'B3RemainCapacityCoulombs': 'B3remainCapacityCoulombs'}
 
 ''' These are variables which will need to be manually filled in within the process function'''
-outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3']
+outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3', 'deltaT']
 
 
 # Processing
@@ -47,32 +48,77 @@ outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3']
 
 # This function is run to process the data. It should return an array of arrays in the same format of outputProcessing
 # mainData.data is the full .csv file in a dictionary
-def process(mainData, initial=False):
-    dictFormat = dict.fromkeys(neededHeaders + list(outputDirect.keys()))
-    outData, prev = [], None  # Initialize the used variables
+def process(mainData, filePath, initial=False):
+    values = list(outputDirect.values())
+    values.append('Time')
 
-    if initial:  # Add in all of the items which don't change if it's being run from load data
-        for count, i in enumerate(mainData.data):
-            for plotName, header in outputDirect.items():
-                dictFormat[plotName] = i[header]
-            outData.append(dictFormat)
+    if initial:  # If loading a new file, grab new data
+        mainData.data = pd.read_csv(open(filePath))
+        try:
+            mainData.plotData = mainData.data[values]
+        except Exception as e:
+            print(e)
 
-            if count % (mainData.step * 50) == 0:
-                mainData.progressBar.setValue(40 + count // (mainData.step * 50))
-                print(f'Time column: {40 + count // (mainData.step * 50)}%')
+        mainData.updateProgress(50, 'Data loaded')
 
-        # for i in mainData.data:  # TODO : Get the output processing to operate
-        #     if prev is None:
-        #         timeDiff = 0  # First time difference is 0
-        #
-        #         # Set the calculated values
-        #         dictFormat['bepTSoc1'] = 100
-        #         dictFormat['bepTSoc2'] = 100
-        #         dictFormat['bepTSoc3'] = 100
-        #         outData = [dictFormat]
-        #     else:
-        #         diff = i['Time'] - prev['Time']  # Difference in milliseconds
-        #         diff = (diff.days * 86400000) + (diff.seconds * 1000) + (diff.microseconds / 1000)
+        mainData.lines = len(mainData.data.index)
+        mainData.stepWidth = mainData.lines // 100
 
-        prev = i  # Update the previous value
-    return outData
+        # Convert time to readable format
+        mainData.plotData = mainData.plotData.assign(
+            Time=pd.to_datetime(mainData.plotData['Time'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
+
+        mainData.updateProgress(70, 'Time applied')
+
+        mainData.plotData['deltaT'] = mainData.plotData['Time']
+        mainData.plotData['deltaT'] = mainData.plotData['deltaT'].diff()
+        mainData.plotData.loc[0, 'deltaT'] = mainData.plotData.loc[1, 'deltaT']  # Make the first time not = NaN
+
+        #  Turn all of the values into floats of how many hours have passed between results
+        mainData.plotData['deltaT'] = [delta.total_seconds() / 3600 for delta in mainData.plotData['deltaT']]
+
+        startTime = mainData.plotData['Time'][0]
+        mainData.plotData['Time'] = [(i - startTime).total_seconds() / 3600 for i in mainData.plotData['Time']]
+        mainData.plotData.set_index('Time')
+
+        mainData.updateProgress(90, 'Stuff tweaked')
+
+    # /////////////////// Start of data processing /////////////////////////////
+    else:
+        db = mainData.plotData  # Simplify variable names
+        bat = mainData.batterySpecs
+
+        final = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3']  # Stores the output part of the array
+        current = ['B1Current', 'B2Current', 'B3Current']  # Stores the I input
+
+        mainData.updateProgress(0, 'Processing plot')
+
+        # This for loop is doing peukert's and efficiency
+        for index in range(3):
+            # deltaT, Capacity (Ah), Peukert's, Efficiency
+            t, c, k, e = db['deltaT'], bat[index]['cap'], bat[index]['peu'], bat[index]['eff']
+            tmp = [100]
+            cur = 1
+
+            for step, I in enumerate(db[current[index]]):
+                if not step:
+                    continue
+
+                if I < 0:
+                    cur = cur - (t[step] / (20 * abs((c / (20 * I)) ** k)))
+                elif I > 0:
+                    cur = cur + (t[step] / (c / (I * e)))
+
+                if cur > 1:
+                    cur = 1
+
+                # print(I, cur, t[step])
+
+                tmp.append(cur * 100)
+
+                if step % mainData.stepWidth:
+                    mainData.updateProgress((step // (mainData.stepWidth * 3)) + (index * 33))
+
+            db[final[index]] = tmp
+        mainData.updateProgress(100, 'Plot processed!')
+    print('Data processed')

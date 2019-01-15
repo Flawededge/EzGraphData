@@ -3,6 +3,7 @@
 
 # Pre compile the ui (If an update is needed)
 import os
+
 os.system("pyuic5 mainwindow.ui > mainwindow.py")
 
 import sys
@@ -15,51 +16,53 @@ from functools import partial  # Used to read amount of lines quickly
 from datetime import datetime
 import setup
 import shelve
+import pandas as pd
+import matplotlib.pyplot as plt
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
     root.withdraw()
-    # data = []
     validData = []  # Add extra processing functions in here
-    reader = None
     fileList = []
     lines = None
-    plotData = None
-    step = None
-    deep = shelve.open('data', flag='c', writeback=True)
+    stepWidth = None
+    plotData = pd.DataFrame
+    curPath = None
+    fig = None
+    ax = None
 
     def __init__(self, dialog):
         Ui_plotGui.__init__(self)
         self.setupUi(dialog)
 
-        self.batterySpecs = [{'peu': self.inputPeu1.value(),
-                              'eff': self.inputEff1.value(),
+        self.batterySpecs = [{'peu': self.inputPeu1.value() / 100,
+                              'eff': 1 / (self.inputEff1.value() / 100),
                               'cap': self.inputCap1.value()},
-                             {'peu': self.inputPeu2.value(),
-                              'eff': self.inputEff2.value(),
+                             {'peu': self.inputPeu2.value() / 100,
+                              'eff': 1 / (self.inputEff2.value() / 100),
                               'cap': self.inputCap2.value()},
-                             {'peu': self.inputPeu3.value(),
-                              'eff': self.inputEff3.value(),
+                             {'peu': self.inputPeu3.value() / 100,
+                              'eff': 1 / (self.inputEff3.value() / 100),
                               'cap': self.inputCap3.value()}]
 
         self.browseBtn.clicked.connect(self.browseClicked)  # Clicking buttons
         self.currentDir.returnPressed.connect(self.searchDirectory)
-        self.plotButton.clicked.connect(self.loadData)
+        self.loadButton.clicked.connect(self.loadData)
+        self.plotButton.clicked.connect(self.plot)
 
         self.inputPeu1.valueChanged.connect(self.printBatteries)  # For battery type commands
         self.slidePeu1.sliderReleased.connect(self.printBatteries)
 
-    def printBatteries(self):  # TODO: change fcn to update plot
-        self.batterySpecs = [{'peu': self.inputPeu1.value(),
-                              'eff': self.inputEff1.value(),
+    def printBatteries(self):
+        self.batterySpecs = [{'peu': self.inputPeu1.value() / 100,
+                              'eff': self.inputEff1.value() / 100,
                               'cap': self.inputCap1.value()},
-                             {'peu': self.inputPeu2.value(),
-                              'eff': self.inputEff2.value(),
+                             {'peu': self.inputPeu2.value() / 100,
+                              'eff': self.inputEff2.value() / 100,
                               'cap': self.inputCap2.value()},
-                             {'peu': self.inputPeu3.value(),
-                              'eff': self.inputEff3.value(),
+                             {'peu': self.inputPeu3.value() / 100,
+                              'eff': self.inputEff3.value() / 100,
                               'cap': self.inputCap3.value()}]
-        print(self.batterySpecs)
 
     # Grab the contents of the currentDir box, check if it's a real dir and search it
     def searchDirectory(self):
@@ -106,24 +109,27 @@ class mainPlotGui(Ui_plotGui):
     # Checks format of currently loaded file, then loads it if valid
     # Note: copies to current working directory to decrease networked file load
     def loadData(self):
-        if self.fileList == []:  # Check if current selection is valid
-            self.plotStatus.setText('No files in current directory =/')
+        self.plotList.setEnabled(False)
+        self.plotButton.setEnabled(False)
+
+        if not self.fileList:  # Check if current selection is valid
+            self.loadStatus.setText('No files in current directory =/')
             return
         elif self.listDir.currentRow() == -1:  # Another check
-            self.plotStatus.setText('No file selected on left =(')
+            self.loadStatus.setText('No file selected on left =(')
             return
 
         # Current selection is valid, so continue
         # Save full path and display status update
-        curPath = self.fileList[self.listDir.currentRow()]
-        if len(curPath) > 30:  # Chop the string if it's going to go out of view
-            self.plotStatus.setText(f'Checking! \'...{curPath[slice(-30, None)]}\'')
+        self.curPath = self.fileList[self.listDir.currentRow()]
+        if len(self.curPath) > 30:  # Chop the string if it's going to go out of view
+            self.plotStatus.setText(f'Checking! \'...{self.curPath[slice(-30, None)]}\'')
         else:
-            self.plotStatus.setText(f'Checking! \'{curPath}\'')
+            self.plotStatus.setText(f'Checking! \'{self.curPath}\'')
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
         # Check the header row to see if all the required data is there
-        with open(curPath) as file:
+        with open(self.curPath) as file:
             firstLine = file.readline()
             file.close()
 
@@ -146,47 +152,38 @@ class mainPlotGui(Ui_plotGui):
             self.plotList.clear()
             self.plotList.addItems(list(setup.outputDirect.keys()) + setup.outputProcessing)
 
-        self.updateProgress(0, 'Reading the file')  # Read the file
-        self.lines = self.countLines(curPath)
-        self.step = round(self.lines / 1000)
-        print(f'Line count: {self.lines} lines')
-        self.lineOut.setText(f'Line count: {self.lines} lines')
-        QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
-
-        self.deep['data'] = []
-        with open(curPath) as file:
-            print(f'Opening {curPath}')
-            reader = csv.DictReader(file)
-            for count, r in enumerate(reader):
-                self.deep['data'].append(r)
-                if count % (self.step * 50) == 0:
-                    self.deep.sync()
-                    self.progressBar.setValue(count // (self.step * 50))
-                    print(f'Reading data: {count // (self.step * 50)}%')
-                    QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
-            # self.deep['data'] = [r for r in reader]
-            file.close()
-        print(f'{curPath} opened')
-
-        self.updateProgress(0, 'Time column')
-        print('Time column: 0%')
-        for i in range(len(self.deep['data'])):  # Convert the time column into an easier to use datetime format
-            self.deep['data'][i]['Time'] = datetime.strptime(self.deep['data'][i]['Time'], '%Y-%m-%d %H:%M:%S:%f')
-            if i % (self.step * 50) == 0:
-                self.progressBar.setValue(20 + i // (self.step * 50))
-                print(f'Time column: {20 + i // (self.step * 50)}%')
-                QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
-
-        print('Time done')
-        self.updateProgress(40, 'Processing data')
-
-        self.plotData = setup.process(self, True)  # Run plotData in the first run mode to load everything
+        self.updateProgress(10, 'Processing data')
+        setup.process(self, self.curPath, True)  # Run plotData in the first run mode to load everything
 
         self.plotList.setEnabled(True)
-        self.updateProgress(100, 'Done!')
+        self.plotButton.setEnabled(True)
+        self.updateProgress(100, 'Data loaded!')
 
-    def updateData(self):
-        self.plotData = setup.process(self)
+    def plot(self, load=True):
+        self.printBatteries()
+        setup.process(self, self.curPath, False)
+        data = self.plotData
+
+        print('Plot in progress')
+
+        items = [i.text() if i.text() in setup.outputProcessing else setup.outputDirect[i.text()] for i in
+                 self.plotList.selectedItems()]
+        print('Plotting')
+        plt.cla()
+        for i in items:
+            print(f'Plotting: {i}')
+            try:
+                plt.plot(data['Time'], data[i])
+
+            except Exception as e:
+                print(e)
+        plt.title(self.curPath)
+        plt.legend(items)
+        plt.grid(b=True, which='both', axis='both')
+        plt.show()
+        print(f'Plotted')
+
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

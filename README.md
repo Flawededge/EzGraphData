@@ -11,28 +11,29 @@ It will "eventually" be able to plot any time based data it's given (assuming th
 
 - ~~Make the gui do stuff in the first place~~
     - ~~Add in file searching capability~~
-    - ~~Make the currently selected file be loaded~~
-    - ~~Add in better looking symbols for spinner boxes~~
+    - ~~Make the currently selected file be loaded~~ ! Pressing the load button does this 
+    - ~~Add in better looking symbols for spinner boxes~~ ! Can't do much about peukert's, they don't support floats
     - ~~Make check boxes change when data is loaded~~
-    - Add in processing of the data
+    - ~~Add in processing of the data~~ ! Using Pandas library
     
 - **Make a plot window and make it do the things**
-    - Choose which plotter to use
-    - Make separate window pop up
-    - Make update button make a fresh plot
+    - ~~Choose which plotter to use~~ ! Using pyplot from matplotlib
+    - ~~Make separate window pop up~~ ! Plot window appears
+    - ~~Make update button make a fresh plot~~ It does that now
     
 - Give the entire interface a bit of pizazz
-    - Make the 'No file loaded' label reflect current progress
-    - Make the 'Not plotted yet' label reflect 
-    - Add a progress bar
-    - Add a line count 
-    - Add in an estimator of how long to go based off previous runs
+    - ~~Make the 'No file loaded' label reflect current progress~~
+    - ~~Add a progress bar~~ ! It shows progress, and there's a function to update it
+    - ~~Add a line count~~ ! It's a thing
+    
+    Version 1.0 - Hurrah
     
 Things I want to do after it's working
 
 	→ Sit back in awe at my first git project
     → Allow multiple data sets to be selected and overlayed
     → Cache processed data to decrease the time to update plots
+    → Add in an estimator of how long to go based off previous runs
 
 - Hello world guide
     - 
