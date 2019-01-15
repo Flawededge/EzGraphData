@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1128</width>
-    <height>534</height>
+    <width>1072</width>
+    <height>442</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,7 +25,7 @@
      <x>10</x>
      <y>10</y>
      <width>381</width>
-     <height>231</height>
+     <height>201</height>
     </rect>
    </property>
    <property name="title">
@@ -37,7 +37,7 @@
       <x>10</x>
       <y>50</y>
       <width>361</width>
-      <height>141</height>
+      <height>111</height>
      </rect>
     </property>
     <property name="midLineWidth">
@@ -91,8 +91,8 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>200</y>
-      <width>361</width>
+      <y>170</y>
+      <width>271</width>
       <height>21</height>
      </rect>
     </property>
@@ -103,12 +103,25 @@
      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
+   <widget class="QPushButton" name="loadButton">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>170</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Load</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>250</y>
+     <y>220</y>
      <width>811</width>
      <height>211</height>
     </rect>
@@ -234,7 +247,7 @@
          <number>150</number>
         </property>
         <property name="value">
-         <number>50</number>
+         <number>85</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -256,7 +269,7 @@
          <number>150</number>
         </property>
         <property name="value">
-         <number>50</number>
+         <number>85</number>
         </property>
        </widget>
        <widget class="QLabel" name="effLbl1">
@@ -419,7 +432,7 @@
          <number>150</number>
         </property>
         <property name="value">
-         <number>50</number>
+         <number>85</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -444,7 +457,7 @@
          <number>150</number>
         </property>
         <property name="value">
-         <number>50</number>
+         <number>85</number>
         </property>
        </widget>
        <widget class="QLabel" name="effLbl2">
@@ -635,7 +648,7 @@
          <number>150</number>
         </property>
         <property name="value">
-         <number>50</number>
+         <number>85</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -660,7 +673,7 @@
          <number>150</number>
         </property>
         <property name="value">
-         <number>50</number>
+         <number>85</number>
         </property>
         <property name="displayIntegerBase">
          <number>10</number>
@@ -774,10 +787,13 @@
    </layout>
   </widget>
   <widget class="QPushButton" name="plotButton">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>730</x>
-     <y>220</y>
+     <y>130</y>
      <width>91</width>
      <height>23</height>
     </rect>
@@ -786,187 +802,14 @@
     <string>Update Plot</string>
    </property>
    <property name="autoDefault">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
-  </widget>
-  <widget class="QWidget" name="gridLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>10</y>
-     <width>421</width>
-     <height>211</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="plotCheckboxes">
-    <item row="6" column="1">
-     <widget class="QCheckBox" name="supplyCurrent">
-      <property name="text">
-       <string>Supply Current</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QCheckBox" name="b2Current">
-      <property name="text">
-       <string>B2 Current</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QCheckBox" name="b1Current">
-      <property name="text">
-       <string>B1 Current</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QCheckBox" name="SoC2">
-      <property name="text">
-       <string>SoC 2</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QCheckBox" name="b2Cap">
-      <property name="text">
-       <string>B2 remain cap</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="0">
-     <widget class="QCheckBox" name="supplyVoltage">
-      <property name="text">
-       <string>Supply Voltage</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QCheckBox" name="SoC3">
-      <property name="text">
-       <string>SoC 3</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QCheckBox" name="b3Current">
-      <property name="text">
-       <string>B3 Current</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="1">
-     <widget class="QCheckBox" name="loadCurrent">
-      <property name="text">
-       <string>Load Current</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="2">
-     <widget class="QCheckBox" name="b3soc">
-      <property name="text">
-       <string>B3 SoC</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
-     <widget class="QCheckBox" name="b2Soc">
-      <property name="text">
-       <string>B2 SoC</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="2">
-     <widget class="QCheckBox" name="b3Cap">
-      <property name="text">
-       <string>B3 remain cap</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
-     <widget class="QCheckBox" name="b1Cap">
-      <property name="text">
-       <string>B1 remain Cap</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QCheckBox" name="SoC1">
-      <property name="text">
-       <string>SoC 1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="1">
-     <widget class="QCheckBox" name="b2Voltage">
-      <property name="text">
-       <string>B2 Voltage</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QCheckBox" name="b1soc">
-      <property name="text">
-       <string>B1 SoC</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QCheckBox" name="b3Voltage">
-      <property name="text">
-       <string>B3 Voltage</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="2">
-     <widget class="QCheckBox" name="temp">
-      <property name="text">
-       <string>Temperature</string>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="0">
-     <widget class="QCheckBox" name="loadVoltage">
-      <property name="text">
-       <string>Load Voltage</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QCheckBox" name="b1Voltage">
-      <property name="text">
-       <string>B1 Voltage</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <widget class="QCheckBox" name="b2TSoc">
-      <property name="text">
-       <string>Theor SoC2</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QCheckBox" name="b1TSoc">
-      <property name="text">
-       <string>Theor SoC1</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QCheckBox" name="b3TSoc">
-      <property name="text">
-       <string>Theor SoC 3</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
   </widget>
   <widget class="QLabel" name="plotStatus">
    <property name="geometry">
     <rect>
      <x>400</x>
-     <y>220</y>
+     <y>130</y>
      <width>321</width>
      <height>21</height>
     </rect>
@@ -985,7 +828,7 @@
    <property name="geometry">
     <rect>
      <x>630</x>
-     <y>470</y>
+     <y>160</y>
      <width>191</width>
      <height>20</height>
     </rect>
@@ -1010,9 +853,9 @@
    <property name="geometry">
     <rect>
      <x>830</x>
-     <y>10</y>
+     <y>20</y>
      <width>231</width>
-     <height>241</height>
+     <height>411</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -1026,6 +869,15 @@
    </property>
    <property name="horizontalScrollBarPolicy">
     <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="editTriggers">
+    <set>QAbstractItemView::DoubleClicked</set>
+   </property>
+   <property name="showDropIndicator" stdset="0">
+    <bool>false</bool>
+   </property>
+   <property name="defaultDropAction">
+    <enum>Qt::IgnoreAction</enum>
    </property>
    <property name="selectionMode">
     <enum>QAbstractItemView::MultiSelection</enum>
@@ -1042,9 +894,9 @@
   <widget class="QProgressBar" name="progressBar">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>470</y>
-     <width>351</width>
+     <x>560</x>
+     <y>190</y>
+     <width>261</width>
      <height>23</height>
     </rect>
    </property>
@@ -1058,8 +910,8 @@
   <widget class="QLabel" name="progressLabel">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>470</y>
+     <x>400</x>
+     <y>190</y>
      <width>161</width>
      <height>21</height>
     </rect>
@@ -1084,25 +936,6 @@
   <tabstop>currentDir</tabstop>
   <tabstop>listDir</tabstop>
   <tabstop>browseBtn</tabstop>
-  <tabstop>SoC1</tabstop>
-  <tabstop>SoC2</tabstop>
-  <tabstop>SoC3</tabstop>
-  <tabstop>b1Current</tabstop>
-  <tabstop>b2Current</tabstop>
-  <tabstop>b3Current</tabstop>
-  <tabstop>b1Voltage</tabstop>
-  <tabstop>b2Voltage</tabstop>
-  <tabstop>b3Voltage</tabstop>
-  <tabstop>b1Cap</tabstop>
-  <tabstop>b2Cap</tabstop>
-  <tabstop>b3Cap</tabstop>
-  <tabstop>b1soc</tabstop>
-  <tabstop>b2Soc</tabstop>
-  <tabstop>b3soc</tabstop>
-  <tabstop>supplyVoltage</tabstop>
-  <tabstop>supplyCurrent</tabstop>
-  <tabstop>loadVoltage</tabstop>
-  <tabstop>loadCurrent</tabstop>
   <tabstop>plotButton</tabstop>
   <tabstop>inputPeu1</tabstop>
   <tabstop>slidePeu1</tabstop>
@@ -1129,12 +962,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>160</x>
-     <y>392</y>
+     <x>161</x>
+     <y>372</y>
     </hint>
     <hint type="destinationlabel">
-     <x>170</x>
-     <y>369</y>
+     <x>171</x>
+     <y>342</y>
     </hint>
    </hints>
   </connection>
@@ -1145,12 +978,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>439</x>
-     <y>323</y>
+     <x>513</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
-     <x>443</x>
-     <y>294</y>
+     <x>513</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>
@@ -1161,12 +994,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>476</x>
-     <y>393</y>
+     <x>513</x>
+     <y>372</y>
     </hint>
     <hint type="destinationlabel">
-     <x>478</x>
-     <y>366</y>
+     <x>513</x>
+     <y>342</y>
     </hint>
    </hints>
   </connection>
@@ -1177,12 +1010,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>661</x>
-     <y>323</y>
+     <x>784</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
-     <x>724</x>
-     <y>293</y>
+     <x>784</x>
+     <y>272</y>
     </hint>
    </hints>
   </connection>
@@ -1193,12 +1026,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>693</x>
-     <y>388</y>
+     <x>784</x>
+     <y>372</y>
     </hint>
     <hint type="destinationlabel">
-     <x>720</x>
-     <y>359</y>
+     <x>784</x>
+     <y>342</y>
     </hint>
    </hints>
   </connection>
@@ -1209,12 +1042,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>156</x>
-     <y>365</y>
+     <x>157</x>
+     <y>342</y>
     </hint>
     <hint type="destinationlabel">
-     <x>133</x>
-     <y>386</y>
+     <x>134</x>
+     <y>372</y>
     </hint>
    </hints>
   </connection>
@@ -1225,12 +1058,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>470</x>
-     <y>290</y>
+     <x>513</x>
+     <y>272</y>
     </hint>
     <hint type="destinationlabel">
-     <x>406</x>
-     <y>319</y>
+     <x>513</x>
+     <y>302</y>
     </hint>
    </hints>
   </connection>
@@ -1241,12 +1074,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>431</x>
-     <y>363</y>
+     <x>513</x>
+     <y>342</y>
     </hint>
     <hint type="destinationlabel">
-     <x>413</x>
-     <y>391</y>
+     <x>513</x>
+     <y>372</y>
     </hint>
    </hints>
   </connection>
@@ -1257,12 +1090,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>766</x>
-     <y>291</y>
+     <x>784</x>
+     <y>272</y>
     </hint>
     <hint type="destinationlabel">
-     <x>768</x>
-     <y>322</y>
+     <x>784</x>
+     <y>302</y>
     </hint>
    </hints>
   </connection>
@@ -1273,12 +1106,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>746</x>
-     <y>369</y>
+     <x>784</x>
+     <y>342</y>
     </hint>
     <hint type="destinationlabel">
-     <x>745</x>
-     <y>385</y>
+     <x>784</x>
+     <y>372</y>
     </hint>
    </hints>
   </connection>
@@ -1289,12 +1122,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>170</x>
-     <y>287</y>
+     <x>171</x>
+     <y>271</y>
     </hint>
     <hint type="destinationlabel">
-     <x>123</x>
-     <y>318</y>
+     <x>124</x>
+     <y>302</y>
     </hint>
    </hints>
   </connection>
@@ -1305,12 +1138,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>176</x>
-     <y>322</y>
+     <x>177</x>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
-     <x>193</x>
-     <y>294</y>
+     <x>194</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
