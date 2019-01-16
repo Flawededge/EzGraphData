@@ -1,8 +1,16 @@
 import pandas as pd
-import numpy as np
+import os
+import shelve
 
 # Config
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+# You shouldn't need to change this. It's the name of the file which the program stores unused data on disk
+# Feel free to delete the data file when you're done. It is mainly used to switch between data sets quickly
+shelveName = 'data'
+# ! WARNING ! DO NOT use some else's data file, just delete it and start with a fresh one. These have the possibility
+#   to bring outside code into this program and execute it.
+#   Look at the big red warning box on here for more info https://docs.python.org/3/library/shelve.html
+
 # These headers are checked if they are present, warnings will show if any are missing (can leave empty)
 neededHeaders = ['Time', 'Supply Current', 'Supply Voltage', 'Load Current', 'Load Voltage', 'Soc1', 'Soc2', 'Soc3',
                  'Soc4',
@@ -47,41 +55,54 @@ outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3', 'deltaT']
 
 
 # This function is run to process the data. It should return an array of arrays in the same format of outputProcessing
-# mainData.data is the full .csv file in a dictionary
 def process(mainData, filePath, initial=False):
     values = list(outputDirect.values())
     values.append('Time')
 
     if initial:  # If loading a new file, grab new data
-        mainData.data = pd.read_csv(open(filePath))
+        # First get the modify date of the file, so changes can be detected
+        fileDate = os.path.getmtime(filePath)
         try:
-            mainData.plotData = mainData.data[values]
-        except Exception as e:
-            print(e)
+            data = shelve.open(shelveName, flag='rb')
+        except:
+            #  The file most likely doesn't exist, so skip over the file checking
+            print("No shelve exists, will create one")
+            data = None
 
-        mainData.updateProgress(50, 'Data loaded')
+        if data is not None:
+            # Something has been loaded, so see if the file has been loaded before
+            oldDate = data['index'][filePath]
+            if oldDate == fileDate:
+                # The file is probably the same, so the data only needs to be un-shelved
+                mainData.updateProgress(50, 'Stored file found!')
+                mainData.plotData = data[filePath]
+                return  # There's nothing more to do here, so back to the program
 
-        mainData.lines = len(mainData.data.index)
-        mainData.stepWidth = mainData.lines // 100
+            # If we got to here, the file is either new or has been updated.. Either way time to load new data!
+            mainData.plotData = pd.read_csv(open(filePath))[values]  # Read from file
+            mainData.updateProgress(50, 'Data loaded')  # Progress bar to keep the interface looking interesting
 
-        # Convert time to readable format
-        mainData.plotData = mainData.plotData.assign(
-            Time=pd.to_datetime(mainData.plotData['Time'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
+            mainData.lines = len(mainData.data.index)
+            mainData.stepWidth = mainData.lines // 100
 
-        mainData.updateProgress(70, 'Time applied')
+            # Convert time to readable format
+            mainData.plotData = mainData.plotData.assign(
+                Time=pd.to_datetime(mainData.plotData['Time'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
 
-        mainData.plotData['deltaT'] = mainData.plotData['Time']
-        mainData.plotData['deltaT'] = mainData.plotData['deltaT'].diff()
-        mainData.plotData.loc[0, 'deltaT'] = mainData.plotData.loc[1, 'deltaT']  # Make the first time not = NaN
+            mainData.updateProgress(70, 'Time applied')
 
-        #  Turn all of the values into floats of how many hours have passed between results
-        mainData.plotData['deltaT'] = [delta.total_seconds() / 3600 for delta in mainData.plotData['deltaT']]
+            mainData.plotData['deltaT'] = mainData.plotData['Time']
+            mainData.plotData['deltaT'] = mainData.plotData['deltaT'].diff()
+            mainData.plotData.loc[0, 'deltaT'] = mainData.plotData.loc[1, 'deltaT']  # Make the first time not = NaN
 
-        startTime = mainData.plotData['Time'][0]
-        mainData.plotData['Time'] = [(i - startTime).total_seconds() / 3600 for i in mainData.plotData['Time']]
-        mainData.plotData.set_index('Time')
+            #  Turn all of the values into floats of how many hours have passed between results
+            mainData.plotData['deltaT'] = [delta.total_seconds() / 3600 for delta in mainData.plotData['deltaT']]
 
-        mainData.updateProgress(90, 'Stuff tweaked')
+            startTime = mainData.plotData['Time'][0]
+            mainData.plotData['Time'] = [(i - startTime).total_seconds() / 3600 for i in mainData.plotData['Time']]
+            mainData.plotData.set_index('Time')
+
+            mainData.updateProgress(90, 'Stuff tweaked')
 
     # /////////////////// Start of data processing /////////////////////////////
     else:

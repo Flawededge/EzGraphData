@@ -373,5 +373,4 @@ class Ui_plotGui(object):
         item = self.plotList.item(0)
         item.setText(_translate("plotGui", "No data loaded yet"))
         self.plotList.setSortingEnabled(__sortingEnabled)
-        self.progressLabel.setText(_translate("plotGui", "Progress: "))
-
+        self.progressLabel.setText(_translate("plotGui", "Progress:"))

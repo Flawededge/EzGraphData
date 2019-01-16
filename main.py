@@ -3,21 +3,19 @@
 
 # Pre compile the ui (If an update is needed)
 import os
-
 os.system("pyuic5 mainwindow.ui > mainwindow.py")
 
+# The real imports
 import sys
-import csv
 from PyQt5 import QtWidgets
 from mainwindow import Ui_plotGui
 import tkinter as tk
 from tkinter.filedialog import askdirectory
 from functools import partial  # Used to read amount of lines quickly
-from datetime import datetime
 import setup
-import shelve
 import pandas as pd
 import matplotlib.pyplot as plt
+import pickle
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
@@ -28,8 +26,6 @@ class mainPlotGui(Ui_plotGui):
     stepWidth = None
     plotData = pd.DataFrame
     curPath = None
-    fig = None
-    ax = None
 
     def __init__(self, dialog):
         Ui_plotGui.__init__(self)
@@ -182,7 +178,6 @@ class mainPlotGui(Ui_plotGui):
         plt.grid(b=True, which='both', axis='both')
         plt.show()
         print(f'Plotted')
-
 
 
 if __name__ == '__main__':
