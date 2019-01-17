@@ -12,7 +12,7 @@ This is going to be where I keep track of a to do list and changelog. The change
     → Shelve data sets which have already been loaded. Hash when loading to decide if the data is reloaded
     → Only reprocess when updating plots when necassary
     
-- Stuff I want to do in the future
+- Stuff I want to do in the future (Grows as I think of things)
 
     
     → Remove needed headers and add in a load, but don't display in setup 
@@ -21,12 +21,20 @@ This is going to be where I keep track of a to do list and changelog. The change
         Will probably make it so you can select multiple files on the left
     → Cache processed data to decrease the time to update plots
     → Add in an estimator of how long to go based off previous runs
+    → Make a save plot button, where a range of predefined plots get saved to a folder
 
 
 - Changelog
     -
 
-- **1.0 → 1.0.1 - File loading**
+- **1.0 → 1.1 - Optimization branch -  File loading**
+
+    1.0 → 1.0.1
+    This version still has some issues. I'm going to make some changes to processing, so this is a backup if all goes wrong
+    - Added in shelving. Any loaded and processed data will be saved in the 3 data.* files
+    - Optimised my processing with a NumPy array. The access times seem to be better
+    - Added in a '(Loaded in {time}s)' to give an indication of how efficient the loading is
+    
 
 - **Pre 1.0**
     - Make the gui do stuff in the first place

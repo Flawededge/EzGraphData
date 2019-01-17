@@ -15,7 +15,7 @@ from functools import partial  # Used to read amount of lines quickly
 import setup
 import pandas as pd
 import matplotlib.pyplot as plt
-import pickle
+import time
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
@@ -23,13 +23,16 @@ class mainPlotGui(Ui_plotGui):
     validData = []  # Add extra processing functions in here
     fileList = []
     lines = None
-    stepWidth = None
     plotData = pd.DataFrame
     curPath = None
+    change = {'bepTSoc1': True, 'bepTSoc2': True, 'bepTSoc3': True}  # Marks if these need to be updated
 
     def __init__(self, dialog):
         Ui_plotGui.__init__(self)
         self.setupUi(dialog)
+
+        # with shelve.open(setup.shelveName, flag='n+b') as sh:  # Create a new, empty shelf in binary format
+        #     sh['index'] = {}
 
         self.batterySpecs = [{'peu': self.inputPeu1.value() / 100,
                               'eff': 1 / (self.inputEff1.value() / 100),
@@ -41,24 +44,43 @@ class mainPlotGui(Ui_plotGui):
                               'eff': 1 / (self.inputEff3.value() / 100),
                               'cap': self.inputCap3.value()}]
 
-        self.browseBtn.clicked.connect(self.browseClicked)  # Clicking buttons
+        # Connection for the buttons around the place to do stuff
+        self.browseBtn.clicked.connect(self.browseClicked)
         self.currentDir.returnPressed.connect(self.searchDirectory)
         self.loadButton.clicked.connect(self.loadData)
         self.plotButton.clicked.connect(self.plot)
+        self.loadAllButton.clicked.connect(self.loadAll)
 
-        self.inputPeu1.valueChanged.connect(self.printBatteries)  # For battery type commands
-        self.slidePeu1.sliderReleased.connect(self.printBatteries)
+        # Connections for updating battery values and marking them to be recalculated at next plot
+        self.inputPeu1.valueChanged.connect(self.batt1_update)
+        self.inputEff1.valueChanged.connect(self.batt1_update)
+        self.inputCap1.valueChanged.connect(self.batt1_update)
 
-    def printBatteries(self):
-        self.batterySpecs = [{'peu': self.inputPeu1.value() / 100,
-                              'eff': self.inputEff1.value() / 100,
-                              'cap': self.inputCap1.value()},
-                             {'peu': self.inputPeu2.value() / 100,
-                              'eff': self.inputEff2.value() / 100,
-                              'cap': self.inputCap2.value()},
-                             {'peu': self.inputPeu3.value() / 100,
-                              'eff': self.inputEff3.value() / 100,
-                              'cap': self.inputCap3.value()}]
+        self.inputPeu2.valueChanged.connect(self.batt2_update)
+        self.inputEff2.valueChanged.connect(self.batt2_update)
+        self.inputCap2.valueChanged.connect(self.batt2_update)
+
+        self.inputPeu3.valueChanged.connect(self.batt3_update)
+        self.inputEff3.valueChanged.connect(self.batt3_update)
+        self.inputCap3.valueChanged.connect(self.batt3_update)
+
+    def batt1_update(self):
+        self.change['bepTSoc1'] = True
+        self.batterySpecs[0] = {'peu': self.inputPeu1.value() / 100,
+                                'eff': self.inputEff1.value() / 100,
+                                'cap': self.inputCap1.value()}
+
+    def batt2_update(self):
+        self.change['bepTSoc2'] = True
+        self.batterySpecs[1] = {'peu': self.inputPeu2.value() / 100,
+                                'eff': self.inputEff2.value() / 100,
+                                'cap': self.inputCap2.value()}
+
+    def batt3_update(self):
+        self.change['bepTSoc3'] = True
+        self.batterySpecs[2] = {'peu': self.inputPeu3.value() / 100,
+                                'eff': self.inputEff3.value() / 100,
+                                'cap': self.inputCap3.value()}
 
     # Grab the contents of the currentDir box, check if it's a real dir and search it
     def searchDirectory(self):
@@ -67,10 +89,8 @@ class mainPlotGui(Ui_plotGui):
         temp = self.currentDir.text()
         if os.path.isdir(temp):  # If it's a valid directory
             print('Searching dir')
-            if len(temp) > 30:  # Chop the string if it's going to go out of view
-                self.loadStatus.setText(f'Success! \'...{temp[slice(-30, None)]}\' contents shown')
-            else:
-                self.loadStatus.setText(f'Success! \'{temp}\' contents shown')
+
+            self.loadStatus.setText('Loading')
 
             for i in os.listdir(temp):
                 if i.lower().endswith('.csv'):
@@ -81,10 +101,7 @@ class mainPlotGui(Ui_plotGui):
 
         else:  # If it's an invalid directory
             print('Error: directory not valid')
-            if len(temp) > 30:  # Chop the string if it's going to go out of view
-                self.loadStatus.setText(f'Error: \'...{temp[slice(-30, None)]}\' not valid')
-            else:
-                self.loadStatus.setText(f'Error: \'{temp}\' not valid')
+            self.loadStatus.setText('Not valid')
 
     # When browse is clicked, open file dialogue and set the currentDir box to the result. Then run searchDirectory
     def browseClicked(self):
@@ -102,10 +119,16 @@ class mainPlotGui(Ui_plotGui):
         self.progressBar.setValue(percent)
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
+    def loadAll(self):
+        for i in range(self.listDir.count()):
+            self.listDir.setCurrentRow(i)
+            self.loadData()
+
     # Checks format of currently loaded file, then loads it if valid
     # Note: copies to current working directory to decrease networked file load
     def loadData(self):
-        self.plotList.setEnabled(False)
+        tic = time.time()
+
         self.plotButton.setEnabled(False)
 
         if not self.fileList:  # Check if current selection is valid
@@ -117,9 +140,10 @@ class mainPlotGui(Ui_plotGui):
 
         # Current selection is valid, so continue
         # Save full path and display status update
-        self.curPath = self.fileList[self.listDir.currentRow()]
-        if len(self.curPath) > 30:  # Chop the string if it's going to go out of view
-            self.plotStatus.setText(f'Checking! \'...{self.curPath[slice(-30, None)]}\'')
+        row = self.listDir.currentRow()
+        self.curPath = self.fileList[row]
+        if len(self.curPath) > 20:  # Chop the string if it's going to go out of view
+            self.plotStatus.setText(f'Checking! \'...{self.curPath[slice(-20, None)]}\'')
         else:
             self.plotStatus.setText(f'Checking! \'{self.curPath}\'')
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
@@ -151,12 +175,17 @@ class mainPlotGui(Ui_plotGui):
         self.updateProgress(10, 'Processing data')
         setup.process(self, self.curPath, True)  # Run plotData in the first run mode to load everything
 
+        # Update the file list with a processed after the filename
+        item = self.listDir.item(row)
+        item.setText(item.text() + f' (Loaded in {round(time.time() - tic, 2)}s)')
+
+
         self.plotList.setEnabled(True)
         self.plotButton.setEnabled(True)
+
         self.updateProgress(100, 'Data loaded!')
 
     def plot(self, load=True):
-        self.printBatteries()
         setup.process(self, self.curPath, False)
         data = self.plotData
 
@@ -168,11 +197,8 @@ class mainPlotGui(Ui_plotGui):
         plt.cla()
         for i in items:
             print(f'Plotting: {i}')
-            try:
-                plt.plot(data['Time'], data[i])
+            plt.plot(data['Time'], data[i])
 
-            except Exception as e:
-                print(e)
         plt.title(self.curPath)
         plt.legend(items)
         plt.grid(b=True, which='both', axis='both')
