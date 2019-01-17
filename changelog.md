@@ -9,8 +9,7 @@ This is going to be where I keep track of a to do list and changelog. The change
 - Stuff I want to do this version
 
 
-    → Shelve data sets which have already been loaded. Hash when loading to decide if the data is reloaded
-    → Only reprocess when updating plots when necassary
+
     
 - Stuff I want to do in the future (Grows as I think of things)
 
@@ -29,7 +28,24 @@ This is going to be where I keep track of a to do list and changelog. The change
 
 - **1.0 → 1.1 - Optimization branch -  File loading**
 
-    1.0 → 1.0.1
+
+1.0.1 → 1.0.2
+
+    - Redoing my processing, as it was taking too long
+        - Have changed all the math to NumPy vectorised math, which makes it almost instant
+        - Because it's so fast, i've added a plot to the on release of the sliders
+    - Restructured the batterySpecs array to be easier to work with 
+        - I did end up doing this, but it didn't help with the vector math as I had hoped, so no functional difference
+    - Added in a check box to choose whether to clear the plot or keep the previous lines on it
+    - Changed and moved the interface around to make it more compact, but more feature rich
+        - Changed the spinners to doubleSpinners, as it makes more sense with the numbers I want to put in them
+        - Removed sliders, as they don't properly interact with doubleSpinners
+        - Added in a marked points box, which will display the max and min if you want
+        - Added in a clear plot box to stack multiple lines on top of each other
+        - Removed and moved a few of the text boxes, as they weren't adding anything to the display
+    
+1.0 → 1.0.1
+
     This version still has some issues. I'm going to make some changes to processing, so this is a backup if all goes wrong
     - Added in shelving. Any loaded and processed data will be saved in the 3 data.* files
     - Optimised my processing with a NumPy array. The access times seem to be better

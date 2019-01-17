@@ -11,11 +11,12 @@ from PyQt5 import QtWidgets
 from mainwindow import Ui_plotGui
 import tkinter as tk
 from tkinter.filedialog import askdirectory
-from functools import partial  # Used to read amount of lines quickly
 import setup
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import time
+import logging
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
@@ -26,61 +27,70 @@ class mainPlotGui(Ui_plotGui):
     plotData = pd.DataFrame
     curPath = None
     change = {'bepTSoc1': True, 'bepTSoc2': True, 'bepTSoc3': True}  # Marks if these need to be updated
+    loaded = False
+    diff = 0
 
     def __init__(self, dialog):
+        logging.basicConfig(stream=sys.stderr, level=logging.INFO)
         Ui_plotGui.__init__(self)
         self.setupUi(dialog)
 
-        # with shelve.open(setup.shelveName, flag='n+b') as sh:  # Create a new, empty shelf in binary format
-        #     sh['index'] = {}
+        # Give values for peukert's, efficiency and capacity which are compatible with array multiplication
+        self.peu = np.array([self.inputPeu1.value(), self.inputPeu2.value(), self.inputPeu3.value()])
+        self.eff = np.array([self.inputEff1.value() / 100, self.inputEff2.value() / 100, self.inputEff3.value() / 100])
+        self.cap = np.array([self.inputCap1.value(), self.inputCap2.value(), self.inputCap3.value()])
 
-        self.batterySpecs = [{'peu': self.inputPeu1.value() / 100,
-                              'eff': 1 / (self.inputEff1.value() / 100),
-                              'cap': self.inputCap1.value()},
-                             {'peu': self.inputPeu2.value() / 100,
-                              'eff': 1 / (self.inputEff2.value() / 100),
-                              'cap': self.inputCap2.value()},
-                             {'peu': self.inputPeu3.value() / 100,
-                              'eff': 1 / (self.inputEff3.value() / 100),
-                              'cap': self.inputCap3.value()}]
+        self.plotList.clear()
+        self.plotList.addItems(list(setup.outputDirect.keys()) + setup.outputProcessing)
 
         # Connection for the buttons around the place to do stuff
         self.browseBtn.clicked.connect(self.browseClicked)
         self.currentDir.returnPressed.connect(self.searchDirectory)
-        self.loadButton.clicked.connect(self.loadData)
         self.plotButton.clicked.connect(self.plot)
         self.loadAllButton.clicked.connect(self.loadAll)
 
+        self.listDir.currentItemChanged.connect(self.loadData)  # Load if item clicked on list
+
         # Connections for updating battery values and marking them to be recalculated at next plot
-        self.inputPeu1.valueChanged.connect(self.batt1_update)
-        self.inputEff1.valueChanged.connect(self.batt1_update)
-        self.inputCap1.valueChanged.connect(self.batt1_update)
 
-        self.inputPeu2.valueChanged.connect(self.batt2_update)
-        self.inputEff2.valueChanged.connect(self.batt2_update)
-        self.inputCap2.valueChanged.connect(self.batt2_update)
-
-        self.inputPeu3.valueChanged.connect(self.batt3_update)
-        self.inputEff3.valueChanged.connect(self.batt3_update)
-        self.inputCap3.valueChanged.connect(self.batt3_update)
+        # self.inputPeu1.editingFinished.connect(self.batt1_update)  # Currently disabled,
+        # self.inputEff1.editingFinished.connect(self.batt1_update)  # It feels better without these
+        # self.inputCap1.editingFinished.connect(self.batt1_update)
+        #
+        # self.inputPeu2.editingFinished.connect(self.batt2_update)
+        # self.inputEff2.editingFinished.connect(self.batt2_update)
+        # self.inputCap2.editingFinished.connect(self.batt2_update)
+        #
+        # self.inputPeu3.editingFinished.connect(self.batt3_update)
+        # self.inputEff3.editingFinished.connect(self.batt3_update)
+        # self.inputCap3.editingFinished.connect(self.batt3_update)
 
     def batt1_update(self):
         self.change['bepTSoc1'] = True
-        self.batterySpecs[0] = {'peu': self.inputPeu1.value() / 100,
-                                'eff': self.inputEff1.value() / 100,
-                                'cap': self.inputCap1.value()}
+        # self.peu[0] = self.inputPeu1.value()
+        # self.eff[0] = self.inputEff1.value() / 100
+        # self.cap[0] = self.inputCap1.value()
+
+        if self.loaded:
+            self.plot()
 
     def batt2_update(self):
         self.change['bepTSoc2'] = True
-        self.batterySpecs[1] = {'peu': self.inputPeu2.value() / 100,
-                                'eff': self.inputEff2.value() / 100,
-                                'cap': self.inputCap2.value()}
+        # self.peu[1] = self.inputPeu2.value()
+        # self.eff[1] = self.inputEff2.value() / 100
+        # self.cap[1] = self.inputCap2.value()
+
+        if self.loaded:
+            self.plot()
 
     def batt3_update(self):
         self.change['bepTSoc3'] = True
-        self.batterySpecs[2] = {'peu': self.inputPeu3.value() / 100,
-                                'eff': self.inputEff3.value() / 100,
-                                'cap': self.inputCap3.value()}
+        # self.peu[2] = self.inputPeu3.value()
+        # self.eff[2] = self.inputEff3.value() / 100
+        # self.cap[2] = self.inputCap3.value()
+
+        if self.loaded:
+            self.plot()
 
     # Grab the contents of the currentDir box, check if it's a real dir and search it
     def searchDirectory(self):
@@ -88,7 +98,7 @@ class mainPlotGui(Ui_plotGui):
         self.fileList = []
         temp = self.currentDir.text()
         if os.path.isdir(temp):  # If it's a valid directory
-            print('Searching dir')
+            logging.debug('Searching dir')
 
             self.loadStatus.setText('Loading')
 
@@ -97,10 +107,10 @@ class mainPlotGui(Ui_plotGui):
                     self.listDir.addItem(i)
                     self.fileList.append(temp + '/' + i)
                 else:
-                    print(f'{i} is not valid')
+                    logging.debug(f'{i} is not valid')
 
         else:  # If it's an invalid directory
-            print('Error: directory not valid')
+            logging.debug('Error: directory not valid')
             self.loadStatus.setText('Not valid')
 
     # When browse is clicked, open file dialogue and set the currentDir box to the result. Then run searchDirectory
@@ -108,14 +118,9 @@ class mainPlotGui(Ui_plotGui):
         self.currentDir.setText(askdirectory())  # Get the directory from the user
         self.searchDirectory()  # Move to verifying the directory and searching it
 
-    def countLines(self, filename):
-        buffer = 2 ** 16
-        with open(filename) as f:
-            return sum(x.count('\n') for x in iter(partial(f.read, buffer), ''))
-
     def updateProgress(self, percent, text=None):
         if text:
-            self.progressLabel.setText(f'{text} | Progress:')
+            self.progressLabel.setText(f'| {text}')
         self.progressBar.setValue(percent)
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
@@ -142,10 +147,6 @@ class mainPlotGui(Ui_plotGui):
         # Save full path and display status update
         row = self.listDir.currentRow()
         self.curPath = self.fileList[row]
-        if len(self.curPath) > 20:  # Chop the string if it's going to go out of view
-            self.plotStatus.setText(f'Checking! \'...{self.curPath[slice(-20, None)]}\'')
-        else:
-            self.plotStatus.setText(f'Checking! \'{self.curPath}\'')
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
         # Check the header row to see if all the required data is there
@@ -161,16 +162,13 @@ class mainPlotGui(Ui_plotGui):
                 if not error:
                     self.plotList.clear()
                 error += 1
-                self.plotStatus.setText(f'Errors found: {error}')
                 self.plotList.addItem(f'Err: {i}')
             QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
         if error:
-            print('error found')
+            logging.debug('error found')
             return
-        else:
-            self.plotList.clear()
-            self.plotList.addItems(list(setup.outputDirect.keys()) + setup.outputProcessing)
+
 
         self.updateProgress(10, 'Processing data')
         setup.process(self, self.curPath, True)  # Run plotData in the first run mode to load everything
@@ -184,27 +182,76 @@ class mainPlotGui(Ui_plotGui):
         self.plotButton.setEnabled(True)
 
         self.updateProgress(100, 'Data loaded!')
+        self.loaded = True
 
     def plot(self, load=True):
-        setup.process(self, self.curPath, False)
-        data = self.plotData
+        if self.loaded:
+            # Give values for peukert's, efficiency and capacity which are compatible with array multiplication
+            self.peu = np.array([self.inputPeu1.value(), self.inputPeu2.value(), self.inputPeu3.value()])
+            self.eff = np.array(
+                [self.inputEff1.value() / 100, self.inputEff2.value() / 100, self.inputEff3.value() / 100])
+            self.cap = np.array([self.inputCap1.value(), self.inputCap2.value(), self.inputCap3.value()])
 
-        print('Plot in progress')
+            loaded = False
+            setup.process(self, self.curPath, False)
+            data = self.plotData
 
-        items = [i.text() if i.text() in setup.outputProcessing else setup.outputDirect[i.text()] for i in
-                 self.plotList.selectedItems()]
-        print('Plotting')
-        plt.cla()
-        for i in items:
-            print(f'Plotting: {i}')
-            plt.plot(data['Time'], data[i])
+            logging.debug('Plot in progress')
 
-        plt.title(self.curPath)
-        plt.legend(items)
-        plt.grid(b=True, which='both', axis='both')
-        plt.show()
-        print(f'Plotted')
+            items = [i.text() if i.text() in setup.outputProcessing else setup.outputDirect[i.text()] for i in
+                     self.plotList.selectedItems()]
+            logging.debug('Plotting')
+            if self.clearPlot.isChecked():
+                plt.cla()  # Clear the plot if the check box is checked
+                self.diff = 0
 
+            for i in items:
+                logging.debug(f'Plotting: {i}')
+                x = data.loc[:, 'Time']
+                y = data.loc[:, i]
+                plt.plot(x, y)
+
+                # Check boxes for marked points
+                if self.plotMax.isChecked():
+                    logging.debug('Getting max point')
+                    self.annot_max(x, y, diff=self.diff, name=i)
+                    self.diff += 1
+
+                if self.plotMin.isChecked():
+                    logging.debug('Getting min point')
+                    self.annot_min(x, y, diff=self.diff, name=i)
+                    self.diff += 1
+
+            plt.title(self.curPath)
+            plt.legend(items)
+            plt.grid(b=True, which='both', axis='both')
+            plt.show()
+            logging.debug(f'Plotted')
+            loaded = True
+
+    def annot_max(self, x, y, ax=None, diff=0, name=""):
+        xmax = x[pd.Series.idxmax(y)]
+        ymax = y.max()
+        text = f'{name} {ymax:.2f}% at {xmax:.2f}'
+        if not ax:
+            ax = plt.gca()
+        bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
+        arrowprops = dict(arrowstyle="->", connectionstyle="angle,angleA=0,angleB=60")
+        kw = dict(xycoords='data', textcoords="axes fraction",
+                  arrowprops=arrowprops, bbox=bbox_props, ha="right", va="top")
+        ax.annotate(text, xy=(xmax, ymax), xytext=(0.85, 0.98 - diff * 0.03), **kw)
+
+    def annot_min(self, x, y, ax=None, diff=0, name=""):
+        xmin = x[pd.Series.idxmin(y)]
+        ymin = y.min()
+        text = f'{name} {ymin:.2f}% at {xmin:.2f}'
+        if not ax:
+            ax = plt.gca()
+        bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
+        arrowprops = dict(arrowstyle="->", connectionstyle="angle,angleA=0,angleB=150")
+        kw = dict(xycoords='data', textcoords="axes fraction",
+                  arrowprops=arrowprops, bbox=bbox_props, ha="right", va="bottom")
+        ax.annotate(text, xy=(xmin, ymin), xytext=(0.98, 0.02 + diff * 0.03), **kw)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
