@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1072</width>
-    <height>442</height>
+       <width>841</width>
+       <height>381</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -47,7 +47,7 @@
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="selectionMode">
-     <enum>QAbstractItemView::SingleSelection</enum>
+        <enum>QAbstractItemView::MultiSelection</enum>
     </property>
     <property name="currentRow">
      <number>-1</number>
@@ -90,9 +90,9 @@
    <widget class="QLabel" name="loadStatus">
     <property name="geometry">
      <rect>
-      <x>10</x>
+         <x>10</x>
       <y>170</y>
-      <width>271</width>
+         <width>121</width>
       <height>21</height>
      </rect>
     </property>
@@ -100,20 +100,26 @@
      <string>No file loaded</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="loadButton">
+      <widget class="QPushButton" name="plotButton">
+          <property name="enabled">
+              <bool>false</bool>
+          </property>
     <property name="geometry">
      <rect>
-      <x>290</x>
+         <x>280</x>
       <y>170</y>
-      <width>75</width>
+         <width>91</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>Load</string>
+        <string>Update Plot</string>
+    </property>
+          <property name="autoDefault">
+              <bool>true</bool>
     </property>
    </widget>
   </widget>
@@ -122,8 +128,8 @@
     <rect>
      <x>10</x>
      <y>220</y>
-     <width>811</width>
-     <height>211</height>
+        <width>581</width>
+        <height>151</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="batteryConfigLayout">
@@ -138,60 +144,35 @@
          <x>10</x>
          <y>20</y>
          <width>231</width>
-         <height>71</height>
+            <height>41</height>
         </rect>
        </property>
        <property name="title">
         <string/>
        </property>
-       <widget class="QSlider" name="slidePeu1">
+          <widget class="QDoubleSpinBox" name="inputPeu1">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>75</number>
-        </property>
-        <property name="maximum">
-         <number>200</number>
-        </property>
-        <property name="value">
-         <number>110</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="inputPeu1">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>21</height>
          </rect>
         </property>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+              </property>
         <property name="showGroupSeparator" stdset="0">
          <bool>true</bool>
         </property>
-        <property name="prefix">
-         <string/>
-        </property>
-        <property name="minimum">
-         <number>75</number>
-        </property>
         <property name="maximum">
-         <number>200</number>
+            <double>1000.000000000000000</double>
         </property>
-        <property name="value">
-         <number>110</number>
+              <property name="singleStep">
+                  <double>0.010000000000000</double>
         </property>
-        <property name="displayIntegerBase">
-         <number>10</number>
+              <property name="value">
+                  <double>1.250000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="peuLbl1">
@@ -199,7 +180,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -209,7 +190,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Peukert's * 100</string>
+            <string>Peukert's</string>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -223,53 +204,37 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>90</y>
+            <y>60</y>
          <width>231</width>
-         <height>71</height>
+            <height>41</height>
         </rect>
        </property>
        <property name="title">
         <string/>
        </property>
-       <widget class="QSlider" name="slideEff1">
+          <widget class="QDoubleSpinBox" name="inputEff1">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>85</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="inputEff1">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>22</height>
          </rect>
         </property>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+              </property>
         <property name="suffix">
-         <string extracomment="%">%</string>
+            <string>%</string>
         </property>
         <property name="maximum">
-         <number>150</number>
+            <double>1000.000000000000000</double>
+        </property>
+              <property name="singleStep">
+                  <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <number>85</number>
+            <double>85.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="effLbl1">
@@ -277,7 +242,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -301,7 +266,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>160</y>
+            <y>100</y>
          <width>231</width>
          <height>41</height>
         </rect>
@@ -314,7 +279,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -324,26 +289,35 @@
          </font>
         </property>
         <property name="text">
-         <string>Capacity (Ah)</string>
+            <string>Capacity</string>
         </property>
         <property name="buddy">
          <cstring>inputCap1</cstring>
         </property>
        </widget>
-       <widget class="QSpinBox" name="inputCap1">
+          <widget class="QDoubleSpinBox" name="inputCap1">
         <property name="geometry">
          <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>22</height>
          </rect>
         </property>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+              </property>
+              <property name="suffix">
+                  <string>Ah</string>
+              </property>
+              <property name="decimals">
+                  <number>1</number>
+              </property>
         <property name="maximum">
-         <number>1000</number>
+            <double>1000.000000000000000</double>
         </property>
         <property name="value">
-         <number>100</number>
+            <double>100.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -358,7 +332,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>160</y>
+            <y>100</y>
          <width>231</width>
          <height>41</height>
         </rect>
@@ -371,7 +345,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -381,26 +355,35 @@
          </font>
         </property>
         <property name="text">
-         <string>Capacity (Ah)</string>
+            <string>Capacity</string>
         </property>
         <property name="buddy">
          <cstring>inputCap2</cstring>
         </property>
        </widget>
-       <widget class="QSpinBox" name="inputCap2">
+          <widget class="QDoubleSpinBox" name="inputCap2">
         <property name="geometry">
          <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>22</height>
          </rect>
         </property>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+              </property>
+              <property name="suffix">
+                  <string>Ah</string>
+              </property>
+              <property name="decimals">
+                  <number>1</number>
+              </property>
         <property name="maximum">
-         <number>1000</number>
+            <double>1000.000000000000000</double>
         </property>
         <property name="value">
-         <number>130</number>
+            <double>130.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -408,56 +391,37 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>90</y>
+            <y>60</y>
          <width>231</width>
-         <height>71</height>
+            <height>41</height>
         </rect>
        </property>
        <property name="title">
         <string/>
        </property>
-       <widget class="QSlider" name="slideEff2">
+          <widget class="QDoubleSpinBox" name="inputEff2">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>85</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="inputEff2">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>22</height>
          </rect>
         </property>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+              </property>
         <property name="suffix">
-         <string comment="%" extracomment="%">%</string>
+            <string>%</string>
         </property>
-        <property name="minimum">
-         <number>0</number>
+              <property name="maximum">
+                  <double>1000.000000000000000</double>
         </property>
-        <property name="maximum">
-         <number>150</number>
+              <property name="singleStep">
+                  <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <number>85</number>
+            <double>85.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="effLbl2">
@@ -465,7 +429,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -491,51 +455,32 @@
          <x>10</x>
          <y>20</y>
          <width>231</width>
-         <height>71</height>
+            <height>41</height>
         </rect>
        </property>
        <property name="title">
         <string/>
        </property>
-       <widget class="QSlider" name="slidePeu2">
+          <widget class="QDoubleSpinBox" name="inputPeu2">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>75</number>
-        </property>
-        <property name="maximum">
-         <number>200</number>
-        </property>
-        <property name="value">
-         <number>110</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="inputPeu2">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>22</height>
          </rect>
         </property>
-        <property name="minimum">
-         <number>75</number>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
         </property>
         <property name="maximum">
-         <number>200</number>
+            <double>1000.000000000000000</double>
+        </property>
+              <property name="singleStep">
+                  <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <number>110</number>
+            <double>1.100000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="peuLbl2">
@@ -543,7 +488,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -553,7 +498,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Peukert's * 100</string>
+            <string>Peukert's</string>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -574,7 +519,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>160</y>
+            <y>100</y>
          <width>231</width>
          <height>41</height>
         </rect>
@@ -587,7 +532,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -597,26 +542,35 @@
          </font>
         </property>
         <property name="text">
-         <string>Capacity (Ah)</string>
+            <string>Capacity</string>
         </property>
         <property name="buddy">
          <cstring>inputCap3</cstring>
         </property>
        </widget>
-       <widget class="QSpinBox" name="inputCap3">
+          <widget class="QDoubleSpinBox" name="inputCap3">
         <property name="geometry">
          <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>22</height>
          </rect>
         </property>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+              </property>
+              <property name="suffix">
+                  <string>Ah</string>
+              </property>
+              <property name="decimals">
+                  <number>1</number>
+              </property>
         <property name="maximum">
-         <number>1000</number>
+            <double>1000.000000000000000</double>
         </property>
         <property name="value">
-         <number>120</number>
+            <double>120.000000000000000</double>
         </property>
        </widget>
       </widget>
@@ -624,40 +578,18 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>90</y>
+            <y>60</y>
          <width>231</width>
-         <height>71</height>
+            <height>41</height>
         </rect>
        </property>
        <property name="title">
         <string/>
        </property>
-       <widget class="QSlider" name="slideEff3">
+          <widget class="QDoubleSpinBox" name="inputEff3">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="maximum">
-         <number>150</number>
-        </property>
-        <property name="value">
-         <number>85</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="inputEff3">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>22</height>
@@ -666,17 +598,20 @@
         <property name="accelerated">
          <bool>true</bool>
         </property>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+              </property>
         <property name="suffix">
          <string>%</string>
         </property>
         <property name="maximum">
-         <number>150</number>
+            <double>1000.000000000000000</double>
+        </property>
+              <property name="singleStep">
+                  <double>0.100000000000000</double>
         </property>
         <property name="value">
-         <number>85</number>
-        </property>
-        <property name="displayIntegerBase">
-         <number>10</number>
+            <double>85.000000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="effLbl3">
@@ -684,7 +619,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -710,51 +645,32 @@
          <x>10</x>
          <y>20</y>
          <width>231</width>
-         <height>71</height>
+            <height>41</height>
         </rect>
        </property>
        <property name="title">
         <string/>
        </property>
-       <widget class="QSlider" name="slidePeu3">
+          <widget class="QDoubleSpinBox" name="inputPeu3">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>40</y>
-          <width>211</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="minimum">
-         <number>75</number>
-        </property>
-        <property name="maximum">
-         <number>200</number>
-        </property>
-        <property name="value">
-         <number>110</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-       <widget class="QSpinBox" name="inputPeu3">
-        <property name="geometry">
-         <rect>
-          <x>130</x>
+             <x>80</x>
           <y>10</y>
           <width>91</width>
           <height>22</height>
          </rect>
         </property>
-        <property name="minimum">
-         <number>75</number>
+              <property name="correctionMode">
+                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
         </property>
         <property name="maximum">
-         <number>200</number>
+            <double>1000.000000000000000</double>
+        </property>
+              <property name="singleStep">
+                  <double>0.010000000000000</double>
         </property>
         <property name="value">
-         <number>110</number>
+            <double>1.150000000000000</double>
         </property>
        </widget>
        <widget class="QLabel" name="peuLbl3">
@@ -762,7 +678,7 @@
          <rect>
           <x>10</x>
           <y>0</y>
-          <width>111</width>
+             <width>71</width>
           <height>41</height>
          </rect>
         </property>
@@ -772,7 +688,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Peukert's * 100</string>
+            <string>Peukert's</string>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -786,76 +702,16 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="plotButton">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>730</x>
-     <y>130</y>
-     <width>91</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Update Plot</string>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLabel" name="plotStatus">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>130</y>
-     <width>321</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Not plotted yet</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-   <property name="buddy">
-    <cstring>plotButton</cstring>
-   </property>
-  </widget>
-  <widget class="QLabel" name="lineOut">
-   <property name="geometry">
-    <rect>
-     <x>630</x>
-     <y>160</y>
-     <width>191</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Sunken</enum>
-   </property>
-   <property name="text">
-    <string>Line count: No file loaded</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
   <widget class="QListWidget" name="plotList">
    <property name="enabled">
-    <bool>false</bool>
+       <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
-     <x>830</x>
-     <y>20</y>
+        <x>600</x>
+        <y>50</y>
      <width>231</width>
-     <height>411</height>
+        <height>321</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -871,7 +727,7 @@
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
    <property name="editTriggers">
-    <set>QAbstractItemView::DoubleClicked</set>
+       <set>QAbstractItemView::NoEditTriggers</set>
    </property>
    <property name="showDropIndicator" stdset="0">
     <bool>false</bool>
@@ -894,14 +750,14 @@
   <widget class="QProgressBar" name="progressBar">
    <property name="geometry">
     <rect>
-     <x>560</x>
-     <y>190</y>
+        <x>410</x>
+        <y>20</y>
      <width>261</width>
      <height>23</height>
     </rect>
    </property>
    <property name="layoutDirection">
-    <enum>Qt::RightToLeft</enum>
+       <enum>Qt::LeftToRight</enum>
    </property>
    <property name="value">
     <number>0</number>
@@ -910,8 +766,8 @@
   <widget class="QLabel" name="progressLabel">
    <property name="geometry">
     <rect>
-     <x>400</x>
-     <y>190</y>
+        <x>670</x>
+        <y>20</y>
      <width>161</width>
      <height>21</height>
     </rect>
@@ -925,11 +781,56 @@
     <enum>Qt::LeftToRight</enum>
    </property>
    <property name="text">
-    <string>Progress:</string>
+       <string>| Progress</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
+  </widget>
+     <widget class="QGroupBox" name="groupBox">
+         <property name="geometry">
+             <rect>
+                 <x>400</x>
+                 <y>50</y>
+                 <width>169</width>
+                 <height>96</height>
+             </rect>
+         </property>
+         <property name="title">
+             <string>Marked points</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+             <item row="0" column="0">
+                 <widget class="QCheckBox" name="plotMax">
+                     <property name="text">
+                         <string>Max</string>
+                     </property>
+                 </widget>
+             </item>
+             <item row="1" column="0">
+                 <widget class="QCheckBox" name="plotMin">
+                     <property name="text">
+                         <string>Min</string>
+                     </property>
+                     <property name="checked">
+                         <bool>true</bool>
+                     </property>
+                 </widget>
+             </item>
+             <item row="2" column="0">
+                 <widget class="QCheckBox" name="clearPlot">
+                     <property name="layoutDirection">
+                         <enum>Qt::LeftToRight</enum>
+                     </property>
+                     <property name="text">
+                         <string>Clear plot when updating</string>
+                     </property>
+                     <property name="checked">
+                         <bool>true</bool>
+                     </property>
+                 </widget>
+             </item>
+         </layout>
   </widget>
  </widget>
  <tabstops>
@@ -938,214 +839,15 @@
   <tabstop>browseBtn</tabstop>
   <tabstop>plotButton</tabstop>
   <tabstop>inputPeu1</tabstop>
-  <tabstop>slidePeu1</tabstop>
   <tabstop>inputEff1</tabstop>
-  <tabstop>slideEff1</tabstop>
   <tabstop>inputCap1</tabstop>
   <tabstop>inputPeu2</tabstop>
-  <tabstop>slidePeu2</tabstop>
   <tabstop>inputEff2</tabstop>
-  <tabstop>slideEff2</tabstop>
   <tabstop>inputCap2</tabstop>
   <tabstop>inputPeu3</tabstop>
-  <tabstop>slidePeu3</tabstop>
   <tabstop>inputEff3</tabstop>
-  <tabstop>slideEff3</tabstop>
   <tabstop>inputCap3</tabstop>
  </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>slideEff1</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>inputEff1</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>161</x>
-     <y>372</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>171</x>
-     <y>342</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slidePeu2</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>inputPeu2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>513</x>
-     <y>302</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>513</x>
-     <y>272</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slideEff2</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>inputEff2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>513</x>
-     <y>372</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>513</x>
-     <y>342</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slidePeu3</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>inputPeu3</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>784</x>
-     <y>302</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>784</x>
-     <y>272</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slideEff3</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>inputEff3</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>784</x>
-     <y>372</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>784</x>
-     <y>342</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inputEff1</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>slideEff1</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>157</x>
-     <y>342</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>134</x>
-     <y>372</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inputPeu2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>slidePeu2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>513</x>
-     <y>272</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>513</x>
-     <y>302</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inputEff2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>slideEff2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>513</x>
-     <y>342</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>513</x>
-     <y>372</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inputPeu3</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>slidePeu3</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>784</x>
-     <y>272</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>784</x>
-     <y>302</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inputEff3</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>slideEff3</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>784</x>
-     <y>342</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>784</x>
-     <y>372</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>inputPeu1</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>slidePeu1</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>171</x>
-     <y>271</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>124</x>
-     <y>302</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>slidePeu1</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>inputPeu1</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>177</x>
-     <y>302</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>194</x>
-     <y>271</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+    <connections/>
 </ui>

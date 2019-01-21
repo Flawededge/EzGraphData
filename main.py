@@ -3,187 +3,231 @@
 
 # Pre compile the ui (If an update is needed)
 import os
-
 os.system("pyuic5 mainwindow.ui > mainwindow.py")
 
+# The real imports
 import sys
-import csv
 from PyQt5 import QtWidgets
 from mainwindow import Ui_plotGui
 import tkinter as tk
 from tkinter.filedialog import askdirectory
-from functools import partial  # Used to read amount of lines quickly
-from datetime import datetime
 import setup
-import shelve
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+import time
+import logging
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
     root.withdraw()
     validData = []  # Add extra processing functions in here
-    fileList = []
     lines = None
-    stepWidth = None
     plotData = pd.DataFrame
     curPath = None
-    fig = None
-    ax = None
+    change = {'bepTSoc1': True, 'bepTSoc2': True, 'bepTSoc3': True}  # Marks if these need to be updated
+    loaded = False
+    diff = 0
+    validDir = False
 
     def __init__(self, dialog):
+        logging.basicConfig(stream=sys.stderr, level=logging.NOTSET)
         Ui_plotGui.__init__(self)
         self.setupUi(dialog)
 
-        self.batterySpecs = [{'peu': self.inputPeu1.value() / 100,
-                              'eff': 1 / (self.inputEff1.value() / 100),
-                              'cap': self.inputCap1.value()},
-                             {'peu': self.inputPeu2.value() / 100,
-                              'eff': 1 / (self.inputEff2.value() / 100),
-                              'cap': self.inputCap2.value()},
-                             {'peu': self.inputPeu3.value() / 100,
-                              'eff': 1 / (self.inputEff3.value() / 100),
-                              'cap': self.inputCap3.value()}]
+        # Give values for peukert's, efficiency and capacity which are compatible with array multiplication
+        self.peu = np.array([self.inputPeu1.value(), self.inputPeu2.value(), self.inputPeu3.value()])
+        self.eff = np.array([self.inputEff1.value() / 100, self.inputEff2.value() / 100, self.inputEff3.value() / 100])
+        self.cap = np.array([self.inputCap1.value(), self.inputCap2.value(), self.inputCap3.value()])
 
-        self.browseBtn.clicked.connect(self.browseClicked)  # Clicking buttons
+        self.plotList.clear()
+        self.plotList.addItems(list(setup.outputDirect.keys()) + setup.outputProcessing)
+
+        # Connection for the buttons around the place to do stuff
+        self.browseBtn.clicked.connect(self.browseClicked)
         self.currentDir.returnPressed.connect(self.searchDirectory)
-        self.loadButton.clicked.connect(self.loadData)
-        self.plotButton.clicked.connect(self.plot)
-
-        self.inputPeu1.valueChanged.connect(self.printBatteries)  # For battery type commands
-        self.slidePeu1.sliderReleased.connect(self.printBatteries)
-
-    def printBatteries(self):
-        self.batterySpecs = [{'peu': self.inputPeu1.value() / 100,
-                              'eff': self.inputEff1.value() / 100,
-                              'cap': self.inputCap1.value()},
-                             {'peu': self.inputPeu2.value() / 100,
-                              'eff': self.inputEff2.value() / 100,
-                              'cap': self.inputCap2.value()},
-                             {'peu': self.inputPeu3.value() / 100,
-                              'eff': self.inputEff3.value() / 100,
-                              'cap': self.inputCap3.value()}]
+        self.plotButton.pressed.connect(self.plotAll)
 
     # Grab the contents of the currentDir box, check if it's a real dir and search it
     def searchDirectory(self):
         self.listDir.clear()
-        self.fileList = []
         temp = self.currentDir.text()
         if os.path.isdir(temp):  # If it's a valid directory
-            print('Searching dir')
-            if len(temp) > 30:  # Chop the string if it's going to go out of view
-                self.loadStatus.setText(f'Success! \'...{temp[slice(-30, None)]}\' contents shown')
-            else:
-                self.loadStatus.setText(f'Success! \'{temp}\' contents shown')
+            logging.debug('Searching dir')
+
+            self.loadStatus.setText('Loading')
 
             for i in os.listdir(temp):
                 if i.lower().endswith('.csv'):
-                    self.listDir.addItem(i)
-                    self.fileList.append(temp + '/' + i)
+                    tmp = QtWidgets.QListWidgetItem(i, self.listDir)  # Create the list item and put it in the list
+                    tmp.setData(3, f'{temp}/{i}')  # Add the full file path to the tooltip bit of data
+                    self.plotButton.setEnabled(True)
+                    self.validDir = True
                 else:
-                    print(f'{i} is not valid')
+                    logging.debug(f'{i} is not valid')
+
 
         else:  # If it's an invalid directory
-            print('Error: directory not valid')
-            if len(temp) > 30:  # Chop the string if it's going to go out of view
-                self.loadStatus.setText(f'Error: \'...{temp[slice(-30, None)]}\' not valid')
-            else:
-                self.loadStatus.setText(f'Error: \'{temp}\' not valid')
+            logging.debug('Error: directory not valid')
+            self.loadStatus.setText('Not valid')
+            self.validDir = False
 
     # When browse is clicked, open file dialogue and set the currentDir box to the result. Then run searchDirectory
     def browseClicked(self):
         self.currentDir.setText(askdirectory())  # Get the directory from the user
-        self.searchDirectory()  # Move to verifying the directory and searching it
-
-    def countLines(self, filename):
-        buffer = 2 ** 16
-        with open(filename) as f:
-            return sum(x.count('\n') for x in iter(partial(f.read, buffer), ''))
+        self.searchDirectory()  # Verify the directory and search it
 
     def updateProgress(self, percent, text=None):
         if text:
-            self.progressLabel.setText(f'{text} | Progress:')
+            self.progressLabel.setText(f'| {text}')
         self.progressBar.setValue(percent)
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
+
+    def plotAll(self):
+        self.plotButton.setEnabled(False)
+        self.currentDir.setEnabled(False)
+        self.browseBtn.setEnabled(False)
+        if not self.validDir:
+            self.loadStatus.setText('Select a valid dir')
+            return
+        elif self.listDir.currentRow() == -1:  # Another check
+            self.loadStatus.setText('No file selected!')
+            return
+
+        self.plotButton.setEnabled(True)
+        self.currentDir.setEnabled(True)
+        self.browseBtn.setEnabled(True)
+
+        # Clear the plot if the box is checked
+        if self.clearPlot.isChecked():
+            plt.cla()  # Clear the plot if the check box is checked
+            self.diff = 0
+
+        items, title = [], '| '
+        # Loop through all of the selected files, and plot them
+        for i in self.listDir.selectedItems():
+            title += f'{i.data(0)[:-4]} | '
+            self.curPath = i.data(3)
+            # self.listDir.setCurrentRow(i)
+            self.loadData()
+            items.append(self.plot(i.data(0)))
+
+        plt.title(title)
+        plt.legend([i for sublist in items for i in sublist])
+        plt.grid(b=True, which='both', axis='both')
+        plt.show()
 
     # Checks format of currently loaded file, then loads it if valid
     # Note: copies to current working directory to decrease networked file load
     def loadData(self):
-        self.plotList.setEnabled(False)
-        self.plotButton.setEnabled(False)
+        tic = time.time()
 
-        if not self.fileList:  # Check if current selection is valid
-            self.loadStatus.setText('No files in current directory =/')
-            return
-        elif self.listDir.currentRow() == -1:  # Another check
-            self.loadStatus.setText('No file selected on left =(')
-            return
-
-        # Current selection is valid, so continue
-        # Save full path and display status update
-        self.curPath = self.fileList[self.listDir.currentRow()]
-        if len(self.curPath) > 30:  # Chop the string if it's going to go out of view
-            self.plotStatus.setText(f'Checking! \'...{self.curPath[slice(-30, None)]}\'')
-        else:
-            self.plotStatus.setText(f'Checking! \'{self.curPath}\'')
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
         # Check the header row to see if all the required data is there
         with open(self.curPath) as file:
-            firstLine = file.readline()
+            header = file.readline()
             file.close()
 
         self.updateProgress(10, 'Checking headers')
 
         error = 0
         for i in setup.neededHeaders:
-            if i not in firstLine:
+            if i not in header:
                 if not error:
                     self.plotList.clear()
                 error += 1
-                self.plotStatus.setText(f'Errors found: {error}')
                 self.plotList.addItem(f'Err: {i}')
             QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
         if error:
-            print('error found')
+            logging.debug('error found')
             return
-        else:
-            self.plotList.clear()
-            self.plotList.addItems(list(setup.outputDirect.keys()) + setup.outputProcessing)
 
         self.updateProgress(10, 'Processing data')
         setup.process(self, self.curPath, True)  # Run plotData in the first run mode to load everything
 
-        self.plotList.setEnabled(True)
-        self.plotButton.setEnabled(True)
+        # Update the file list with a processed after the filename
+        # item.setText(item.text() + f' (Loaded in {round(time.time() - tic, 2)}s)')
+
+        # Update the progress bar
         self.updateProgress(100, 'Data loaded!')
 
-    def plot(self, load=True):
-        self.printBatteries()
+        # Return the time it took to process the data
+        return round(time.time() - tic, 2)
+
+    def plot(self, name=''):
+        # Give values for peukert's, efficiency and capacity which are compatible with array multiplication
+        self.peu = np.array([self.inputPeu1.value(), self.inputPeu2.value(), self.inputPeu3.value()])
+        self.eff = np.array(
+            [self.inputEff1.value() / 100, self.inputEff2.value() / 100, self.inputEff3.value() / 100])
+        self.cap = np.array([self.inputCap1.value(), self.inputCap2.value(), self.inputCap3.value()])
+
         setup.process(self, self.curPath, False)
         data = self.plotData
 
-        print('Plot in progress')
+        logging.debug('Plot in progress')
 
         items = [i.text() if i.text() in setup.outputProcessing else setup.outputDirect[i.text()] for i in
                  self.plotList.selectedItems()]
-        print('Plotting')
-        plt.cla()
+        logging.debug('Plotting')
+
+        # if self.clearPlot.isChecked():
+        #     plt.cla()  # Clear the plot if the check box is checked
+        #     self.diff = 0
+
+        out = []
         for i in items:
-            print(f'Plotting: {i}')
-            try:
-                plt.plot(data['Time'], data[i])
+            out.append(f'{name:5.5}: {i}')
+            logging.debug(f'Plotting: {i}')
+            x = data.loc[:, 'Time']
+            y = data.loc[:, i]
+            plt.plot(x, y)
 
-            except Exception as e:
-                print(e)
-        plt.title(self.curPath)
-        plt.legend(items)
-        plt.grid(b=True, which='both', axis='both')
-        plt.show()
-        print(f'Plotted')
+            # Check boxes for marked points
+            if self.plotMax.isChecked():
+                logging.debug('Getting max point')
+                self.annot_max(x, y, diff=self.diff, name=i)
+                self.diff += 1
 
+            if self.plotMin.isChecked():
+                logging.debug('Getting min point')
+                self.annot_min(x, y, diff=self.diff, name=i)
+                self.diff += 1
 
+        logging.debug(f'Plotted')
+
+        return out
+
+    def annot_max(self, x, y, ax=None, diff=0, name=""):
+        try:
+            xmax = x[pd.Series.idxmax(y)]
+            ymax = y.max()
+            text = f'{name} {ymax:.2f}% at {xmax:.2f}'
+            if not ax:
+                ax = plt.gca()
+            bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
+            arrowprops = dict(arrowstyle="->", connectionstyle="angle,angleA=0,angleB=60")
+            kw = dict(xycoords='data', textcoords="axes fraction",
+                      arrowprops=arrowprops, bbox=bbox_props, ha="right", va="top")
+            ax.annotate(text, xy=(xmax, ymax), xytext=(0.85, 0.98 - diff * 0.03), **kw)
+        except:
+            logging.error(f'Lower impossible for {name}')
+
+    def annot_min(self, x, y, ax=None, diff=0, name=""):
+        try:
+            xmin = x[pd.Series.idxmin(y)]
+            ymin = y.min()
+            text = f'{name} {ymin:.2f}% at {xmin:.2f}'
+            if not ax:
+                ax = plt.gca()
+            bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
+            arrowprops = dict(arrowstyle="->", connectionstyle="angle,angleA=3,angleB=150")
+            kw = dict(xycoords='data', textcoords="axes fraction",
+                      arrowprops=arrowprops, bbox=bbox_props, ha="right", va="bottom")
+            ax.annotate(text, xy=(xmin, ymin), xytext=(0.98, 0.02 + diff * 0.03), **kw)
+        except:
+            logging.error(f'Lower impossible for {name}')
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

@@ -1,10 +1,20 @@
 import pandas as pd
 import numpy as np
+import os
+import shelve
+import logging
 
 # Config
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+# You shouldn't need to change this. It's the name of the file which the program stores unused data on disk
+# Feel free to delete the data file when you're done. It is mainly used to switch between data sets quickly
+shelveName = 'data'
+# Be aware, the file is overwritten on launch in an effort to avoid getting someone else's data file and it running
+# Weird code on your computer
+
 # These headers are checked if they are present, warnings will show if any are missing (can leave empty)
-neededHeaders = ['Time', 'Supply Current', 'Supply Voltage', 'Load Current', 'Load Voltage', 'Soc1', 'Soc2', 'Soc3',
+neededHeaders = ['TimeStamp', 'Supply Current', 'Supply Voltage', 'Load Current', 'Load Voltage', 'Soc1', 'Soc2',
+                 'Soc3',
                  'Soc4',
                  'Soc5', 'B1SecondarySoC', 'B2SecondarySoC', 'B3SecondarySoC',
                  'B1Current', 'B2Current', 'B3Current', 'B4Current', 'B5Current',
@@ -17,7 +27,8 @@ neededHeaders = ['Time', 'Supply Current', 'Supply Voltage', 'Load Current', 'Lo
 # The labels to display in the plot selection area. Dictionary in process needs to be formatted with same names
 
 ''' These are put directly into the plot variable. 'New name': '.csv header name' '''
-outputDirect = {'Temperature': 'CANDevTemperature',
+outputDirect = {'Time': 'TimeStamp',
+                'Temperature': 'CANDevTemperature',
                 'Supply Current': 'Supply Current',
                 'Supply Voltage': 'Supply Voltage',
                 'Load Current': 'Load Current',
@@ -47,26 +58,46 @@ outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3', 'deltaT']
 
 
 # This function is run to process the data. It should return an array of arrays in the same format of outputProcessing
-# mainData.data is the full .csv file in a dictionary
 def process(mainData, filePath, initial=False):
+    mainData.loaded = False
     values = list(outputDirect.values())
-    values.append('Time')
 
     if initial:  # If loading a new file, grab new data
-        mainData.data = pd.read_csv(open(filePath))
-        try:
-            mainData.plotData = mainData.data[values]
-        except Exception as e:
-            print(e)
+        # First get the modify date of the file, so changes can be detected
+        fileDate = os.path.getmtime(filePath)
+        with shelve.open(shelveName, flag='c+b') as data:
+            oldDate = None
+            logging.debug('Shelve opened')
+            if 'index' not in data.keys():
+                logging.debug('No index found: Making new index')
+                data['index'] = {}
+            elif filePath in data['index']:
+                logging.debug(f'Looking for: {filePath}')
+                logging.debug(f"Index found: {data['index']}")
+                oldDate = data['index']
+                oldDate = oldDate[filePath]
 
-        mainData.updateProgress(50, 'Data loaded')
+                if oldDate == fileDate:
+                    logging.debug('File exists in shelf!')
+                    # The file is probably the same, so the data only needs to be un-shelved
+                    mainData.updateProgress(50, 'Loading stored')
+                    mainData.plotData = data[filePath]
+                    return  # There's nothing more to do here, so back to the program
+                else:
+                    logging.debug('File is not up to date')
+            else:
+                logging.debug(f"Index found: {data['index']}")
+                logging.debug(f'Looking for: {filePath}')
+                logging.debug('File does not exist in index')
 
-        mainData.lines = len(mainData.data.index)
-        mainData.stepWidth = mainData.lines // 100
+        # If we got to here, the file is either new or has been updated.. Either way time to load new data!
+        mainData.plotData = pd.read_csv(open(filePath))[values]  # Read from file
 
-        # Convert time to readable format
+        mainData.updateProgress(50, 'Data loaded')  # Progress bar to keep the interface looking interesting
+
+        # Convert time to readable format and add it to plotData
         mainData.plotData = mainData.plotData.assign(
-            Time=pd.to_datetime(mainData.plotData['Time'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
+            Time=pd.to_datetime(mainData.plotData['TimeStamp'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
 
         mainData.updateProgress(70, 'Time applied')
 
@@ -83,42 +114,51 @@ def process(mainData, filePath, initial=False):
 
         mainData.updateProgress(90, 'Stuff tweaked')
 
+        # Time to shelve the output
+        with shelve.open(shelveName, flag='w+b') as data:
+            index = data['index']
+            index[filePath] = fileDate
+            data['index'] = index
+
     # /////////////////// Start of data processing /////////////////////////////
-    else:
-        db = mainData.plotData  # Simplify variable names
-        bat = mainData.batterySpecs
 
-        final = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3']  # Stores the output part of the array
-        current = ['B1Current', 'B2Current', 'B3Current']  # Stores the I input
+    mainData.plotData['bepTSoc1'] = mainData.plotData['B1Current'].copy()
+    mainData.plotData['bepTSoc2'] = mainData.plotData['B2Current'].copy()
+    mainData.plotData['bepTSoc3'] = mainData.plotData['B3Current'].copy()
 
-        mainData.updateProgress(0, 'Processing plot')
+    process = [['bepTSoc1', 'B1Current'], ['bepTSoc2', 'B2Current'], ['bepTSoc3', 'B3Current']]
 
-        # This for loop is doing peukert's and efficiency
-        for index in range(3):
-            # deltaT, Capacity (Ah), Peukert's, Efficiency
-            t, c, k, e = db['deltaT'], bat[index]['cap'], bat[index]['peu'], bat[index]['eff']
-            tmp = [100]
-            cur = 1
+    for i, [out, cur] in enumerate(process):  # Cycle through each battery individually
+        current = mainData.plotData[cur]  # Assign the output to an easier variable to read
+        # mainData.plotData[out].loc[:] = 0
 
-            for step, I in enumerate(db[current[index]]):
-                if not step:
-                    continue
+        # Process negative values, I >= -20c rating
+        mask = current.where(current < 0, 0)
+        mask.where(mask >= -mainData.cap[i] / 20, 0, True)
+        mainData.plotData[out] = (mainData.plotData['deltaT'] * mask) / mainData.cap[i]
 
-                if I < 0:
-                    cur = cur - (t[step] / (20 * abs((c / (20 * I)) ** k)))
-                elif I > 0:
-                    cur = cur + (t[step] / (c / (I * e)))
+        # Process positive values
+        mask = current.where(current > 0, 0)
+        mainData.plotData[out] += (mainData.plotData['deltaT'] * mask * mainData.eff[i]) / mainData.cap[i]
 
-                if cur > 1:
-                    cur = 1
+        # Process negative values, I > 20c rating
+        mask = current.where(current < -mainData.cap[i] / 20, 0)
+        mainData.plotData[out] -= mainData.plotData['deltaT'] / (
+                    20 * ((mainData.cap[i] / (-mask * 20)) ** mainData.peu[i])).fillna(0)
 
-                # print(I, cur, t[step])
+        # Set the starting capacity to 100%
+        mainData.plotData.loc[0, out] = 1
+        mainData.plotData[out] = mainData.plotData[out].cumsum()  # Sum all of the changes in capacity
+        mainData.plotData[out] -= (mainData.plotData[out].clip(1, None) - 1).cummax()  # Subtract numbers over 100%
+        mainData.plotData[out] *= 100  # Increase the scale by 100x
+        mainData.updateProgress(i * 33, 'Calculating')
 
-                tmp.append(cur * 100)
+    logging.info(f"Min 1: {np.min(mainData.plotData['bepTSoc1'])}")
+    logging.info(f"Min 2: {np.min(mainData.plotData['bepTSoc2'])}")
+    logging.info(f"Min 3: {np.min(mainData.plotData['bepTSoc3'])}")
 
-                if step % mainData.stepWidth:
-                    mainData.updateProgress((step // (mainData.stepWidth * 3)) + (index * 33))
-
-            db[final[index]] = tmp
-        mainData.updateProgress(100, 'Plot processed!')
-    print('Data processed')
+    with shelve.open(shelveName, flag='w+b') as data:
+        data[filePath] = mainData.plotData  # Update the shelf with all of the plot data
+    mainData.updateProgress(100, 'Plot processed!')
+    logging.debug('Data processed')
+    mainData.loaded = True
