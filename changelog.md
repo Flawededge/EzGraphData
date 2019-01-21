@@ -1,4 +1,4 @@
-# EzGraphData
+# EzGraphData - Changelog
 - Changelog
     -
 This is going to be where I keep track of a to do list and changelog. The changes by version are going 
@@ -6,21 +6,11 @@ This is going to be where I keep track of a to do list and changelog. The change
 - To do list
     -
     
-- Stuff I want to do this version
-
-
-
-    
 - Stuff I want to do in the future (Grows as I think of things)
 
-    
-    → Remove needed headers and add in a load, but don't display in setup 
-        For when you need data for processing, but don't want to plot it 
-    → Allow multiple data sets to be selected and overlayed
-        Will probably make it so you can select multiple files on the left
-    → Cache processed data to decrease the time to update plots
-    → Add in an estimator of how long to go based off previous runs
-    → Make a save plot button, where a range of predefined plots get saved to a folder
+
+    → Make a save plots button, where a range of predefined plots get saved to a folder
+    → Add in a seperate window with useful formulae. Peukert's, internal resistance... 
 
 
 - Changelog
@@ -28,6 +18,13 @@ This is going to be where I keep track of a to do list and changelog. The change
 
 - **1.0 → 1.1 - Optimization branch -  File loading**
 
+
+1.0.2 → 1.0.3
+
+    - Selecting multiple files at once to plot all of them at once
+    - Changed the Peukert's equation around a bit to make it more accurate to what i'm comparing it to
+    - Removed the original sample data, as it was too large for git, added in a couple different examples
+        which should hopefully be a little bit more manageable
 
 1.0.1 → 1.0.2
 

@@ -47,7 +47,7 @@
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
     <property name="selectionMode">
-     <enum>QAbstractItemView::SingleSelection</enum>
+        <enum>QAbstractItemView::MultiSelection</enum>
     </property>
     <property name="currentRow">
      <number>-1</number>
@@ -92,7 +92,7 @@
      <rect>
          <x>10</x>
       <y>170</y>
-         <width>281</width>
+         <width>121</width>
       <height>21</height>
      </rect>
     </property>
@@ -100,20 +100,26 @@
      <string>No file loaded</string>
     </property>
     <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
     </property>
    </widget>
-      <widget class="QPushButton" name="loadAllButton">
+      <widget class="QPushButton" name="plotButton">
+          <property name="enabled">
+              <bool>false</bool>
+          </property>
     <property name="geometry">
      <rect>
-         <x>300</x>
+         <x>280</x>
       <y>170</y>
-      <width>75</width>
+         <width>91</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-        <string>Load All</string>
+        <string>Update Plot</string>
+    </property>
+          <property name="autoDefault">
+              <bool>true</bool>
     </property>
    </widget>
   </widget>
@@ -696,28 +702,9 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="plotButton">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-        <x>440</x>
-        <y>180</y>
-     <width>91</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Update Plot</string>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QListWidget" name="plotList">
    <property name="enabled">
-    <bool>false</bool>
+       <bool>true</bool>
    </property>
    <property name="geometry">
     <rect>
@@ -740,7 +727,7 @@
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
    <property name="editTriggers">
-    <set>QAbstractItemView::DoubleClicked</set>
+       <set>QAbstractItemView::NoEditTriggers</set>
    </property>
    <property name="showDropIndicator" stdset="0">
     <bool>false</bool>
@@ -800,66 +787,50 @@
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
    </property>
   </widget>
-     <widget class="QCheckBox" name="clearPlot">
-         <property name="geometry">
-             <rect>
-                 <x>420</x>
-                 <y>150</y>
-                 <width>171</width>
-                 <height>20</height>
-             </rect>
-         </property>
-         <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-             <string>Clear plot when updating</string>
-         </property>
-         <property name="checked">
-             <bool>true</bool>
-         </property>
-     </widget>
      <widget class="QGroupBox" name="groupBox">
          <property name="geometry">
              <rect>
                  <x>400</x>
                  <y>50</y>
-                 <width>191</width>
-                 <height>91</height>
+                 <width>169</width>
+                 <height>96</height>
              </rect>
          </property>
          <property name="title">
              <string>Marked points</string>
          </property>
-         <widget class="QCheckBox" name="plotMax">
-             <property name="geometry">
-                 <rect>
-                     <x>10</x>
-                     <y>20</y>
-                     <width>70</width>
-                     <height>17</height>
-                 </rect>
-             </property>
-             <property name="text">
-                 <string>Max</string>
-             </property>
-         </widget>
-         <widget class="QCheckBox" name="plotMin">
-             <property name="geometry">
-                 <rect>
-                     <x>10</x>
-                     <y>40</y>
-                     <width>70</width>
-                     <height>17</height>
-                 </rect>
-             </property>
-             <property name="text">
-                 <string>Min</string>
-             </property>
-             <property name="checked">
-                 <bool>true</bool>
-             </property>
-         </widget>
+         <layout class="QFormLayout" name="formLayout">
+             <item row="0" column="0">
+                 <widget class="QCheckBox" name="plotMax">
+                     <property name="text">
+                         <string>Max</string>
+                     </property>
+                 </widget>
+             </item>
+             <item row="1" column="0">
+                 <widget class="QCheckBox" name="plotMin">
+                     <property name="text">
+                         <string>Min</string>
+                     </property>
+                     <property name="checked">
+                         <bool>true</bool>
+                     </property>
+                 </widget>
+             </item>
+             <item row="2" column="0">
+                 <widget class="QCheckBox" name="clearPlot">
+                     <property name="layoutDirection">
+                         <enum>Qt::LeftToRight</enum>
+                     </property>
+                     <property name="text">
+                         <string>Clear plot when updating</string>
+                     </property>
+                     <property name="checked">
+                         <bool>true</bool>
+                     </property>
+                 </widget>
+             </item>
+         </layout>
   </widget>
  </widget>
  <tabstops>

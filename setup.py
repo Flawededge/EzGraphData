@@ -61,7 +61,7 @@ outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3', 'deltaT']
 def process(mainData, filePath, initial=False):
     mainData.loaded = False
     values = list(outputDirect.values())
-    new = False
+
     if initial:  # If loading a new file, grab new data
         # First get the modify date of the file, so changes can be detected
         fileDate = os.path.getmtime(filePath)
@@ -120,8 +120,6 @@ def process(mainData, filePath, initial=False):
             index[filePath] = fileDate
             data['index'] = index
 
-        new = True
-
     # /////////////////// Start of data processing /////////////////////////////
 
     mainData.plotData['bepTSoc1'] = mainData.plotData['B1Current'].copy()
@@ -130,26 +128,29 @@ def process(mainData, filePath, initial=False):
 
     process = [['bepTSoc1', 'B1Current'], ['bepTSoc2', 'B2Current'], ['bepTSoc3', 'B3Current']]
 
-    for i, [out, cur] in enumerate(process):
-        # if mainData.change[out] or new:  # This is optional, the math below is fast enough to not worry
-        # Separate the positive and negative values
-        pos = mainData.plotData[cur].clip(0, None)  # Clip the positive numbers
-        neg = (-mainData.plotData[cur]).clip(0, None)  # Clip the negative numbers and make them positive
+    for i, [out, cur] in enumerate(process):  # Cycle through each battery individually
+        current = mainData.plotData[cur]  # Assign the output to an easier variable to read
+        # mainData.plotData[out].loc[:] = 0
 
-        # The negative, discharging processing (peukert's)
-        neg = mainData.plotData['deltaT'] / (20 * ((mainData.cap[i] / (neg * 20)) ** mainData.peu[i]))
-        neg = neg.replace(np.inf, 0)
+        # Process negative values, I >= -20c rating
+        mask = current.where(current < 0, 0)
+        mask.where(mask >= -mainData.cap[i] / 20, 0, True)
+        mainData.plotData[out] = (mainData.plotData['deltaT'] * mask) / mainData.cap[i]
 
-        # The positive, charging processing (efficiency %)
-        pos = (mainData.plotData['deltaT'] * pos * mainData.eff[i]) / mainData.cap[i]
+        # Process positive values
+        mask = current.where(current > 0, 0)
+        mainData.plotData[out] += (mainData.plotData['deltaT'] * mask * mainData.eff[i]) / mainData.cap[i]
 
-        # Add the charging and discharging together (the negative has a power, so ends up positive)
-        mainData.plotData[out] = pos - neg
+        # Process negative values, I > 20c rating
+        mask = current.where(current < -mainData.cap[i] / 20, 0)
+        mainData.plotData[out] -= mainData.plotData['deltaT'] / (
+                    20 * ((mainData.cap[i] / (-mask * 20)) ** mainData.peu[i])).fillna(0)
 
+        # Set the starting capacity to 100%
         mainData.plotData.loc[0, out] = 1
-        mainData.plotData[out] = mainData.plotData[out].cumsum()
-        mainData.plotData[out] -= (mainData.plotData[out].clip(1, None) - 1).cummax()
-        mainData.plotData[out] *= 100  # This is to keep the calculated results in line with the measured ones
+        mainData.plotData[out] = mainData.plotData[out].cumsum()  # Sum all of the changes in capacity
+        mainData.plotData[out] -= (mainData.plotData[out].clip(1, None) - 1).cummax()  # Subtract numbers over 100%
+        mainData.plotData[out] *= 100  # Increase the scale by 100x
         mainData.updateProgress(i * 33, 'Calculating')
 
     logging.info(f"Min 1: {np.min(mainData.plotData['bepTSoc1'])}")
