@@ -18,7 +18,17 @@ This is going to be where I keep track of a to do list and changelog. The change
 
 - **1.0 → 1.1 - Optimization branch -  File loading**
 
+1.0.3 → 1.0.4
 
+    - Added my own SoC implementation based off the confrence below
+        → Still needs a lot of work, but it is getting pretty confusing
+    - Moved the custom plot labels to the top
+    - Rearranged the interface again. Still have some bits to add to it related to tuning my algorithm
+    
+Reference: 
+
+‘A novel comprehensive evaluation method for state-of-health of lead-acid batteries’ (2018) 2018 International Conference on Power System Technology (POWERCON), Power System Technology (POWERCON), 2018 International Conference on, p. 3765. doi: 10.1109/POWERCON.2018.8601795.
+    
 1.0.2 → 1.0.3
 
     - Selecting multiple files at once to plot all of them at once

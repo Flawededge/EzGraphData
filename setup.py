@@ -3,6 +3,7 @@ import numpy as np
 import os
 import shelve
 import logging
+import math
 
 # Config
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +51,9 @@ outputDirect = {'Time': 'TimeStamp',
                 'B3RemainCapacityCoulombs': 'B3remainCapacityCoulombs'}
 
 ''' These are variables which will need to be manually filled in within the process function'''
-outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3', 'deltaT']
+outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3',
+                    'diggleSoc1', 'diggleSoc2', 'diggleSoc3', 'curDiff1', 'curDiff2', 'curDiff3',
+                    'deltaT']
 
 
 # Processing
@@ -125,26 +128,95 @@ def process(mainData, filePath, initial=False):
     mainData.plotData['bepTSoc1'] = mainData.plotData['B1Current'].copy()
     mainData.plotData['bepTSoc2'] = mainData.plotData['B2Current'].copy()
     mainData.plotData['bepTSoc3'] = mainData.plotData['B3Current'].copy()
+    mainData.plotData['diggleSoc1'] = mainData.plotData['B1Current'].copy()
+    mainData.plotData['diggleSoc2'] = mainData.plotData['B2Current'].copy()
+    mainData.plotData['diggleSoc3'] = mainData.plotData['B3Current'].copy()
 
     process = [['bepTSoc1', 'B1Current'], ['bepTSoc2', 'B2Current'], ['bepTSoc3', 'B3Current']]
+    dig = ['diggleSoc1', 'diggleSoc2', 'diggleSoc3']
+    voltage = ['B1Voltage', 'B2Voltage', 'B3Voltage']
+    difference = ['curDiff1', 'curDiff2', 'curDiff3']
 
     for i, [out, cur] in enumerate(process):  # Cycle through each battery individually
-        current = mainData.plotData[cur]  # Assign the output to an easier variable to read
-        # mainData.plotData[out].loc[:] = 0
+        volt = mainData.plotData[voltage[i]].rolling(window=100, min_periods=1,
+                                                     center=False).mean()  # Smooth the voltage
+        cur = mainData.plotData[cur]  # Give the current a variable as well
+
+        # # BEP SoC
 
         # Process negative values, I >= -20c rating
-        mask = current.where(current < 0, 0)
-        mask.where(mask >= -mainData.cap[i] / 20, 0, True)
-        mainData.plotData[out] = (mainData.plotData['deltaT'] * mask) / mainData.cap[i]
+        negMask = cur.where(cur < 0, 0)
+        negMask.where(negMask >= -mainData.cap[i] / 20, 0, True)
+        mainData.plotData[out] = -mainData.plotData['deltaT'] / (
+                20 * (mainData.cap[i] / (-negMask * 20))).fillna(0)
 
         # Process positive values
-        mask = current.where(current > 0, 0)
-        mainData.plotData[out] += (mainData.plotData['deltaT'] * mask * mainData.eff[i]) / mainData.cap[i]
+        posMask = cur.where(cur > 0, 0)
+        mainData.plotData[out] += (mainData.plotData['deltaT'] * posMask * mainData.eff[i]) / mainData.cap[i]
 
         # Process negative values, I > 20c rating
-        mask = current.where(current < -mainData.cap[i] / 20, 0)
+        peuMask = cur.where(cur < -mainData.cap[i] / 20, 0)
         mainData.plotData[out] -= mainData.plotData['deltaT'] / (
-                    20 * ((mainData.cap[i] / (-mask * 20)) ** mainData.peu[i])).fillna(0)
+                20 * ((mainData.cap[i] / (-peuMask * 20)) ** mainData.peu[i])).fillna(0)
+
+        # # Diggle SoC
+        '''Positive values - Cu = Incoming% + Σ { δt * ß * δT * A } 'Equation 15')
+            
+            δt - Time
+            
+            ß - Charging efficiency =   /|Constant Current (V → Voltage)    : (100.6265 - (6.3626e-10 * (e ** (9.1904V))) / 100
+            'Fig 4, 5'                  \|Constant Voltage (A → C discharge): (-44.211 * A + 100) / 100
+            
+            δT - Temperature coefficient = ((-0.02069 * (t ** 2)) + (1.8904 * t) + 64.4967) / 100
+            'Figure 3 (0.05c line)'
+            
+            A - Current discharge based on c rating = Current / Capacity
+        
+            Negative values - Cu = Σ { (K / δT) * A }
+            
+            K - Attached to peukert's (I have no idea what range of values it'gonna be)
+            
+        '''
+
+        #  δT → % of useful capacity based off temperature
+        t = mainData.plotData['CANDevTemperature']
+        T = -0.00008 * (t ** 2) + 0.0081 * t + 0.85
+        # T = 0.00008011 * (t ** 2) + 0.008087 * t + 0.8479
+        cap = mainData.cap[i] * T
+
+        # Working out A, which is Current / Capacity
+        A = cur / (mainData.cap[i] * T)
+
+        # Process negative values, I >= -20c rating
+        mainData.plotData[dig[i]] = -mainData.plotData['deltaT'] / (
+                20 * (cap / (-negMask * 20))).fillna(0)
+
+        # Process negative values, I < -20c rating
+        mainData.plotData[dig[i]] -= mainData.plotData['deltaT'] / (
+                20 * ((cap / (-peuMask * 20)) ** mainData.peu[i])).fillna(0)
+
+        # Calculate a window difference of the current to figure out when in CC or CV mode (lots of smoothing)
+        diff = abs(cur.rolling(window=600, min_periods=0, center=False, win_type='triang').mean().diff().rolling(
+            window=1000, min_periods=0, center=True, win_type='hanning').mean() * 10000) - 1
+        mainData.plotData[difference[i]] = diff
+
+        # CC → (100.6265 - (6.3626e-10 * (e ** (9.1904V)))
+        mask = volt.where(diff < 0, np.NAN) / 6  # Take only the CC values and convert to 1 cell voltage
+        eff = ((100.6265 - (6.3626e-10 * (np.exp(9.1904 * mask)))) / 100).fillna(0)  # Calculate the efficiency
+
+        # CV → (-44.211 * A + 100) / 100 ! Where A is 'C charging'
+        mask = A.where(diff > 0, np.NAN)  # Take only the CV values
+        eff += ((-44.211 * mask + 100) / 100).fillna(0)  # Calculate the efficiency
+
+        # Calculate the delta percentages
+        A = A.where(cur > 0, 0)
+        mainData.plotData[dig[i]] += (mainData.plotData['deltaT'] * eff * T * A)
+
+        mainData.plotData.loc[0, dig[i]] = 1  # Start at 100%
+        mainData.plotData[dig[i]] = mainData.plotData[dig[i]].cumsum()  # Sum all the changes in capacity
+        mainData.plotData[dig[i]] -= (
+                    mainData.plotData[dig[i]].clip(1, None) - 1).cummax()  # Subtract numbers over 100%
+        mainData.plotData[dig[i]] *= 100  # Increase the scale by 100x
 
         # Set the starting capacity to 100%
         mainData.plotData.loc[0, out] = 1

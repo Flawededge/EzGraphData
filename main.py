@@ -1,9 +1,8 @@
 # To update the gui from the .ui file, run:
 # pyuic5 mainwindow.ui -o mainwindow.py
 
-# Pre compile the ui (If an update is needed)
-import os
-os.system("pyuic5 mainwindow.ui > mainwindow.py")
+# To compile with pyinstaller from python console:
+# pyinstaller main.py --onefile --icon=icon.ico
 
 # The real imports
 import sys
@@ -17,6 +16,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 import logging
+import os
+import importlib  # TODO: Remove this line once testing is over
+
 
 class mainPlotGui(Ui_plotGui):
     root = tk.Tk()
@@ -29,9 +31,10 @@ class mainPlotGui(Ui_plotGui):
     loaded = False
     diff = 0
     validDir = False
+    error = 0
 
     def __init__(self, dialog):
-        logging.basicConfig(stream=sys.stderr, level=logging.NOTSET)
+        logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
         Ui_plotGui.__init__(self)
         self.setupUi(dialog)
 
@@ -41,12 +44,37 @@ class mainPlotGui(Ui_plotGui):
         self.cap = np.array([self.inputCap1.value(), self.inputCap2.value(), self.inputCap3.value()])
 
         self.plotList.clear()
-        self.plotList.addItems(list(setup.outputDirect.keys()) + setup.outputProcessing)
+        self.plotList.addItems(setup.outputProcessing + list(setup.outputDirect.keys()))
 
         # Connection for the buttons around the place to do stuff
         self.browseBtn.clicked.connect(self.browseClicked)
         self.currentDir.returnPressed.connect(self.searchDirectory)
         self.plotButton.pressed.connect(self.plotAll)
+
+        self.inputPeu1.valueChanged.connect(self.b1Change)  # Variables to say that
+        self.inputPeu2.valueChanged.connect(self.b2Change)
+        self.inputPeu3.valueChanged.connect(self.b3Change)
+        self.inputEff1.valueChanged.connect(self.b1Change)
+        self.inputEff2.valueChanged.connect(self.b2Change)
+        self.inputEff3.valueChanged.connect(self.b3Change)
+        self.inputCap1.valueChanged.connect(self.b1Change)
+        self.inputCap2.valueChanged.connect(self.b2Change)
+        self.inputCap3.valueChanged.connect(self.b3Change)
+        self.listDir.currentItemChanged.connect(self.allChange)
+
+    def b1Change(self):
+        self.change['bepTSoc1'] = True
+
+    def b2Change(self):
+        self.change['bepTSoc2'] = True
+
+    def b3Change(self):
+        self.change['bepTSoc3'] = True
+
+    def allChange(self):
+        self.change['bepTSoc1'] = True
+        self.change['bepTSoc2'] = True
+        self.change['bepTSoc3'] = True
 
     # Grab the contents of the currentDir box, check if it's a real dir and search it
     def searchDirectory(self):
@@ -66,7 +94,6 @@ class mainPlotGui(Ui_plotGui):
                 else:
                     logging.debug(f'{i} is not valid')
 
-
         else:  # If it's an invalid directory
             logging.debug('Error: directory not valid')
             self.loadStatus.setText('Not valid')
@@ -84,9 +111,7 @@ class mainPlotGui(Ui_plotGui):
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
     def plotAll(self):
-        self.plotButton.setEnabled(False)
-        self.currentDir.setEnabled(False)
-        self.browseBtn.setEnabled(False)
+
         if not self.validDir:
             self.loadStatus.setText('Select a valid dir')
             return
@@ -94,9 +119,9 @@ class mainPlotGui(Ui_plotGui):
             self.loadStatus.setText('No file selected!')
             return
 
-        self.plotButton.setEnabled(True)
-        self.currentDir.setEnabled(True)
-        self.browseBtn.setEnabled(True)
+        self.plotButton.setEnabled(False)
+        self.currentDir.setEnabled(False)
+        self.browseBtn.setEnabled(False)
 
         # Clear the plot if the box is checked
         if self.clearPlot.isChecked():
@@ -115,6 +140,23 @@ class mainPlotGui(Ui_plotGui):
         plt.title(title)
         plt.legend([i for sublist in items for i in sublist])
         plt.grid(b=True, which='both', axis='both')
+
+        logging.info('Plot finished')
+        self.change['bepTSoc1'] = False
+        self.change['bepTSoc2'] = False
+        self.change['bepTSoc3'] = False  # Set all of the changes as done
+
+        logging.debug('Need changes set to false')
+
+        self.plotButton.setEnabled(True)
+        logging.debug('Plot button: True')
+        self.currentDir.setEnabled(True)
+        logging.debug('Current Dir: True')
+        self.browseBtn.setEnabled(True)
+        logging.debug('Browse button: True')
+        QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
+
+        logging.info('Showing plot')
         plt.show()
 
     # Checks format of currently loaded file, then loads it if valid
@@ -131,24 +173,29 @@ class mainPlotGui(Ui_plotGui):
 
         self.updateProgress(10, 'Checking headers')
 
-        error = 0
+        if self.error:  # If the last load was an error
+            self.plotList.clear()
+            self.plotList.addItems(setup.outputProcessing + list(setup.outputDirect.keys()))
+        self.error = 0
         for i in setup.neededHeaders:
             if i not in header:
-                if not error:
+                if not self.error:
                     self.plotList.clear()
-                error += 1
+                self.error += 1
                 self.plotList.addItem(f'Err: {i}')
             QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
 
-        if error:
+        if self.error:
             logging.debug('error found')
-            return
+            return True
+
+        importlib.reload(setup)  # TODO: Remove this line after testing
 
         self.updateProgress(10, 'Processing data')
-        setup.process(self, self.curPath, True)  # Run plotData in the first run mode to load everything
-
-        # Update the file list with a processed after the filename
-        # item.setText(item.text() + f' (Loaded in {round(time.time() - tic, 2)}s)')
+        try:
+            setup.process(self, self.curPath, True)  # Run plotData in the first run mode to load everything
+        except Exception as e:
+            print(e)
 
         # Update the progress bar
         self.updateProgress(100, 'Data loaded!')
@@ -222,7 +269,7 @@ class mainPlotGui(Ui_plotGui):
             if not ax:
                 ax = plt.gca()
             bbox_props = dict(boxstyle="square,pad=0.3", fc="w", ec="k", lw=0.72)
-            arrowprops = dict(arrowstyle="->", connectionstyle="angle,angleA=3,angleB=150")
+            arrowprops = dict(arrowstyle="->", connectionstyle="angle,angleA=0,angleB=150")
             kw = dict(xycoords='data', textcoords="axes fraction",
                       arrowprops=arrowprops, bbox=bbox_props, ha="right", va="bottom")
             ax.annotate(text, xy=(xmin, ymin), xytext=(0.98, 0.02 + diff * 0.03), **kw)

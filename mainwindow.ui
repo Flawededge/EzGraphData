@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
        <width>841</width>
-       <height>381</height>
+       <height>516</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -123,679 +123,100 @@
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>220</y>
-        <width>581</width>
-        <height>151</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="batteryConfigLayout">
-    <item>
-     <widget class="QGroupBox" name="battery1">
-      <property name="title">
-       <string>Battery 1</string>
-      </property>
-      <widget class="QGroupBox" name="Peukert1">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>231</width>
-            <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-          <widget class="QDoubleSpinBox" name="inputPeu1">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>21</height>
-         </rect>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-              </property>
-        <property name="showGroupSeparator" stdset="0">
-         <bool>true</bool>
-        </property>
-        <property name="maximum">
-            <double>1000.000000000000000</double>
-        </property>
-              <property name="singleStep">
-                  <double>0.010000000000000</double>
-        </property>
-              <property name="value">
-                  <double>1.250000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="peuLbl1">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-            <string>Peukert's</string>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-        <property name="buddy">
-         <cstring>inputPeu1</cstring>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="Efficiency1">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-            <y>60</y>
-         <width>231</width>
-            <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-          <widget class="QDoubleSpinBox" name="inputEff1">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-              </property>
-        <property name="suffix">
-            <string>%</string>
-        </property>
-        <property name="maximum">
-            <double>1000.000000000000000</double>
-        </property>
-              <property name="singleStep">
-                  <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-            <double>85.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="effLbl1">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Efficiency</string>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-        <property name="buddy">
-         <cstring>inputEff1</cstring>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="Capacity1">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-            <y>100</y>
-         <width>231</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QLabel" name="capLbl1">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-            <string>Capacity</string>
-        </property>
-        <property name="buddy">
-         <cstring>inputCap1</cstring>
-        </property>
-       </widget>
-          <widget class="QDoubleSpinBox" name="inputCap1">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-              </property>
-              <property name="suffix">
-                  <string>Ah</string>
-              </property>
-              <property name="decimals">
-                  <number>1</number>
-              </property>
-        <property name="maximum">
-            <double>1000.000000000000000</double>
-        </property>
-        <property name="value">
-            <double>100.000000000000000</double>
-        </property>
-       </widget>
-      </widget>
+     <widget class="QListWidget" name="plotList">
+         <property name="enabled">
+             <bool>true</bool>
+         </property>
+         <property name="geometry">
+             <rect>
+                 <x>400</x>
+                 <y>80</y>
+                 <width>231</width>
+                 <height>421</height>
+             </rect>
+         </property>
+         <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+             <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="midLineWidth">
+             <number>0</number>
+         </property>
+         <property name="horizontalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+         <property name="editTriggers">
+             <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="showDropIndicator" stdset="0">
+             <bool>false</bool>
+         </property>
+         <property name="defaultDropAction">
+             <enum>Qt::IgnoreAction</enum>
+         </property>
+         <property name="selectionMode">
+             <enum>QAbstractItemView::MultiSelection</enum>
+         </property>
+         <property name="currentRow">
+             <number>-1</number>
+         </property>
+         <item>
+             <property name="text">
+                 <string>No data loaded yet</string>
+             </property>
+         </item>
      </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="battery2">
-      <property name="title">
-       <string>Battery 2</string>
-      </property>
-      <widget class="QGroupBox" name="Capacity2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-            <y>100</y>
-         <width>231</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QLabel" name="capLbl2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-            <string>Capacity</string>
-        </property>
-        <property name="buddy">
-         <cstring>inputCap2</cstring>
-        </property>
-       </widget>
-          <widget class="QDoubleSpinBox" name="inputCap2">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-              </property>
-              <property name="suffix">
-                  <string>Ah</string>
-              </property>
-              <property name="decimals">
-                  <number>1</number>
-              </property>
-        <property name="maximum">
-            <double>1000.000000000000000</double>
-        </property>
-        <property name="value">
-            <double>130.000000000000000</double>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="Efficiency2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-            <y>60</y>
-         <width>231</width>
-            <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-          <widget class="QDoubleSpinBox" name="inputEff2">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-              </property>
-        <property name="suffix">
-            <string>%</string>
-        </property>
-              <property name="maximum">
-                  <double>1000.000000000000000</double>
-        </property>
-              <property name="singleStep">
-                  <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-            <double>85.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="effLbl2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Efficiency</string>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-        <property name="buddy">
-         <cstring>inputEff2</cstring>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="Peukert2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>231</width>
-            <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-          <widget class="QDoubleSpinBox" name="inputPeu2">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-        </property>
-        <property name="maximum">
-            <double>1000.000000000000000</double>
-        </property>
-              <property name="singleStep">
-                  <double>0.010000000000000</double>
-        </property>
-        <property name="value">
-            <double>1.100000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="peuLbl2">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-            <string>Peukert's</string>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-        <property name="buddy">
-         <cstring>inputPeu2</cstring>
-        </property>
-       </widget>
-      </widget>
+     <widget class="QProgressBar" name="progressBar">
+         <property name="geometry">
+             <rect>
+                 <x>400</x>
+                 <y>20</y>
+                 <width>231</width>
+                 <height>23</height>
+             </rect>
+         </property>
+         <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="value">
+             <number>0</number>
+         </property>
      </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="battery3">
-      <property name="title">
-       <string>Battery 3</string>
-      </property>
-      <widget class="QGroupBox" name="Capacity3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-            <y>100</y>
-         <width>231</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-       <widget class="QLabel" name="capLbl3">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-            <string>Capacity</string>
-        </property>
-        <property name="buddy">
-         <cstring>inputCap3</cstring>
-        </property>
-       </widget>
-          <widget class="QDoubleSpinBox" name="inputCap3">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-              </property>
-              <property name="suffix">
-                  <string>Ah</string>
-              </property>
-              <property name="decimals">
-                  <number>1</number>
-              </property>
-        <property name="maximum">
-            <double>1000.000000000000000</double>
-        </property>
-        <property name="value">
-            <double>120.000000000000000</double>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="Efficiency3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-            <y>60</y>
-         <width>231</width>
-            <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-          <widget class="QDoubleSpinBox" name="inputEff3">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-        <property name="accelerated">
-         <bool>true</bool>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-              </property>
-        <property name="suffix">
-         <string>%</string>
-        </property>
-        <property name="maximum">
-            <double>1000.000000000000000</double>
-        </property>
-              <property name="singleStep">
-                  <double>0.100000000000000</double>
-        </property>
-        <property name="value">
-            <double>85.000000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="effLbl3">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Efficiency</string>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-        <property name="buddy">
-         <cstring>inputEff3</cstring>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QGroupBox" name="Peukert3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>20</y>
-         <width>231</width>
-            <height>41</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string/>
-       </property>
-          <widget class="QDoubleSpinBox" name="inputPeu3">
-        <property name="geometry">
-         <rect>
-             <x>80</x>
-          <y>10</y>
-          <width>91</width>
-          <height>22</height>
-         </rect>
-        </property>
-              <property name="correctionMode">
-                  <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-        </property>
-        <property name="maximum">
-            <double>1000.000000000000000</double>
-        </property>
-              <property name="singleStep">
-                  <double>0.010000000000000</double>
-        </property>
-        <property name="value">
-            <double>1.150000000000000</double>
-        </property>
-       </widget>
-       <widget class="QLabel" name="peuLbl3">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>0</y>
-             <width>71</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-            <string>Peukert's</string>
-        </property>
-        <property name="scaledContents">
-         <bool>true</bool>
-        </property>
-        <property name="buddy">
-         <cstring>inputPeu3</cstring>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QListWidget" name="plotList">
-   <property name="enabled">
-       <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-        <x>600</x>
-        <y>50</y>
-     <width>231</width>
-        <height>321</height>
-    </rect>
-   </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Sunken</enum>
-   </property>
-   <property name="midLineWidth">
-    <number>0</number>
-   </property>
-   <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
-   </property>
-   <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-   </property>
-   <property name="showDropIndicator" stdset="0">
-    <bool>false</bool>
-   </property>
-   <property name="defaultDropAction">
-    <enum>Qt::IgnoreAction</enum>
-   </property>
-   <property name="selectionMode">
-    <enum>QAbstractItemView::MultiSelection</enum>
-   </property>
-   <property name="currentRow">
-    <number>-1</number>
-   </property>
-   <item>
-    <property name="text">
-     <string>No data loaded yet</string>
-    </property>
-   </item>
-  </widget>
-  <widget class="QProgressBar" name="progressBar">
-   <property name="geometry">
-    <rect>
-        <x>410</x>
-        <y>20</y>
-     <width>261</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-   </property>
-   <property name="value">
-    <number>0</number>
-   </property>
-  </widget>
-  <widget class="QLabel" name="progressLabel">
-   <property name="geometry">
-    <rect>
-        <x>670</x>
-        <y>20</y>
-     <width>161</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
-   <property name="layoutDirection">
-    <enum>Qt::LeftToRight</enum>
-   </property>
-   <property name="text">
-       <string>| Progress</string>
-   </property>
-   <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-     <widget class="QGroupBox" name="groupBox">
+     <widget class="QLabel" name="progressLabel">
          <property name="geometry">
              <rect>
                  <x>400</x>
                  <y>50</y>
-                 <width>169</width>
-                 <height>96</height>
+                 <width>161</width>
+                 <height>21</height>
              </rect>
          </property>
+         <property name="font">
+             <font>
+                 <pointsize>10</pointsize>
+             </font>
+         </property>
+         <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+             <string>| Progress</string>
+         </property>
+         <property name="alignment">
+             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+        <y>380</y>
+        <width>169</width>
+        <height>96</height>
+    </rect>
+   </property>
          <property name="title">
              <string>Marked points</string>
          </property>
@@ -831,6 +252,459 @@
                  </widget>
              </item>
          </layout>
+     </widget>
+     <widget class="QGroupBox" name="battery1">
+         <property name="geometry">
+             <rect>
+                 <x>11</x>
+                 <y>221</y>
+                 <width>141</width>
+                 <height>149</height>
+             </rect>
+         </property>
+         <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+             </sizepolicy>
+         </property>
+         <property name="title">
+             <string>Battery 1</string>
+         </property>
+         <widget class="QGroupBox" name="Peukert1">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>20</y>
+                     <width>121</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QDoubleSpinBox" name="inputPeu1">
+                 <property name="geometry">
+                     <rect>
+                         <x>40</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>21</height>
+                     </rect>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="showGroupSeparator" stdset="0">
+                     <bool>true</bool>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                     <double>0.010000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>1.250000000000000</double>
+                 </property>
+             </widget>
+             <widget class="QLabel" name="peuLbl1">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>0</y>
+                         <width>31</width>
+                         <height>41</height>
+                     </rect>
+                 </property>
+                 <property name="font">
+                     <font>
+                         <pointsize>12</pointsize>
+                     </font>
+                 </property>
+                 <property name="text">
+                     <string>Peu</string>
+                 </property>
+                 <property name="scaledContents">
+                     <bool>true</bool>
+                 </property>
+                 <property name="buddy">
+                     <cstring>inputPeu1</cstring>
+                 </property>
+             </widget>
+         </widget>
+         <widget class="QGroupBox" name="Efficiency1">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>60</y>
+                     <width>121</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QDoubleSpinBox" name="inputEff1">
+                 <property name="geometry">
+                     <rect>
+                         <x>40</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>22</height>
+                     </rect>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="suffix">
+                     <string>%</string>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                     <double>0.100000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>85.000000000000000</double>
+                 </property>
+             </widget>
+             <widget class="QLabel" name="effLbl1">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>0</y>
+                         <width>21</width>
+                         <height>41</height>
+                     </rect>
+                 </property>
+                 <property name="font">
+                     <font>
+                         <pointsize>12</pointsize>
+                     </font>
+                 </property>
+                 <property name="text">
+                     <string>Eff</string>
+                 </property>
+                 <property name="scaledContents">
+                     <bool>true</bool>
+                 </property>
+                 <property name="buddy">
+                     <cstring>inputEff1</cstring>
+                 </property>
+             </widget>
+         </widget>
+         <widget class="QGroupBox" name="Capacity1">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>100</y>
+                     <width>121</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QLabel" name="capLbl1">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>0</y>
+                         <width>31</width>
+                         <height>41</height>
+                     </rect>
+                 </property>
+                 <property name="font">
+                     <font>
+                         <pointsize>12</pointsize>
+                     </font>
+                 </property>
+                 <property name="text">
+                     <string>Cap</string>
+                 </property>
+                 <property name="buddy">
+                     <cstring>inputCap1</cstring>
+                 </property>
+             </widget>
+             <widget class="QDoubleSpinBox" name="inputCap1">
+                 <property name="geometry">
+                     <rect>
+                         <x>40</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>22</height>
+                     </rect>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="suffix">
+                     <string>Ah</string>
+                 </property>
+                 <property name="decimals">
+                     <number>1</number>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>100.000000000000000</double>
+                 </property>
+             </widget>
+         </widget>
+     </widget>
+     <widget class="QGroupBox" name="battery3">
+         <property name="geometry">
+             <rect>
+                 <x>280</x>
+                 <y>220</y>
+                 <width>111</width>
+                 <height>151</height>
+             </rect>
+         </property>
+         <property name="title">
+             <string>Battery 3</string>
+         </property>
+         <widget class="QGroupBox" name="Capacity3">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>100</y>
+                     <width>91</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QDoubleSpinBox" name="inputCap3">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>22</height>
+                     </rect>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="suffix">
+                     <string>Ah</string>
+                 </property>
+                 <property name="decimals">
+                     <number>1</number>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>120.000000000000000</double>
+                 </property>
+             </widget>
+         </widget>
+         <widget class="QGroupBox" name="Efficiency3">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>60</y>
+                     <width>91</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QDoubleSpinBox" name="inputEff3">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>22</height>
+                     </rect>
+                 </property>
+                 <property name="accelerated">
+                     <bool>true</bool>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="suffix">
+                     <string>%</string>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                     <double>0.100000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>85.000000000000000</double>
+                 </property>
+             </widget>
+         </widget>
+         <widget class="QGroupBox" name="Peukert3">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>20</y>
+                     <width>91</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QDoubleSpinBox" name="inputPeu3">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>22</height>
+                     </rect>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                     <double>0.010000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>1.150000000000000</double>
+                 </property>
+             </widget>
+         </widget>
+     </widget>
+     <widget class="QGroupBox" name="battery2">
+         <property name="geometry">
+             <rect>
+                 <x>160</x>
+                 <y>220</y>
+                 <width>111</width>
+                 <height>149</height>
+             </rect>
+         </property>
+         <property name="title">
+             <string>Battery 2</string>
+         </property>
+         <widget class="QGroupBox" name="Capacity2">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>100</y>
+                     <width>91</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QDoubleSpinBox" name="inputCap2">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>22</height>
+                     </rect>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="suffix">
+                     <string>Ah</string>
+                 </property>
+                 <property name="decimals">
+                     <number>1</number>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>130.000000000000000</double>
+                 </property>
+             </widget>
+         </widget>
+         <widget class="QGroupBox" name="Efficiency2">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>60</y>
+                     <width>91</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QDoubleSpinBox" name="inputEff2">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>22</height>
+                     </rect>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="suffix">
+                     <string>%</string>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                     <double>0.100000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>85.000000000000000</double>
+                 </property>
+             </widget>
+         </widget>
+         <widget class="QGroupBox" name="Peukert2">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>20</y>
+                     <width>91</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="title">
+                 <string/>
+             </property>
+             <widget class="QDoubleSpinBox" name="inputPeu2">
+                 <property name="geometry">
+                     <rect>
+                         <x>10</x>
+                         <y>10</y>
+                         <width>71</width>
+                         <height>22</height>
+                     </rect>
+                 </property>
+                 <property name="correctionMode">
+                     <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                 </property>
+                 <property name="maximum">
+                     <double>1000.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                     <double>0.010000000000000</double>
+                 </property>
+                 <property name="value">
+                     <double>1.100000000000000</double>
+                 </property>
+             </widget>
+         </widget>
   </widget>
  </widget>
  <tabstops>
