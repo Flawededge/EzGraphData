@@ -18,6 +18,11 @@ This is going to be where I keep track of a to do list and changelog. The change
 
 - **1.0 → 1.1 - Optimization branch -  File loading**
 
+1.0.4 → 1.0.5
+    
+    - Continued to refine the algorithm. The charging side seems pretty good, 
+        but the discharging side is a bit lacking More research into it needed
+
 1.0.3 → 1.0.4
 
     - Added my own SoC implementation based off the confrence below

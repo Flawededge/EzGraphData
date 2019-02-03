@@ -3,7 +3,6 @@ import numpy as np
 import os
 import shelve
 import logging
-import math
 
 # Config
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -22,9 +21,9 @@ neededHeaders = ['TimeStamp', 'Supply Current', 'Supply Voltage', 'Load Current'
                  'B1Voltage', 'B2Voltage', 'B3Voltage', 'B4Voltage', 'B5Voltage',
                  'B1RemainCapacity', 'B2RemainCapacity', 'B3RemainCapacity',
                  'B4RemainCapacity', 'B5RemainCapacity', 'B1EffectiveCurrent', 'B2EffectiveCurrent',
-                 'B3EffectiveCurrent', 'B4EffectiveCurrent', 'B5EffectiveCurrent', 'B1remainCapacityCoulombs',
-                 'B2remainCapacityCoulombs', 'B3remainCapacityCoulombs', 'B4remainCapacityCoulombs',
-                 'B5remainCapacityCoulombs', 'CANDevTemperature']
+                 'B3EffectiveCurrent', 'B4EffectiveCurrent', 'B5EffectiveCurrent', 'B1RemainCapacityCoulombs',
+                 'B2RemainCapacityCoulombs', 'B3RemainCapacityCoulombs', 'B4RemainCapacityCoulombs',
+                 'B5RemainCapacityCoulombs', 'CANDevTemperature']
 # The labels to display in the plot selection area. Dictionary in process needs to be formatted with same names
 
 ''' These are put directly into the plot variable. 'New name': '.csv header name' '''
@@ -46,14 +45,14 @@ outputDirect = {'Time': 'TimeStamp',
                 'B1Voltage': 'B1Voltage',
                 'B2Voltage': 'B2Voltage',
                 'B3Voltage': 'B3Voltage',
-                'B1RemainCapacityCoulombs': 'B1remainCapacityCoulombs',
-                'B2RemainCapacityCoulombs': 'B2remainCapacityCoulombs',
-                'B3RemainCapacityCoulombs': 'B3remainCapacityCoulombs'}
+                'B1RemainCapacityCoulombs': 'B1RemainCapacityCoulombs',
+                'B2RemainCapacityCoulombs': 'B2RemainCapacityCoulombs',
+                'B3RemainCapacityCoulombs': 'B3RemainCapacityCoulombs'}
 
 ''' These are variables which will need to be manually filled in within the process function'''
 outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3',
                     'diggleSoc1', 'diggleSoc2', 'diggleSoc3', 'curDiff1', 'curDiff2', 'curDiff3',
-                    'deltaT']
+                    'deltaT', 'watt1', 'watt2', 'watt3']
 
 
 # Processing
@@ -136,8 +135,10 @@ def process(mainData, filePath, initial=False):
     dig = ['diggleSoc1', 'diggleSoc2', 'diggleSoc3']
     voltage = ['B1Voltage', 'B2Voltage', 'B3Voltage']
     difference = ['curDiff1', 'curDiff2', 'curDiff3']
+    watts = ['watt1', 'watt2', 'watt3']
 
     for i, [out, cur] in enumerate(process):  # Cycle through each battery individually
+        mainData.plotData[watts[i]] = mainData.plotData[cur] * mainData.plotData[voltage[i]]
         volt = mainData.plotData[voltage[i]].rolling(window=100, min_periods=1,
                                                      center=False).mean()  # Smooth the voltage
         cur = mainData.plotData[cur]  # Give the current a variable as well
