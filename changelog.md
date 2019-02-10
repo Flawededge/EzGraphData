@@ -22,6 +22,9 @@ This is going to be where I keep track of a to do list and changelog. The change
     
     - Continued to refine the algorithm. The charging side seems pretty good, 
         but the discharging side is a bit lacking More research into it needed
+    - Started to change around how the shelve works to a writeback. This means 
+        that loading multiple files isn't annoyingly slow, but will use more ram
+        as you open more files (but should self regulate in theory)
 
 1.0.3 → 1.0.4
 

@@ -12,11 +12,13 @@ which is really good at loading large data sets and then doing vectorized calcul
 - Quick start guide
     - 
 
-I'm using PyCharm with python 3.7 https://www.jetbrains.com/pycharm/\
+I'm using PyCharm with python 3.7 https://www.jetbrains.com/pycharm/
 
 Once you're in the python interpreter
 All of the dependencies can be grabbed with:
 
     pip3 install -r dependencies.txt
 
-Then run main.py.. And you should be into 
+Then run main.py
+
+And that's it!

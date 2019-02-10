@@ -12,12 +12,11 @@ import tkinter as tk
 from tkinter.filedialog import askdirectory
 import setup
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import time
 import logging
 import os
-import importlib  # TODO: Remove this line once testing is over
+import shelve
 
 
 class mainPlotGui(Ui_plotGui):
@@ -27,7 +26,9 @@ class mainPlotGui(Ui_plotGui):
     lines = None
     plotData = pd.DataFrame
     curPath = None
-    change = {'bepTSoc1': True, 'bepTSoc2': True, 'bepTSoc3': True}  # Marks if these need to be updated
+    change = [[False, False, False],
+              [False, False, False],
+              [False, False, False]]  # Marks if these need to be updated
     loaded = False
     diff = 0
     validDir = False
@@ -38,10 +39,15 @@ class mainPlotGui(Ui_plotGui):
         Ui_plotGui.__init__(self)
         self.setupUi(dialog)
 
-        # Give values for peukert's, efficiency and capacity which are compatible with array multiplication
-        self.peu = np.array([self.inputPeu1.value(), self.inputPeu2.value(), self.inputPeu3.value()])
-        self.eff = np.array([self.inputEff1.value() / 100, self.inputEff2.value() / 100, self.inputEff3.value() / 100])
-        self.cap = np.array([self.inputCap1.value(), self.inputCap2.value(), self.inputCap3.value()])
+        self.batterySpecs = [{'peu': self.inputPeu1.value(),
+                              'eff': (self.inputEff1.value()) / 100,
+                              'cap': self.inputCap1.value()},
+                             {'peu': self.inputPeu2.value(),
+                              'eff': (self.inputEff2.value()) / 100,
+                              'cap': self.inputCap2.value()},
+                             {'peu': self.inputPeu3.value(),
+                              'eff': (self.inputEff3.value()) / 100,
+                              'cap': self.inputCap3.value()}]
 
         self.plotList.clear()
         self.plotList.addItems(setup.outputProcessing + list(setup.outputDirect.keys()))
@@ -62,19 +68,27 @@ class mainPlotGui(Ui_plotGui):
         self.inputCap3.valueChanged.connect(self.b3Change)
         self.listDir.currentItemChanged.connect(self.allChange)
 
+        self.spinA.valueChanged.connect(self.bx1Change)
+        self.spinB.valueChanged.connect(self.bx1Change)
+        self.spinC.valueChanged.connect(self.bx1Change)
+        self.spinD.valueChanged.connect(self.bx1Change)
+
+    def bx1Change(self):
+        self.change[0][1] = True
+        self.change[1][1] = True
+        self.change[2][1] = True
+
     def b1Change(self):
-        self.change['bepTSoc1'] = True
+        self.change[0][0] = True
 
     def b2Change(self):
-        self.change['bepTSoc2'] = True
+        self.change[1][0] = True
 
     def b3Change(self):
-        self.change['bepTSoc3'] = True
+        self.change[2][0] = True
 
     def allChange(self):
-        self.change['bepTSoc1'] = True
-        self.change['bepTSoc2'] = True
-        self.change['bepTSoc3'] = True
+        self.change = [[True, True, True], [True, True, True], [True, True, True]]  # Marks if these need to be updated
 
     # Grab the contents of the currentDir box, check if it's a real dir and search it
     def searchDirectory(self):
@@ -134,18 +148,15 @@ class mainPlotGui(Ui_plotGui):
             title += f'{i.data(0)[:-4]} | '
             self.curPath = i.data(3)
             # self.listDir.setCurrentRow(i)
-            self.loadData()
-            items.append(self.plot(i.data(0)))
+            self.loadData(self.change)
+            items.append(self.plot(self.change, i.data(0)))
 
         plt.title(title)
         plt.legend([i for sublist in items for i in sublist])
         plt.grid(b=True, which='both', axis='both')
 
         logging.info('Plot finished')
-        self.change['bepTSoc1'] = False
-        self.change['bepTSoc2'] = False
-        self.change['bepTSoc3'] = False  # Set all of the changes as done
-
+        self.change = [[False, False, False], [False, False, False], [False, False, False]]
         logging.debug('Need changes set to false')
 
         self.plotButton.setEnabled(True)
@@ -161,7 +172,7 @@ class mainPlotGui(Ui_plotGui):
 
     # Checks format of currently loaded file, then loads it if valid
     # Note: copies to current working directory to decrease networked file load
-    def loadData(self):
+    def loadData(self, state):
         tic = time.time()
 
         QtWidgets.qApp.processEvents()  # Update the interface to show whats happening
@@ -189,11 +200,19 @@ class mainPlotGui(Ui_plotGui):
             logging.debug('error found')
             return True
 
-        importlib.reload(setup)  # TODO: Remove this line after testing
+        self.batterySpecs = [{'peu': self.inputPeu1.value(),
+                              'eff': (self.inputEff1.value()) / 100,
+                              'cap': self.inputCap1.value()},
+                             {'peu': self.inputPeu2.value(),
+                              'eff': (self.inputEff2.value()) / 100,
+                              'cap': self.inputCap2.value()},
+                             {'peu': self.inputPeu3.value(),
+                              'eff': (self.inputEff3.value()) / 100,
+                              'cap': self.inputCap3.value()}]
 
         self.updateProgress(10, 'Processing data')
         try:
-            setup.process(self, self.curPath, True)  # Run plotData in the first run mode to load everything
+            setup.process(self, self.curPath, state)  # Run plotData in the first run mode to load everything
         except Exception as e:
             print(e)
 
@@ -203,14 +222,9 @@ class mainPlotGui(Ui_plotGui):
         # Return the time it took to process the data
         return round(time.time() - tic, 2)
 
-    def plot(self, name=''):
-        # Give values for peukert's, efficiency and capacity which are compatible with array multiplication
-        self.peu = np.array([self.inputPeu1.value(), self.inputPeu2.value(), self.inputPeu3.value()])
-        self.eff = np.array(
-            [self.inputEff1.value() / 100, self.inputEff2.value() / 100, self.inputEff3.value() / 100])
-        self.cap = np.array([self.inputCap1.value(), self.inputCap2.value(), self.inputCap3.value()])
+    def plot(self, state, name=''):
+        # Update battery specs values
 
-        setup.process(self, self.curPath, False)
         data = self.plotData
 
         logging.debug('Plot in progress')

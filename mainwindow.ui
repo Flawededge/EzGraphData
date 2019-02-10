@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-       <width>641</width>
-       <height>516</height>
+       <width>1044</width>
+       <height>511</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -706,6 +706,279 @@
              </widget>
          </widget>
   </widget>
+     <widget class="QGroupBox" name="groupBox_2">
+         <property name="geometry">
+             <rect>
+                 <x>680</x>
+                 <y>40</y>
+                 <width>351</width>
+                 <height>181</height>
+             </rect>
+         </property>
+         <property name="title">
+             <string>Diggle's Symmetrical Sigmoidal</string>
+         </property>
+         <widget class="QSlider" name="A">
+             <property name="geometry">
+                 <rect>
+                     <x>39</x>
+                     <y>30</y>
+                     <width>211</width>
+                     <height>22</height>
+                 </rect>
+             </property>
+             <property name="minimum">
+                 <number>97511</number>
+             </property>
+             <property name="maximum">
+                 <number>114613</number>
+             </property>
+             <property name="value">
+                 <number>106062</number>
+             </property>
+             <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+             </property>
+         </widget>
+         <widget class="QLabel" name="lA">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>20</y>
+                     <width>31</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="font">
+                 <font>
+                     <pointsize>12</pointsize>
+                 </font>
+             </property>
+             <property name="text">
+                 <string>A</string>
+             </property>
+             <property name="scaledContents">
+                 <bool>true</bool>
+             </property>
+             <property name="buddy">
+                 <cstring>inputPeu1</cstring>
+             </property>
+         </widget>
+         <widget class="QLabel" name="lB">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>60</y>
+                     <width>31</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="font">
+                 <font>
+                     <pointsize>12</pointsize>
+                 </font>
+             </property>
+             <property name="text">
+                 <string>B</string>
+             </property>
+             <property name="scaledContents">
+                 <bool>true</bool>
+             </property>
+             <property name="buddy">
+                 <cstring>inputPeu1</cstring>
+             </property>
+         </widget>
+         <widget class="QSlider" name="C">
+             <property name="geometry">
+                 <rect>
+                     <x>39</x>
+                     <y>110</y>
+                     <width>211</width>
+                     <height>22</height>
+                 </rect>
+             </property>
+             <property name="minimum">
+                 <number>235</number>
+             </property>
+             <property name="maximum">
+                 <number>1931</number>
+             </property>
+             <property name="value">
+                 <number>1083</number>
+             </property>
+             <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+             </property>
+         </widget>
+         <widget class="QLabel" name="lC">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>100</y>
+                     <width>31</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="font">
+                 <font>
+                     <pointsize>12</pointsize>
+                 </font>
+             </property>
+             <property name="text">
+                 <string>C</string>
+             </property>
+             <property name="scaledContents">
+                 <bool>true</bool>
+             </property>
+             <property name="buddy">
+                 <cstring>inputPeu1</cstring>
+             </property>
+         </widget>
+         <widget class="QSlider" name="D">
+             <property name="geometry">
+                 <rect>
+                     <x>39</x>
+                     <y>150</y>
+                     <width>211</width>
+                     <height>22</height>
+                 </rect>
+             </property>
+             <property name="minimum">
+                 <number>-14463</number>
+             </property>
+             <property name="maximum">
+                 <number>52777</number>
+             </property>
+             <property name="value">
+                 <number>19157</number>
+             </property>
+             <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+             </property>
+         </widget>
+         <widget class="QLabel" name="lD">
+             <property name="geometry">
+                 <rect>
+                     <x>10</x>
+                     <y>140</y>
+                     <width>31</width>
+                     <height>41</height>
+                 </rect>
+             </property>
+             <property name="font">
+                 <font>
+                     <pointsize>12</pointsize>
+                 </font>
+             </property>
+             <property name="text">
+                 <string>D</string>
+             </property>
+             <property name="scaledContents">
+                 <bool>true</bool>
+             </property>
+             <property name="buddy">
+                 <cstring>inputPeu1</cstring>
+             </property>
+         </widget>
+         <widget class="QSpinBox" name="spinA">
+             <property name="geometry">
+                 <rect>
+                     <x>260</x>
+                     <y>30</y>
+                     <width>62</width>
+                     <height>22</height>
+                 </rect>
+             </property>
+             <property name="minimum">
+                 <number>97511</number>
+             </property>
+             <property name="maximum">
+                 <number>114613</number>
+             </property>
+             <property name="value">
+                 <number>106062</number>
+             </property>
+         </widget>
+         <widget class="QSpinBox" name="spinB">
+             <property name="geometry">
+                 <rect>
+                     <x>260</x>
+                     <y>70</y>
+                     <width>62</width>
+                     <height>22</height>
+                 </rect>
+             </property>
+             <property name="minimum">
+                 <number>433</number>
+             </property>
+             <property name="maximum">
+                 <number>1377</number>
+             </property>
+             <property name="value">
+                 <number>905</number>
+             </property>
+         </widget>
+         <widget class="QSpinBox" name="spinC">
+             <property name="geometry">
+                 <rect>
+                     <x>260</x>
+                     <y>110</y>
+                     <width>62</width>
+                     <height>22</height>
+                 </rect>
+             </property>
+             <property name="minimum">
+                 <number>235</number>
+             </property>
+             <property name="maximum">
+                 <number>1931</number>
+             </property>
+             <property name="value">
+                 <number>1083</number>
+             </property>
+         </widget>
+         <widget class="QSpinBox" name="spinD">
+             <property name="geometry">
+                 <rect>
+                     <x>260</x>
+                     <y>150</y>
+                     <width>62</width>
+                     <height>22</height>
+                 </rect>
+             </property>
+             <property name="minimum">
+                 <number>-14463</number>
+             </property>
+             <property name="maximum">
+                 <number>52777</number>
+             </property>
+             <property name="value">
+                 <number>19157</number>
+             </property>
+         </widget>
+         <widget class="QSlider" name="B">
+             <property name="geometry">
+                 <rect>
+                     <x>40</x>
+                     <y>70</y>
+                     <width>211</width>
+                     <height>22</height>
+                 </rect>
+             </property>
+             <property name="minimum">
+                 <number>433</number>
+             </property>
+             <property name="maximum">
+                 <number>1377</number>
+             </property>
+             <property name="value">
+                 <number>905</number>
+             </property>
+             <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+             </property>
+         </widget>
+     </widget>
  </widget>
  <tabstops>
   <tabstop>currentDir</tabstop>
@@ -723,5 +996,134 @@
   <tabstop>inputCap3</tabstop>
  </tabstops>
  <resources/>
-    <connections/>
+    <connections>
+        <connection>
+            <sender>A</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>spinA</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>914</x>
+                    <y>82</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>959</x>
+                    <y>76</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>C</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>spinC</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>905</x>
+                    <y>158</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>949</x>
+                    <y>165</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>D</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>spinD</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>901</x>
+                    <y>205</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>955</x>
+                    <y>201</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>spinD</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>D</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>969</x>
+                    <y>199</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>892</x>
+                    <y>204</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>spinC</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>C</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>952</x>
+                    <y>160</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>903</x>
+                    <y>163</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>spinA</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>A</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>952</x>
+                    <y>85</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>910</x>
+                    <y>89</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>B</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>spinB</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>911</x>
+                    <y>118</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>959</x>
+                    <y>123</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>spinB</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>B</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>955</x>
+                    <y>119</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>892</x>
+                    <y>120</y>
+                </hint>
+            </hints>
+        </connection>
+    </connections>
 </ui>

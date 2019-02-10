@@ -3,6 +3,8 @@ import numpy as np
 import os
 import shelve
 import logging
+import SoC  # Contains state of charge calculations
+import importlib  # For reloading SoC while testing
 
 # Config
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -49,34 +51,35 @@ outputDirect = {'Time': 'TimeStamp',
                 'B2RemainCapacityCoulombs': 'B2RemainCapacityCoulombs',
                 'B3RemainCapacityCoulombs': 'B3RemainCapacityCoulombs'}
 
-''' These are variables which will need to be manually filled in within the process function'''
-outputProcessing = ['bepTSoc1', 'bepTSoc2', 'bepTSoc3',
-                    'diggleSoc1', 'diggleSoc2', 'diggleSoc3', 'curDiff1', 'curDiff2', 'curDiff3',
-                    'deltaT', 'watt1', 'watt2', 'watt3']
-
+''' These are variables which will need to be manually filled in within the process function '''
+outputProcessing = ['bepTSoc1', 'digTSoc1', 'bluTSoc1',
+                    'bepTSoc2', 'digTSoc2', 'bluTSoc2',
+                    'bepTSoc3', 'digTSoc3', 'bluTSoc3',
+                    'deltaT']
 
 # Processing
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 # This function is run to process the data. It should return an array of arrays in the same format of outputProcessing
-def process(mainData, filePath, initial=False):
+def process(mainData, filePath, state):
     mainData.loaded = False
     values = list(outputDirect.values())
+    new = True
 
-    if initial:  # If loading a new file, grab new data
-        # First get the modify date of the file, so changes can be detected
-        fileDate = os.path.getmtime(filePath)
-        with shelve.open(shelveName, flag='c+b') as data:
-            oldDate = None
-            logging.debug('Shelve opened')
-            if 'index' not in data.keys():
-                logging.debug('No index found: Making new index')
-                data['index'] = {}
-            elif filePath in data['index']:
-                logging.debug(f'Looking for: {filePath}')
-                logging.debug(f"Index found: {data['index']}")
-                oldDate = data['index']
+    # First get the modify date of the file, so changes can be detected
+    fileDate = os.path.getmtime(filePath)
+    with shelve.open(shelveName, flag='c+b') as data:
+        logging.debug('Shelve opened')
+
+        logging.debug('Checking for valid index')
+        if 'index' in data.values():  # Check if an index exists
+            logging.debug('Valid index found!')
+
+            if filePath in data['index']:  # Check if the file exists in the index
+                logging.info(f'{filePath} found in index, loading from shelve')
+
+                oldDate = data.loc['index', filePath]
                 oldDate = oldDate[filePath]
 
                 if oldDate == fileDate:
@@ -84,147 +87,72 @@ def process(mainData, filePath, initial=False):
                     # The file is probably the same, so the data only needs to be un-shelved
                     mainData.updateProgress(50, 'Loading stored')
                     mainData.plotData = data[filePath]
-                    return  # There's nothing more to do here, so back to the program
                 else:
                     logging.debug('File is not up to date')
-            else:
-                logging.debug(f"Index found: {data['index']}")
-                logging.debug(f'Looking for: {filePath}')
-                logging.debug('File does not exist in index')
+            else:  # The file is not in the index
+                logging.info(f'{filePath} is a new file, loading from disk')
+        else:  # No index exists
+            logging.debug('No index found, making one')
+            data['index'] = {}
 
-        # If we got to here, the file is either new or has been updated.. Either way time to load new data!
-        mainData.plotData = pd.read_csv(open(filePath))[values]  # Read from file
+        if new:
+            # If we got to here, the file is either new or has been updated.. Either way time to load new data!
+            state = [[True, True, True], [True, True, True], [True, True, True]]
+            mainData.plotData = pd.read_csv(open(filePath))[values]  # Read from file
 
-        mainData.updateProgress(50, 'Data loaded')  # Progress bar to keep the interface looking interesting
+            mainData.updateProgress(50, 'Data loaded')  # Progress bar to keep the interface looking interesting
 
-        # Convert time to readable format and add it to plotData
-        mainData.plotData = mainData.plotData.assign(
-            Time=pd.to_datetime(mainData.plotData['TimeStamp'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
+            # Convert time to readable format and add it to plotData
+            mainData.plotData = mainData.plotData.assign(
+                Time=pd.to_datetime(mainData.plotData['TimeStamp'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
 
-        mainData.updateProgress(70, 'Time applied')
+            mainData.updateProgress(70, 'Time applied')
 
-        mainData.plotData['deltaT'] = mainData.plotData['Time']
-        mainData.plotData['deltaT'] = mainData.plotData['deltaT'].diff()
-        mainData.plotData.loc[0, 'deltaT'] = mainData.plotData.loc[1, 'deltaT']  # Make the first time not = NaN
+            mainData.plotData['deltaT'] = mainData.plotData['Time']
+            mainData.plotData['deltaT'] = mainData.plotData['deltaT'].diff()
+            mainData.plotData.loc[0, 'deltaT'] = mainData.plotData.loc[1, 'deltaT']  # Make the first time not = NaN
 
-        #  Turn all of the values into floats of how many hours have passed between results
-        mainData.plotData['deltaT'] = [delta.total_seconds() / 3600 for delta in mainData.plotData['deltaT']]
+            #  Turn all of the values into floats of how many hours have passed between results
+            mainData.plotData['deltaT'] = [delta.total_seconds() / 3600 for delta in mainData.plotData['deltaT']]
 
-        startTime = mainData.plotData['Time'][0]
-        mainData.plotData['Time'] = [(i - startTime).total_seconds() / 3600 for i in mainData.plotData['Time']]
-        mainData.plotData.set_index('Time')
+            startTime = mainData.plotData['Time'][0]
+            mainData.plotData['Time'] = [(i - startTime).total_seconds() / 3600 for i in mainData.plotData['Time']]
+            mainData.plotData.set_index('Time')
 
-        mainData.updateProgress(90, 'Stuff tweaked')
+            mainData.updateProgress(90, 'Stuff tweaked')
 
-        # Time to shelve the output
-        with shelve.open(shelveName, flag='w+b') as data:
+            # Time to shelve the output
             index = data['index']
             index[filePath] = fileDate
             data['index'] = index
 
     # /////////////////// Start of data processing /////////////////////////////
 
-    mainData.plotData['bepTSoc1'] = mainData.plotData['B1Current'].copy()
-    mainData.plotData['bepTSoc2'] = mainData.plotData['B2Current'].copy()
-    mainData.plotData['bepTSoc3'] = mainData.plotData['B3Current'].copy()
-    mainData.plotData['diggleSoc1'] = mainData.plotData['B1Current'].copy()
-    mainData.plotData['diggleSoc2'] = mainData.plotData['B2Current'].copy()
-    mainData.plotData['diggleSoc3'] = mainData.plotData['B3Current'].copy()
+    # mainData.plotData['bepTSoc1'] = mainData.plotData['B1Current'].copy()
+    # mainData.plotData['bepTSoc2'] = mainData.plotData['B2Current'].copy()
+    # mainData.plotData['bepTSoc3'] = mainData.plotData['B3Current'].copy()
+    # mainData.plotData['diggleSoc1'] = mainData.plotData['B1Current'].copy()
+    # mainData.plotData['diggleSoc2'] = mainData.plotData['B2Current'].copy()
+    # mainData.plotData['diggleSoc3'] = mainData.plotData['B3Current'].copy()
 
-    process = [['bepTSoc1', 'B1Current'], ['bepTSoc2', 'B2Current'], ['bepTSoc3', 'B3Current']]
-    dig = ['diggleSoc1', 'diggleSoc2', 'diggleSoc3']
+    output = [['bepTSoc1', 'digTSoc1', 'bluTSoc1'],
+              ['bepTSoc2', 'digTSoc2', 'bluTSoc2'],
+              ['bepTSoc3', 'digTSoc3', 'bluTSoc3']]
+
+    current = ['B1Current', 'B2Current', 'B3Current']
     voltage = ['B1Voltage', 'B2Voltage', 'B3Voltage']
-    difference = ['curDiff1', 'curDiff2', 'curDiff3']
-    watts = ['watt1', 'watt2', 'watt3']
+    batteries = mainData.batterySpecs
 
-    for i, [out, cur] in enumerate(process):  # Cycle through each battery individually
-        mainData.plotData[watts[i]] = mainData.plotData[cur] * mainData.plotData[voltage[i]]
-        volt = mainData.plotData[voltage[i]].rolling(window=100, min_periods=1,
-                                                     center=False).mean()  # Smooth the voltage
-        cur = mainData.plotData[cur]  # Give the current a variable as well
+    importlib.reload(SoC)  # Update the file so I can make quick changes without recompiling
+    for out, cur, bat, vol, active in zip(output, current, batteries, voltage,
+                                          state):  # Cycle through each battery individually
 
-        # # BEP SoC
-
-        # Process negative values, I >= -20c rating
-        negMask = cur.where(cur < 0, 0)
-        negMask.where(negMask >= -mainData.cap[i] / 20, 0, True)
-        mainData.plotData[out] = -mainData.plotData['deltaT'] / (
-                20 * (mainData.cap[i] / (-negMask * 20))).fillna(0)
-
-        # Process positive values
-        posMask = cur.where(cur > 0, 0)
-        mainData.plotData[out] += (mainData.plotData['deltaT'] * posMask * mainData.eff[i]) / mainData.cap[i]
-
-        # Process negative values, I > 20c rating
-        peuMask = cur.where(cur < -mainData.cap[i] / 20, 0)
-        mainData.plotData[out] -= mainData.plotData['deltaT'] / (
-                20 * ((mainData.cap[i] / (-peuMask * 20)) ** mainData.peu[i])).fillna(0)
-
-        # # Diggle SoC
-        '''Positive values - Cu = Incoming% + Σ { δt * ß * δT * A } 'Equation 15')
-            
-            δt - Time
-            
-            ß - Charging efficiency =   /|Constant Current (V → Voltage)    : (100.6265 - (6.3626e-10 * (e ** (9.1904V))) / 100
-            'Fig 4, 5'                  \|Constant Voltage (A → C discharge): (-44.211 * A + 100) / 100
-            
-            δT - Temperature coefficient = ((-0.02069 * (t ** 2)) + (1.8904 * t) + 64.4967) / 100
-            'Figure 3 (0.05c line)'
-            
-            A - Current discharge based on c rating = Current / Capacity
-        
-            Negative values - Cu = Σ { (K / δT) * A }
-            
-            K - Attached to peukert's (I have no idea what range of values it'gonna be)
-            
-        '''
-
-        #  δT → % of useful capacity based off temperature
-        t = mainData.plotData['CANDevTemperature']
-        T = -0.00008 * (t ** 2) + 0.0081 * t + 0.85
-        # T = 0.00008011 * (t ** 2) + 0.008087 * t + 0.8479
-        cap = mainData.cap[i] * T
-
-        # Working out A, which is Current / Capacity
-        A = cur / (mainData.cap[i] * T)
-
-        # Process negative values, I >= -20c rating
-        mainData.plotData[dig[i]] = -mainData.plotData['deltaT'] / (
-                20 * (cap / (-negMask * 20))).fillna(0)
-
-        # Process negative values, I < -20c rating
-        mainData.plotData[dig[i]] -= mainData.plotData['deltaT'] / (
-                20 * ((cap / (-peuMask * 20)) ** mainData.peu[i])).fillna(0)
-
-        # Calculate a window difference of the current to figure out when in CC or CV mode (lots of smoothing)
-        diff = abs(cur.rolling(window=600, min_periods=0, center=False, win_type='triang').mean().diff().rolling(
-            window=1000, min_periods=0, center=True, win_type='hanning').mean() * 10000) - 1
-        mainData.plotData[difference[i]] = diff
-
-        # CC → (100.6265 - (6.3626e-10 * (e ** (9.1904V)))
-        mask = volt.where(diff < 0, np.NAN) / 6  # Take only the CC values and convert to 1 cell voltage
-        eff = ((100.6265 - (6.3626e-10 * (np.exp(9.1904 * mask)))) / 100).fillna(0)  # Calculate the efficiency
-
-        # CV → (-44.211 * A + 100) / 100 ! Where A is 'C charging'
-        mask = A.where(diff > 0, np.NAN)  # Take only the CV values
-        eff += ((-44.211 * mask + 100) / 100).fillna(0)  # Calculate the efficiency
-
-        # Calculate the delta percentages
-        A = A.where(cur > 0, 0)
-        mainData.plotData[dig[i]] += (mainData.plotData['deltaT'] * eff * T * A)
-
-        mainData.plotData.loc[0, dig[i]] = 1  # Start at 100%
-        mainData.plotData[dig[i]] = mainData.plotData[dig[i]].cumsum()  # Sum all the changes in capacity
-        mainData.plotData[dig[i]] -= (
-                    mainData.plotData[dig[i]].clip(1, None) - 1).cummax()  # Subtract numbers over 100%
-        mainData.plotData[dig[i]] *= 100  # Increase the scale by 100x
-
-        # Set the starting capacity to 100%
-        mainData.plotData.loc[0, out] = 1
-        mainData.plotData[out] = mainData.plotData[out].cumsum()  # Sum all of the changes in capacity
-        mainData.plotData[out] -= (mainData.plotData[out].clip(1, None) - 1).cummax()  # Subtract numbers over 100%
-        mainData.plotData[out] *= 100  # Increase the scale by 100x
-        mainData.updateProgress(i * 33, 'Calculating')
+        if active[0]:
+            mainData.plotData[out[0]] = SoC.bepSoC(mainData, mainData.plotData[cur], bat)
+        if active[1]:
+            mainData.plotData[out[1]] = SoC.digSoC(mainData, mainData.plotData[cur], bat, mainData.plotData[vol])
+        if active[2]:
+            mainData.plotData[out[2]] = SoC.bluSoC(mainData, mainData.plotData[cur], bat, mainData.plotData[vol])
 
     logging.info(f"Min 1: {np.min(mainData.plotData['bepTSoc1'])}")
     logging.info(f"Min 2: {np.min(mainData.plotData['bepTSoc2'])}")
