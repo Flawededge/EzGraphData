@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import os
-import shelve
 import logging
 import SoC  # Contains state of charge calculations
 import importlib  # For reloading SoC while testing
@@ -62,78 +61,71 @@ outputProcessing = ['bepTSoc1', 'digTSoc1', 'bluTSoc1',
 
 
 # This function is run to process the data. It should return an array of arrays in the same format of outputProcessing
-def process(mainData, filePath, state):
+def process(mainData, filePath, state, data):
     mainData.loaded = False
     values = list(outputDirect.values())
-    new = True
+    new = False
 
     # First get the modify date of the file, so changes can be detected
     fileDate = os.path.getmtime(filePath)
-    with shelve.open(shelveName, flag='c+b') as data:
-        logging.debug('Shelve opened')
+    logging.debug('---------------------------------------------------------------------------------------------------')
+    logging.debug(f'{filePath} | Checking for valid index')
+    if 'index' in data:  # Check if an index exists
+        logging.debug('Valid index found!')
 
-        logging.debug('Checking for valid index')
-        if 'index' in data.values():  # Check if an index exists
-            logging.debug('Valid index found!')
+        if filePath in data['index']:  # Check if the file exists in the index
+            logging.info(f'{filePath} found in index, checking date')
 
-            if filePath in data['index']:  # Check if the file exists in the index
-                logging.info(f'{filePath} found in index, loading from shelve')
+            oldDate = data['index'][filePath]
 
-                oldDate = data.loc['index', filePath]
-                oldDate = oldDate[filePath]
+            if oldDate == fileDate:
+                logging.debug('File exists in shelf!')
 
-                if oldDate == fileDate:
-                    logging.debug('File exists in shelf!')
-                    # The file is probably the same, so the data only needs to be un-shelved
-                    mainData.updateProgress(50, 'Loading stored')
-                    mainData.plotData = data[filePath]
-                else:
-                    logging.debug('File is not up to date')
-            else:  # The file is not in the index
-                logging.info(f'{filePath} is a new file, loading from disk')
-        else:  # No index exists
-            logging.debug('No index found, making one')
-            data['index'] = {}
+                mainData.updateProgress(50, 'Loading stored')
+                mainData.plotData = data[filePath]
+            else:
+                logging.debug('File is not up to date')
+                new = True
+        else:  # The file is not in the index
+            logging.info(f'{filePath} is a new file, loading from disk')
+            new = True
+    else:  # No index exists
+        logging.debug('No index found, making one')
+        data['index'] = {}
+        new = True
 
-        if new:
-            # If we got to here, the file is either new or has been updated.. Either way time to load new data!
-            state = [[True, True, True], [True, True, True], [True, True, True]]
-            mainData.plotData = pd.read_csv(open(filePath))[values]  # Read from file
+    if new is True:
+        # If we got to here, the file is either new or has been updated.. Either way time to load new data!
+        state = [[True, True, True], [True, True, True], [True, True, True]]
+        mainData.updateProgress(30, 'Loading file from disk')
+        mainData.plotData = pd.read_csv(open(filePath), engine='python')[values]  # Read from file
+        mainData.updateProgress(50, 'Data loaded')  # Progress bar to keep the interface looking interesting
 
-            mainData.updateProgress(50, 'Data loaded')  # Progress bar to keep the interface looking interesting
+        # Convert time to readable format and add it to plotData
+        mainData.plotData = mainData.plotData.assign(
+            Time=pd.to_datetime(mainData.plotData['TimeStamp'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
 
-            # Convert time to readable format and add it to plotData
-            mainData.plotData = mainData.plotData.assign(
-                Time=pd.to_datetime(mainData.plotData['TimeStamp'], errors='coerce', format='%Y-%m-%d %H:%M:%S:%f'))
+        mainData.updateProgress(70, 'Time applied')
 
-            mainData.updateProgress(70, 'Time applied')
+        mainData.plotData['deltaT'] = mainData.plotData['Time']
+        mainData.plotData['deltaT'] = mainData.plotData['deltaT'].diff()
+        mainData.plotData.loc[0, 'deltaT'] = mainData.plotData.loc[1, 'deltaT']  # Make the first time not = NaN
 
-            mainData.plotData['deltaT'] = mainData.plotData['Time']
-            mainData.plotData['deltaT'] = mainData.plotData['deltaT'].diff()
-            mainData.plotData.loc[0, 'deltaT'] = mainData.plotData.loc[1, 'deltaT']  # Make the first time not = NaN
+        #  Turn all of the values into floats of how many hours have passed between results
+        mainData.plotData['deltaT'] = [delta.total_seconds() / 3600 for delta in mainData.plotData['deltaT']]
 
-            #  Turn all of the values into floats of how many hours have passed between results
-            mainData.plotData['deltaT'] = [delta.total_seconds() / 3600 for delta in mainData.plotData['deltaT']]
+        startTime = mainData.plotData['Time'][0]
+        mainData.plotData['Time'] = [(i - startTime).total_seconds() / 3600 for i in mainData.plotData['Time']]
+        mainData.plotData['timeIndex'] = mainData.plotData['Time']
 
-            startTime = mainData.plotData['Time'][0]
-            mainData.plotData['Time'] = [(i - startTime).total_seconds() / 3600 for i in mainData.plotData['Time']]
-            mainData.plotData.set_index('Time')
+        mainData.updateProgress(90, 'Stuff tweaked')
 
-            mainData.updateProgress(90, 'Stuff tweaked')
-
-            # Time to shelve the output
-            index = data['index']
-            index[filePath] = fileDate
-            data['index'] = index
+        # Time to shelve the output
+        index = data['index']
+        index[filePath] = fileDate
+        data['index'] = index
 
     # /////////////////// Start of data processing /////////////////////////////
-
-    # mainData.plotData['bepTSoc1'] = mainData.plotData['B1Current'].copy()
-    # mainData.plotData['bepTSoc2'] = mainData.plotData['B2Current'].copy()
-    # mainData.plotData['bepTSoc3'] = mainData.plotData['B3Current'].copy()
-    # mainData.plotData['diggleSoc1'] = mainData.plotData['B1Current'].copy()
-    # mainData.plotData['diggleSoc2'] = mainData.plotData['B2Current'].copy()
-    # mainData.plotData['diggleSoc3'] = mainData.plotData['B3Current'].copy()
 
     output = [['bepTSoc1', 'digTSoc1', 'bluTSoc1'],
               ['bepTSoc2', 'digTSoc2', 'bluTSoc2'],
@@ -148,7 +140,7 @@ def process(mainData, filePath, state):
                                           state):  # Cycle through each battery individually
 
         if active[0]:
-            mainData.plotData[out[0]] = SoC.bepSoC(mainData, mainData.plotData[cur], bat)
+            mainData.plotData[out[0]] = SoC.bepSoC(mainData, mainData.plotData[cur], bat, mainData.plotData[vol])
         if active[1]:
             mainData.plotData[out[1]] = SoC.digSoC(mainData, mainData.plotData[cur], bat, mainData.plotData[vol])
         if active[2]:
@@ -158,8 +150,7 @@ def process(mainData, filePath, state):
     logging.info(f"Min 2: {np.min(mainData.plotData['bepTSoc2'])}")
     logging.info(f"Min 3: {np.min(mainData.plotData['bepTSoc3'])}")
 
-    with shelve.open(shelveName, flag='w+b') as data:
-        data[filePath] = mainData.plotData  # Update the shelf with all of the plot data
+    data[filePath] = mainData.plotData  # Update the shelf with all of the plot data
     mainData.updateProgress(100, 'Plot processed!')
     logging.debug('Data processed')
     mainData.loaded = True

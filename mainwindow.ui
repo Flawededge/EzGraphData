@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-       <width>1044</width>
+       <width>1002</width>
        <height>511</height>
    </rect>
   </property>
@@ -212,7 +212,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-        <y>380</y>
+        <y>410</y>
         <width>169</width>
         <height>96</height>
     </rect>
@@ -709,8 +709,8 @@
      <widget class="QGroupBox" name="groupBox_2">
          <property name="geometry">
              <rect>
-                 <x>680</x>
-                 <y>40</y>
+                 <x>640</x>
+                 <y>10</y>
                  <width>351</width>
                  <height>181</height>
              </rect>
@@ -979,6 +979,127 @@
              </property>
          </widget>
      </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget">
+         <property name="geometry">
+             <rect>
+                 <x>640</x>
+                 <y>200</y>
+                 <width>351</width>
+                 <height>301</height>
+             </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+             <item>
+                 <layout class="QFormLayout" name="leftForm">
+                     <item row="0" column="0">
+                         <widget class="QLabel" name="tempAdjustLabel">
+                             <property name="text">
+                                 <string>TempAdjust</string>
+                             </property>
+                         </widget>
+                     </item>
+                     <item row="0" column="1">
+                         <widget class="QDoubleSpinBox" name="tempAdj">
+                             <property name="minimum">
+                                 <double>-100.000000000000000</double>
+                             </property>
+                             <property name="maximum">
+                                 <double>100.000000000000000</double>
+                             </property>
+                             <property name="singleStep">
+                                 <double>0.500000000000000</double>
+                             </property>
+                         </widget>
+                     </item>
+                     <item row="1" column="0">
+                         <widget class="QLabel" name="tempCoefficientLabel">
+                             <property name="text">
+                                 <string>TempCoefficient</string>
+                             </property>
+                         </widget>
+                     </item>
+                     <item row="1" column="1">
+                         <widget class="QDoubleSpinBox" name="tempCo">
+                             <property name="decimals">
+                                 <number>6</number>
+                             </property>
+                             <property name="minimum">
+                                 <double>-10.000000000000000</double>
+                             </property>
+                             <property name="maximum">
+                                 <double>10.000000000000000</double>
+                             </property>
+                             <property name="singleStep">
+                                 <double>0.000010000000000</double>
+                             </property>
+                             <property name="value">
+                                 <double>0.000800000000000</double>
+                             </property>
+                         </widget>
+                     </item>
+                     <item row="2" column="0">
+                         <widget class="QLabel" name="batteryTypeLabel">
+                             <property name="text">
+                                 <string>Battery Type</string>
+                             </property>
+                         </widget>
+                     </item>
+                     <item row="2" column="1">
+                         <widget class="QComboBox" name="battType">
+                             <item>
+                                 <property name="text">
+                                     <string>Flooded Reserve</string>
+                                 </property>
+                             </item>
+                             <item>
+                                 <property name="text">
+                                     <string>Flooded Combination</string>
+                                 </property>
+                             </item>
+                             <item>
+                                 <property name="text">
+                                     <string>Flooded Deep Cycle</string>
+                                 </property>
+                             </item>
+                             <item>
+                                 <property name="text">
+                                     <string>AGM STD</string>
+                                 </property>
+                             </item>
+                             <item>
+                                 <property name="text">
+                                     <string>AGM SPL</string>
+                                 </property>
+                             </item>
+                             <item>
+                                 <property name="text">
+                                     <string>Gel Cell</string>
+                                 </property>
+                             </item>
+                             <item>
+                                 <property name="text">
+                                     <string>FFLY Cell</string>
+                                 </property>
+                             </item>
+                         </widget>
+                     </item>
+                 </layout>
+             </item>
+         </layout>
+     </widget>
+     <widget class="QCheckBox" name="adjustedChargeEfficiency">
+         <property name="geometry">
+             <rect>
+                 <x>10</x>
+                 <y>380</y>
+                 <width>171</width>
+                 <height>17</height>
+             </rect>
+         </property>
+         <property name="text">
+             <string>Use adjusted charge efficiency</string>
+         </property>
+     </widget>
  </widget>
  <tabstops>
   <tabstop>currentDir</tabstop>
@@ -1004,12 +1125,12 @@
             <slot>setValue(int)</slot>
             <hints>
                 <hint type="sourcelabel">
-                    <x>914</x>
-                    <y>82</y>
+                    <x>874</x>
+                    <y>52</y>
                 </hint>
                 <hint type="destinationlabel">
-                    <x>959</x>
-                    <y>76</y>
+                    <x>919</x>
+                    <y>46</y>
                 </hint>
             </hints>
         </connection>
@@ -1020,12 +1141,12 @@
             <slot>setValue(int)</slot>
             <hints>
                 <hint type="sourcelabel">
-                    <x>905</x>
-                    <y>158</y>
+                    <x>865</x>
+                    <y>128</y>
                 </hint>
                 <hint type="destinationlabel">
-                    <x>949</x>
-                    <y>165</y>
+                    <x>909</x>
+                    <y>135</y>
                 </hint>
             </hints>
         </connection>
@@ -1036,12 +1157,12 @@
             <slot>setValue(int)</slot>
             <hints>
                 <hint type="sourcelabel">
-                    <x>901</x>
-                    <y>205</y>
+                    <x>861</x>
+                    <y>175</y>
                 </hint>
                 <hint type="destinationlabel">
-                    <x>955</x>
-                    <y>201</y>
+                    <x>915</x>
+                    <y>171</y>
                 </hint>
             </hints>
         </connection>
@@ -1052,12 +1173,12 @@
             <slot>setValue(int)</slot>
             <hints>
                 <hint type="sourcelabel">
-                    <x>969</x>
-                    <y>199</y>
+                    <x>929</x>
+                    <y>169</y>
                 </hint>
                 <hint type="destinationlabel">
-                    <x>892</x>
-                    <y>204</y>
+                    <x>852</x>
+                    <y>174</y>
                 </hint>
             </hints>
         </connection>
@@ -1068,12 +1189,12 @@
             <slot>setValue(int)</slot>
             <hints>
                 <hint type="sourcelabel">
-                    <x>952</x>
-                    <y>160</y>
+                    <x>912</x>
+                    <y>130</y>
                 </hint>
                 <hint type="destinationlabel">
-                    <x>903</x>
-                    <y>163</y>
+                    <x>863</x>
+                    <y>133</y>
                 </hint>
             </hints>
         </connection>
@@ -1084,12 +1205,12 @@
             <slot>setValue(int)</slot>
             <hints>
                 <hint type="sourcelabel">
-                    <x>952</x>
-                    <y>85</y>
+                    <x>912</x>
+                    <y>55</y>
                 </hint>
                 <hint type="destinationlabel">
-                    <x>910</x>
-                    <y>89</y>
+                    <x>870</x>
+                    <y>59</y>
                 </hint>
             </hints>
         </connection>
@@ -1100,12 +1221,12 @@
             <slot>setValue(int)</slot>
             <hints>
                 <hint type="sourcelabel">
-                    <x>911</x>
-                    <y>118</y>
+                    <x>871</x>
+                    <y>88</y>
                 </hint>
                 <hint type="destinationlabel">
-                    <x>959</x>
-                    <y>123</y>
+                    <x>919</x>
+                    <y>93</y>
                 </hint>
             </hints>
         </connection>
@@ -1116,12 +1237,12 @@
             <slot>setValue(int)</slot>
             <hints>
                 <hint type="sourcelabel">
-                    <x>955</x>
-                    <y>119</y>
+                    <x>915</x>
+                    <y>89</y>
                 </hint>
                 <hint type="destinationlabel">
-                    <x>892</x>
-                    <y>120</y>
+                    <x>852</x>
+                    <y>90</y>
                 </hint>
             </hints>
         </connection>

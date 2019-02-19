@@ -18,6 +18,13 @@ This is going to be where I keep track of a to do list and changelog. The change
 
 - **1.0 → 1.1 - Optimization branch -  File loading**
 
+1.0.5 → 1.0.6 - Backup version - A lot of stuff still half baked
+    
+    - Started to make the blue seas algorithm. Still not actually implemented
+    - Re-added the check to see if anything has changed, as my algorithm is a bit more bloated tham the BEP one
+    - Added a check box to use my charging efficiency in the BEP algorithm. Doesn't seem to do anything, but will
+        look at that for the next version
+    
 1.0.4 → 1.0.5
     
     - Continued to refine the algorithm. The charging side seems pretty good, 

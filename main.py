@@ -33,6 +33,7 @@ class mainPlotGui(Ui_plotGui):
     diff = 0
     validDir = False
     error = 0
+    data = shelve.open(setup.shelveName, flag='c+b', writeback=True)
 
     def __init__(self, dialog):
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
@@ -72,6 +73,8 @@ class mainPlotGui(Ui_plotGui):
         self.spinB.valueChanged.connect(self.bx1Change)
         self.spinC.valueChanged.connect(self.bx1Change)
         self.spinD.valueChanged.connect(self.bx1Change)
+
+        self.adjustedChargeEfficiency.stateChanged.connect(self.b1Change)
 
     def bx1Change(self):
         self.change[0][1] = True
@@ -158,6 +161,7 @@ class mainPlotGui(Ui_plotGui):
         logging.info('Plot finished')
         self.change = [[False, False, False], [False, False, False], [False, False, False]]
         logging.debug('Need changes set to false')
+        self.data.sync()
 
         self.plotButton.setEnabled(True)
         logging.debug('Plot button: True')
@@ -211,10 +215,7 @@ class mainPlotGui(Ui_plotGui):
                               'cap': self.inputCap3.value()}]
 
         self.updateProgress(10, 'Processing data')
-        try:
-            setup.process(self, self.curPath, state)  # Run plotData in the first run mode to load everything
-        except Exception as e:
-            print(e)
+        setup.process(self, self.curPath, state, self.data)  # Run plotData in the first run mode to load everything
 
         # Update the progress bar
         self.updateProgress(100, 'Data loaded!')
@@ -224,8 +225,6 @@ class mainPlotGui(Ui_plotGui):
 
     def plot(self, state, name=''):
         # Update battery specs values
-
-        data = self.plotData
 
         logging.debug('Plot in progress')
 
@@ -241,8 +240,8 @@ class mainPlotGui(Ui_plotGui):
         for i in items:
             out.append(f'{name:5.5}: {i}')
             logging.debug(f'Plotting: {i}')
-            x = data.loc[:, 'Time']
-            y = data.loc[:, i]
+            x = self.plotData.loc[:, 'Time']
+            y = self.plotData.loc[:, i]
             plt.plot(x, y)
 
             # Check boxes for marked points
@@ -290,8 +289,10 @@ class mainPlotGui(Ui_plotGui):
         except:
             logging.error(f'Lower impossible for {name}')
 
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
+    # noinspection PyArgumentList
     dialog = QtWidgets.QDialog()
 
     prog = mainPlotGui(dialog)
