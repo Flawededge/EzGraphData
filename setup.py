@@ -28,9 +28,7 @@ neededHeaders = ['TimeStamp', 'Supply Current', 'Supply Voltage', 'Load Current'
 # The labels to display in the plot selection area. Dictionary in process needs to be formatted with same names
 
 ''' These are put directly into the plot variable. 'New name': '.csv header name' '''
-outputDirect = {'Time': 'TimeStamp',
-                'Temperature': 'CANDevTemperature',
-                'Supply Current': 'Supply Current',
+outputDirect = {'Supply Current': 'Supply Current',
                 'Supply Voltage': 'Supply Voltage',
                 'Load Current': 'Load Current',
                 'Load Voltage': 'Load Voltage',
@@ -46,15 +44,23 @@ outputDirect = {'Time': 'TimeStamp',
                 'B1Voltage': 'B1Voltage',
                 'B2Voltage': 'B2Voltage',
                 'B3Voltage': 'B3Voltage',
-                'B1RemainCapacityCoulombs': 'B1RemainCapacityCoulombs',
-                'B2RemainCapacityCoulombs': 'B2RemainCapacityCoulombs',
-                'B3RemainCapacityCoulombs': 'B3RemainCapacityCoulombs'}
+                'Temperature': 'CANDevTemperature'}
+
+''' These are loaded, but not displayed in the GUI '''
+justFrigginLoad = {'Time': 'TimeStamp'}
 
 ''' These are variables which will need to be manually filled in within the process function '''
-outputProcessing = ['bepTSoc1', 'digTSoc1', 'bluTSoc1',
-                    'bepTSoc2', 'digTSoc2', 'bluTSoc2',
-                    'bepTSoc3', 'digTSoc3', 'bluTSoc3',
+outputProcessing = ['bepTSoc1', 'digTSoc1',
+                    'bepTSoc2', 'digTSoc2',
+                    'bepTSoc3', 'digTSoc3',
                     'deltaT']
+
+''' Removed terms
+ 'bluTSoc1',
+ 'bluTSoc2',
+ 'bluTSoc3',
+'''
+
 
 # Processing
 # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +69,7 @@ outputProcessing = ['bepTSoc1', 'digTSoc1', 'bluTSoc1',
 # This function is run to process the data. It should return an array of arrays in the same format of outputProcessing
 def process(mainData, filePath, state, data):
     mainData.loaded = False
-    values = list(outputDirect.values())
+    values = list(dict(outputDirect, **justFrigginLoad).values())
     new = False
 
     # First get the modify date of the file, so changes can be detected

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-       <width>1002</width>
+       <width>640</width>
        <height>511</height>
    </rect>
   </property>
@@ -984,7 +984,7 @@
              <rect>
                  <x>640</x>
                  <y>200</y>
-                 <width>351</width>
+                 <width>374</width>
                  <height>301</height>
              </rect>
          </property>
@@ -1083,6 +1083,20 @@
                              </item>
                          </widget>
                      </item>
+                     <item row="3" column="1">
+                         <widget class="QLabel" name="label">
+                             <property name="text">
+                                 <string>The stuff out here is in various levels of disrepair</string>
+                             </property>
+                         </widget>
+                     </item>
+                     <item row="4" column="1">
+                         <widget class="QLabel" name="label_2">
+                             <property name="text">
+                                 <string>This area is for blue seas, but isn't currently functional</string>
+                             </property>
+                         </widget>
+                     </item>
                  </layout>
              </item>
          </layout>
@@ -1097,7 +1111,7 @@
              </rect>
          </property>
          <property name="text">
-             <string>Use adjusted charge efficiency</string>
+             <string>Use adjusted charge efficiency (Not really doing a lot)</string>
          </property>
      </widget>
  </widget>
@@ -1118,22 +1132,6 @@
  </tabstops>
  <resources/>
     <connections>
-        <connection>
-            <sender>A</sender>
-            <signal>sliderMoved(int)</signal>
-            <receiver>spinA</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>874</x>
-                    <y>52</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>919</x>
-                    <y>46</y>
-                </hint>
-            </hints>
-        </connection>
         <connection>
             <sender>C</sender>
             <signal>sliderMoved(int)</signal>
@@ -1183,6 +1181,22 @@
             </hints>
         </connection>
         <connection>
+            <sender>A</sender>
+            <signal>sliderMoved(int)</signal>
+            <receiver>spinA</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>874</x>
+                    <y>52</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>919</x>
+                    <y>46</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
             <sender>spinC</sender>
             <signal>valueChanged(int)</signal>
             <receiver>C</receiver>
@@ -1199,22 +1213,6 @@
             </hints>
         </connection>
         <connection>
-            <sender>spinA</sender>
-            <signal>valueChanged(int)</signal>
-            <receiver>A</receiver>
-            <slot>setValue(int)</slot>
-            <hints>
-                <hint type="sourcelabel">
-                    <x>912</x>
-                    <y>55</y>
-                </hint>
-                <hint type="destinationlabel">
-                    <x>870</x>
-                    <y>59</y>
-                </hint>
-            </hints>
-        </connection>
-        <connection>
             <sender>B</sender>
             <signal>sliderMoved(int)</signal>
             <receiver>spinB</receiver>
@@ -1227,6 +1225,22 @@
                 <hint type="destinationlabel">
                     <x>919</x>
                     <y>93</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>spinA</sender>
+            <signal>valueChanged(int)</signal>
+            <receiver>A</receiver>
+            <slot>setValue(int)</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>912</x>
+                    <y>55</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>870</x>
+                    <y>59</y>
                 </hint>
             </hints>
         </connection>

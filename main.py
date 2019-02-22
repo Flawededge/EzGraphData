@@ -153,6 +153,7 @@ class mainPlotGui(Ui_plotGui):
             # self.listDir.setCurrentRow(i)
             self.loadData(self.change)
             items.append(self.plot(self.change, i.data(0)))
+            self.data.sync()
 
         plt.title(title)
         plt.legend([i for sublist in items for i in sublist])
@@ -161,7 +162,6 @@ class mainPlotGui(Ui_plotGui):
         logging.info('Plot finished')
         self.change = [[False, False, False], [False, False, False], [False, False, False]]
         logging.debug('Need changes set to false')
-        self.data.sync()
 
         self.plotButton.setEnabled(True)
         logging.debug('Plot button: True')
